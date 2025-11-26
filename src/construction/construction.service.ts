@@ -9,16 +9,20 @@ export class ConstructionService {
     const DoS = new Date(createConstructorDto.dateOfSigning);
     const rootDir = process.cwd();
 
-    const fileName =
-      DoS.getFullYear() +
-      '-' +
-      ((DoS.getMonth() + 1).toString().length < 2
+    const year = DoS.getFullYear();
+    const month =
+      (DoS.getMonth() + 1).toString().length < 2
         ? '0' + (DoS.getMonth() + 1)
-        : DoS.getMonth() + 1) +
+        : DoS.getMonth() + 1;
+    const date =
+      DoS.getDate().toString().length < 2 ? '0' + DoS.getDate() : DoS.getDate();
+
+    const fileName =
+      year +
       '-' +
-      (DoS.getDate().toString().length < 2
-        ? '0' + DoS.getDate()
-        : DoS.getDate()) +
+      month +
+      '-' +
+      date +
       '-' +
       createConstructorDto.name +
       '.json';
@@ -29,6 +33,7 @@ export class ConstructionService {
     const filePath = path.join(rootDir, 'public', fileName);
 
     fs.writeFileSync(filePath, JSON.stringify(createConstructorDto));
+
     return {
       message: 'Construction created successfully',
       ...createConstructorDto,
