@@ -1,5 +1,5 @@
 export interface Construction {
-  documentNo: number;
+  documentNo: string;
   name: string;
   dateOfSigning: Date;
   budget: number;

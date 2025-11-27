@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { ConstructionService } from './construction.service';
 import { CreateConstructionDto } from './dto/create-construction.dto';
 
@@ -8,8 +8,6 @@ export class ConstructionController {
 
   @Post()
   create(@Body() createConstructionDto: CreateConstructionDto) {
-    console.log('Received DTO:', createConstructionDto);
-
     return this.constructionService.create(createConstructionDto);
   }
 
@@ -18,12 +16,12 @@ export class ConstructionController {
     return this.constructionService.findAll();
   }
 
-  /*
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.constructionService.findOne(+id);
+    return this.constructionService.findById(id);
   }
 
+  /*
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateConstructionDto: UpdateConstructionDto) {
     return this.constructionService.update(+id, updateConstructionDto);
