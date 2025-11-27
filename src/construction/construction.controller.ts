@@ -8,6 +8,8 @@ export class ConstructionController {
 
   @Post()
   create(@Body() createConstructionDto: CreateConstructionDto) {
+    console.log('Received DTO:', createConstructionDto);
+
     return this.constructionService.create(createConstructionDto);
   }
 

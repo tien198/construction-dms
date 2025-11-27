@@ -1,7 +1,7 @@
 import { Construction } from '../type/construction.type';
 
 export class CreateConstructionDto implements Construction {
-  number: number;
+  documentNo: number;
   name: string;
   dateOfSigning: Date;
   budget: number;

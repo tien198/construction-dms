@@ -6,16 +6,16 @@ import { CreateConstructionDto } from './dto/create-construction.dto';
 @Injectable()
 export class ConstructionService {
   create(createConstructorDto: CreateConstructionDto) {
-    const DoS = new Date(createConstructorDto.dateOfSigning);
+    const doS = new Date(createConstructorDto.dateOfSigning);
     const rootDir = process.cwd();
 
-    const year = DoS.getFullYear();
+    const year = doS.getFullYear();
     const month =
-      (DoS.getMonth() + 1).toString().length < 2
-        ? '0' + (DoS.getMonth() + 1)
-        : DoS.getMonth() + 1;
+      (doS.getMonth() + 1).toString().length < 2
+        ? '0' + (doS.getMonth() + 1)
+        : doS.getMonth() + 1;
     const date =
-      DoS.getDate().toString().length < 2 ? '0' + DoS.getDate() : DoS.getDate();
+      doS.getDate().toString().length < 2 ? '0' + doS.getDate() : doS.getDate();
 
     const fileName =
       year +
