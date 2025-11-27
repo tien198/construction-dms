@@ -5,7 +5,7 @@ import { CreateConstructionDto } from './dto/create-construction.dto';
 
 @Injectable()
 export class ConstructionService {
-  create(createConstructorDto: CreateConstructionDto) {
+  async create(createConstructorDto: CreateConstructionDto) {
     const doS = new Date(createConstructorDto.dateOfSigning);
     const rootDir = process.cwd();
 
@@ -28,22 +28,28 @@ export class ConstructionService {
       '.json';
 
     if (!fs.existsSync(path.join(rootDir, 'public')))
-      fs.mkdirSync(path.join(rootDir, 'public'), { recursive: true });
+      await fs.promises.mkdir(path.join(rootDir, 'public'), {
+        recursive: true,
+      });
 
     const filePath = path.join(rootDir, 'public', fileName);
 
-    fs.writeFileSync(filePath, JSON.stringify(createConstructorDto));
+    await fs.promises.writeFile(filePath, JSON.stringify(createConstructorDto));
 
     return {
       message: 'Construction created successfully',
       ...createConstructorDto,
     };
   }
-  /*
-  findAll() {
-    return `This action returns all construction`;
+
+  async findAll() {
+    const files = await fs.promises.readdir(path.join(process.cwd(), 'public'));
+    console.log(files);
+
+    return files;
   }
 
+  /*
   findOne(id: number) {
     return `This action returns a #${id} construction`;
   }

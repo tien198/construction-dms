@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ConstructionService } from './construction.service';
 import { CreateConstructionDto } from './dto/create-construction.dto';
 
@@ -13,12 +13,12 @@ export class ConstructionController {
     return this.constructionService.create(createConstructionDto);
   }
 
-  /*
   @Get()
   findAll() {
     return this.constructionService.findAll();
   }
 
+  /*
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.constructionService.findOne(+id);
