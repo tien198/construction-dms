@@ -1,6 +1,7 @@
 import { Controller, Post, Param } from '@nestjs/common';
 import { ConstructionDocumentService } from './construction-document.service';
 import { ConstructionService } from 'src/construction/construction.service';
+import { Doc2 } from './entities/doc2.entity';
 
 @Controller('construction-document')
 export class ConstructionDocumentController {
@@ -12,6 +13,14 @@ export class ConstructionDocumentController {
   genDocs(@Param('id') id: string) {
     const construction = this.constructionService.findById(id);
 
+    return construction;
+  }
+
+  @Post('doc2/:id')
+  async genDoc2(@Param('id') id: string) {
+    const construction = await this.constructionService.findById(id);
+
+    this.constructionDocumentService.genDoc(construction, new Doc2());
     return construction;
   }
 

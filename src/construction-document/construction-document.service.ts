@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Doc2 } from './entities/doc2';
 import type { Construction } from 'src/common/type/construction.type';
+import type { DocGenerator } from 'src/construction-document/abstracts/docGenerator.entity';
 
 @Injectable()
 export class ConstructionDocumentService {
   constructor() {}
 
-  genDoc2(construction: Construction) {
-    const doc = new Doc2(construction);
-    doc.generate();
+  genDoc(construction: Construction, docInstance: DocGenerator) {
+    docInstance.generate(construction);
   }
 
   /*
