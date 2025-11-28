@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import fs from 'fs';
 import path from 'path';
-import { CreateConstructionDto } from './dto/create-construction.dto';
+import { CreateConstructionDto } from '../common/dto/create-construction.dto';
+import type { Construction } from 'src/common/type/construction.type';
 
 @Injectable()
 export class ConstructionService {
@@ -65,7 +66,8 @@ export class ConstructionService {
       'utf-8',
     );
 
-    return file;
+    const construction = JSON.parse(file) as Construction;
+    return construction;
   }
 
   /*

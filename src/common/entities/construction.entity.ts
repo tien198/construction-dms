@@ -1,5 +1,7 @@
-export class Construction implements Construction {
-  number: number;
+import { Construction } from '../type/construction.type';
+
+export class ConstructionImp implements Construction {
+  documentNo: string;
   name: string;
   dateOfSigning: Date;
   budget: number;
