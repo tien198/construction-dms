@@ -1,7 +1,10 @@
+import fs from 'fs';
 import { Controller, Post, Param } from '@nestjs/common';
 import { ConstructionDocumentService } from './construction-document.service';
 import { ConstructionService } from 'src/construction/construction.service';
 import { Doc2 } from './entities/doc2.entity';
+import { Packer } from 'docx';
+import path from 'path';
 
 @Controller('construction-document')
 export class ConstructionDocumentController {
@@ -24,7 +27,24 @@ export class ConstructionDocumentController {
       construction,
       new Doc2(),
     );
-    return doc2;
+    // 1. Tạo buffer từ Packer (giả sử doc2 là document của bạn)
+    const buffer = await Packer.toBuffer(doc2);
+    const dirPath = path.join(process.cwd(), 'public', construction.name);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+    const filePath = path.join(dirPath, '2. Tờ trình phê duyệt KHLCNT.doc');
+    await fs.promises.writeFile(filePath, buffer);
+    // 2. Thiết lập header để trình duyệt hiểu đây là file tải về
+    // res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    // res.setHeader(
+    //   'Content-Type',
+    //   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    // );
+    // res.setHeader('Content-Length', buffer.length);
+
+    // 4. Gửi Buffer trực tiếp
+    return 'success';
   }
 
   /*

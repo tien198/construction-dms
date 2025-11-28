@@ -7,7 +7,7 @@ export class ConstructionDocumentService {
   constructor() {}
 
   genDoc(construction: Construction, docInstance: DocGenerator) {
-    docInstance.generate(construction);
+    return docInstance.generate(construction);
   }
 
   /*

@@ -3,12 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import { CreateConstructionDto } from '../common/dto/create-construction.dto';
 import type { Construction } from 'src/common/type/construction.type';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ConstructionService {
+  constructor(private configService: ConfigService) {}
   // Create
-  async create(createConstructorDto: CreateConstructionDto) {
-    const doS = new Date(createConstructorDto.dateOfSigning);
+  async create(dto: CreateConstructionDto) {
+    const doS = new Date(dto.dateOfSigning);
     const rootDir = process.cwd();
 
     const year = doS.getFullYear();
@@ -20,53 +22,62 @@ export class ConstructionService {
       doS.getDate().toString().length < 2 ? '0' + doS.getDate() : doS.getDate();
 
     const fileName =
-      year +
-      '-' +
-      month +
-      '-' +
-      date +
-      '-' +
-      createConstructorDto.name.replace(/ /g, '-') +
-      '.json';
+      year + '-' + month + '-' + date + '-' + dto.name.replace(/ /g, '-');
 
     if (!fs.existsSync(path.join(rootDir, 'public')))
       await fs.promises.mkdir(path.join(rootDir, 'public'), {
         recursive: true,
       });
 
-    const filePath = path.join(rootDir, 'public', fileName);
+    const dataFile = this.configService.get<string>('DATA_FILE');
+    const filePath = path.join(rootDir, 'public', dataFile ?? '');
 
-    await fs.promises.writeFile(filePath, JSON.stringify(createConstructorDto));
+    if (!fs.existsSync(filePath)) {
+      await fs.promises.writeFile(filePath, JSON.stringify([]));
+    }
+
+    const file = await fs.promises.readFile(filePath, 'utf-8');
+    const list = JSON.parse(file) as Construction[];
+    const id = Date.now() + '-' + dto.documentNo;
+    list.push({
+      id,
+      ...dto,
+    });
+
+    await fs.promises.writeFile(filePath, JSON.stringify(list));
 
     return {
+      id,
       message: 'Construction created successfully',
       fileName: fileName,
-      ...createConstructorDto,
+      ...dto,
     };
   }
 
   // FindAll
   async findAll() {
-    const files = await fs.promises.readdir(path.join(process.cwd(), 'public'));
+    const dataFile = this.configService.get<string>('DATA_FILE');
 
-    return files;
+    const filePath = path.join(process.cwd(), 'public', dataFile ?? '');
+
+    const file = await fs.promises.readFile(filePath, 'utf-8');
+    const list = JSON.parse(file) as Construction[];
+    return list;
   }
 
   // FindById
   async findById(id: string) {
-    const files = await fs.promises.readdir(path.join(process.cwd(), 'public'));
-    const fileName = files.find((file) => file.includes(id));
-
-    if (!fileName) {
-      throw new Error('File not found');
-    }
+    const dataFile = this.configService.get<string>('DATA_FILE');
 
     const file = await fs.promises.readFile(
-      path.join(process.cwd(), 'public', fileName),
+      path.join(process.cwd(), 'public', dataFile ?? ''),
       'utf-8',
     );
+    const list = JSON.parse(file) as Construction[];
 
-    const construction = JSON.parse(file) as Construction;
+    const construction = list.find((file) => file.id === id);
+    if (!construction) throw new Error('Construction not found');
+
     return construction;
   }
 

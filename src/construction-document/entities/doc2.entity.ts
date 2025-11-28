@@ -1,4 +1,4 @@
-import { Document, Paragraph, Table, TextRun } from 'docx';
+import { Document, Paragraph, TextRun } from 'docx';
 import { Construction } from 'src/common/type/construction.type';
 import { DocGenerator } from 'src/construction-document/abstracts/docGenerator.entity';
 

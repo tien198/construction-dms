@@ -1,4 +1,5 @@
 export interface Construction {
+  id?: string;
   documentNo: string;
   name: string;
   dateOfSigning: Date;
