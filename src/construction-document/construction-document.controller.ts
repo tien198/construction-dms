@@ -6,22 +6,25 @@ import { Doc2 } from './entities/doc2.entity';
 @Controller('construction-document')
 export class ConstructionDocumentController {
   constructor(
-    private readonly constructionDocumentService: ConstructionDocumentService,
-    private readonly constructionService: ConstructionService,
+    private readonly _constructionDocumentService: ConstructionDocumentService,
+    private readonly _constructionService: ConstructionService,
   ) {}
   @Post(':id')
   genDocs(@Param('id') id: string) {
-    const construction = this.constructionService.findById(id);
+    const construction = this._constructionService.findById(id);
 
     return construction;
   }
 
   @Post('doc2/:id')
   async genDoc2(@Param('id') id: string) {
-    const construction = await this.constructionService.findById(id);
+    const construction = await this._constructionService.findById(id);
 
-    this.constructionDocumentService.genDoc(construction, new Doc2());
-    return construction;
+    const doc2 = this._constructionDocumentService.genDoc(
+      construction,
+      new Doc2(),
+    );
+    return doc2;
   }
 
   /*
