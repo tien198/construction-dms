@@ -1,10 +1,18 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { ConstructionService } from './construction.service';
 import { CreateConstructionDto } from 'src/common/dto/create-construction.dto';
+import { DocumentService } from 'src/document/document.service';
+import { ConstructionMapper } from 'src/common/mapper/construction..mapper';
+import { ConstructionDocument } from 'src/common/entities/construction.document.format';
+import { GenListDto } from './dto/genList.dto';
 
 @Controller('construction')
 export class ConstructionController {
-  constructor(private readonly constructionService: ConstructionService) {}
+  constructor(
+    private readonly constructionService: ConstructionService,
+    private readonly documentService: DocumentService,
+    private readonly constructionMapper: ConstructionMapper,
+  ) {}
 
   @Post()
   create(@Body() createConstructionDto: CreateConstructionDto) {
@@ -19,6 +27,17 @@ export class ConstructionController {
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.constructionService.findById(id);
+  }
+
+  @Post('gen-doc/:id')
+  async generateDocument(@Param('id') id: string, @Body() body: GenListDto) {
+    const data = await this.constructionService.findById(id);
+    const doc = this.constructionMapper.toEntity(data);
+    const formatedDoc = new ConstructionDocument(doc);
+    for (const docName of body.list) {
+      await this.documentService.generate(docName, formatedDoc);
+    }
+    return 'successfully';
   }
 
   /*

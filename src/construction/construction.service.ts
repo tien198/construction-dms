@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import fs from 'fs';
 import path from 'path';
-import type { Construction } from 'src/common/type/construction.type';
 import { ConfigService } from '@nestjs/config';
 import { CreateConstructionDto } from 'src/common/dto/create-construction.dto';
+import { UpdateConstructionDto } from 'src/common/dto/update-construction.dto';
 
 @Injectable()
 export class ConstructionService {
@@ -37,7 +37,7 @@ export class ConstructionService {
     }
 
     const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as Construction[];
+    const list = JSON.parse(file) as UpdateConstructionDto[];
     const id = Date.now() + '-' + dto.documentNo;
     list.push({
       id,
@@ -61,7 +61,7 @@ export class ConstructionService {
     const filePath = path.join(process.cwd(), 'public', dataFile ?? '');
 
     const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as Construction[];
+    const list = JSON.parse(file) as UpdateConstructionDto[];
     return list;
   }
 
@@ -73,7 +73,7 @@ export class ConstructionService {
       path.join(process.cwd(), 'public', dataFile ?? ''),
       'utf-8',
     );
-    const list = JSON.parse(file) as Construction[];
+    const list = JSON.parse(file) as UpdateConstructionDto[];
 
     const construction = list.find((file) => file.id === id);
     if (!construction) throw new Error('Construction not found');

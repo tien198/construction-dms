@@ -1,6 +1,7 @@
 import { Construction } from '../type/construction.type';
 
 export class ConstructionImp implements Construction {
+  id?: string;
   documentNo: string;
   name: string;
   dateOfSigning: Date;

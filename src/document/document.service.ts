@@ -10,9 +10,9 @@ import { ConstructionDocument } from 'src/common/entities/construction.document.
 
 @Injectable()
 export class DocumentService {
-  generate(construction: ConstructionDocument) {
-    const content = fs.readFileSync(
-      path.join(__dirname, 'template', '2. Tờ trình phê duyệt KHLCNT.docx'),
+  async generate(docName: string, construction: ConstructionDocument) {
+    const content = await fs.promises.readFile(
+      path.join('public', 'template', docName + '.docx'),
       'binary',
     );
     // Unzip the content of the file
@@ -48,8 +48,16 @@ export class DocumentService {
      */
     const buf = doc.toBuffer();
 
+    if (!fs.existsSync(path.resolve('public', construction.name))) {
+      fs.mkdirSync(path.resolve('public', construction.name), {
+        recursive: true,
+      });
+    }
     // Write the Buffer to a file
-    fs.writeFileSync(path.resolve(__dirname, 'output.docx'), buf);
+    await fs.promises.writeFile(
+      path.resolve('public', construction.name, docName + '.docx'),
+      buf,
+    );
     /*
      * Instead of writing it to a file, you could also
      * let the user download it, store it in a database,
