@@ -1,19 +1,17 @@
-import { Construction } from '../type/construction.type';
-
-export class CreateConstructionDto implements Construction {
+export class CreateConstructionDto {
   documentNo: string;
   name: string;
-  dateOfSigning: Date;
+  dateOfSigning: string;
   budget: number;
   stringBudget: string;
   constructionExecutionTime: {
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
   };
   existingConditionOfTheStructure: string;
   repairScope: string;
   decision: {
-    decisionNumber: string;
-    decisionDate: Date;
+    number: string;
+    date: string;
   };
 }

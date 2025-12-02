@@ -12,7 +12,7 @@ export interface Construction {
   existingConditionOfTheStructure: string;
   repairScope: string;
   decision: {
-    decisionNumber: string;
-    decisionDate: Date;
+    number: string;
+    date: Date;
   };
 }
