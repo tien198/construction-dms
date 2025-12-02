@@ -6,6 +6,7 @@ type DateObject = {
   yyyy: string;
 };
 
+// TRANSITION - entity is created in Controller foreach request
 export class ConstructionDocument {
   id?: string;
   documentNo: string;

@@ -5,6 +5,8 @@ export interface Construction {
   dateOfSigning: Date;
   budget: number;
   stringBudget: string;
+  //
+  sourceOfFunds: string;
   constructionExecutionTime: {
     startDate: Date;
     endDate: Date;
