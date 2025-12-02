@@ -48,14 +48,14 @@ export class DocumentService {
      */
     const buf = doc.toBuffer();
 
-    if (!fs.existsSync(path.resolve('public', construction.name))) {
-      fs.mkdirSync(path.resolve('public', construction.name), {
+    if (!fs.existsSync(path.resolve('gen-documents', construction.name))) {
+      fs.mkdirSync(path.resolve('gen-documents', construction.name), {
         recursive: true,
       });
     }
     // Write the Buffer to a file
     await fs.promises.writeFile(
-      path.resolve('public', construction.name, docName + '.docx'),
+      path.resolve('gen-documents', construction.name, docName + '.docx'),
       buf,
     );
     /*
