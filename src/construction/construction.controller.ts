@@ -23,6 +23,10 @@ export class ConstructionController {
   findAll() {
     return this.constructionService.findAll();
   }
+  @Get('doc-list')
+  getDocumentList() {
+    return this.documentService.getDocumentList();
+  }
 
   @Get(':id')
   findById(@Param('id') id: string) {

@@ -64,4 +64,8 @@ export class DocumentService {
      * on AWS S3, ...
      */
   }
+  async getDocumentList() {
+    const files = await fs.promises.readdir(path.resolve('public', 'template'));
+    return files;
+  }
 }

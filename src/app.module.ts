@@ -4,7 +4,7 @@ import { ConstructionModule } from './construction/construction.module';
 import { ConfigModule } from '@nestjs/config';
 import { DocumentModule } from './document/document.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { resolve } from 'path';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { join } from 'path';
       isGlobal: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client', 'dist'),
+      rootPath: resolve('client', 'dist'),
       exclude: ['/api'],
     }),
     CatModule,
