@@ -4,8 +4,7 @@ type BidPackage = {
   shortDescription: string;
   price: number;
   contractorSelectionTime: Date;
-  implementPeriod: string; // 10 ngày
-  sourceOfFunds: string;
+  implementDuration: string; // 10 ngày
   contractType: string;
 };
 
@@ -16,6 +15,7 @@ export interface Construction {
   dateOfSigning: Date;
   budget: number;
   stringBudget: string;
+  // sourceOfFunds: string;
   //
   constructionExecutionTime: {
     startDate: Date;
@@ -27,5 +27,5 @@ export interface Construction {
     number: string;
     date: Date;
   };
-  proposal: BidPackage[];
+  // packageProposals: BidPackage[];
 }
