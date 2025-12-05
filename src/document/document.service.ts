@@ -12,7 +12,7 @@ import { ConstructionDocument } from 'src/common/entities/construction.document.
 export class DocumentService {
   async generate(docName: string, construction: ConstructionDocument) {
     const content = await fs.promises.readFile(
-      path.join('public', 'template', docName + '.docx'),
+      path.join('public', 'template', docName),
       'binary',
     );
     // Unzip the content of the file

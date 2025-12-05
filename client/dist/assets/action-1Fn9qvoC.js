@@ -1,0 +1,1 @@
+async function e(e){let t=`http://localhost:3000/api/construction/gen-doc/`+e.params.id,n=await e.request.json();console.log(`JSON received in action:`,n);let r=await fetch(t,{method:e.request.method,headers:{"Content-Type":`application/json`},body:JSON.stringify(n)});if(!r.ok)throw Error(`Failed to generate document`);return alert(`Thành công.`),r.json()}export{e as action};

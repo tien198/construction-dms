@@ -41,7 +41,9 @@ export class ConstructionController {
     for (const docName of body.list) {
       await this.documentService.generate(docName, formatedDoc);
     }
-    return 'successfully';
+    return {
+      message: 'successfully',
+    };
   }
 
   /*
