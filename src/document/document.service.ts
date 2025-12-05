@@ -55,7 +55,7 @@ export class DocumentService {
     }
     // Write the Buffer to a file
     await fs.promises.writeFile(
-      path.resolve('gen-documents', construction.name, docName + '.docx'),
+      path.resolve('gen-documents', construction.name, docName),
       buf,
     );
     /*
