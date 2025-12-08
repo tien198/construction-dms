@@ -1,4 +1,4 @@
-import { Construction } from '../type/construction.type';
+import { BidPackage, Construction } from '../type/construction.type';
 
 type DateObject = {
   dd: string;
@@ -27,6 +27,7 @@ export class ConstructionDocument {
     number: string;
     date: string;
   };
+  packages: BidPackage[];
 
   constructor(con: Construction) {
     this.id = con.id;
@@ -53,6 +54,8 @@ export class ConstructionDocument {
       number: con.decision?.number,
       date: this.formatDate(con.decision.date),
     };
+
+    this.packages = con.packages;
   }
 
   toDateObject = (ISOString: string | Date): DateObject => {
