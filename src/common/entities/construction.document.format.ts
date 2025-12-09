@@ -17,11 +17,8 @@ export class ConstructionDocument {
   budget: string;
   stringBudget: string;
   sourceOfFunds: string;
-  // constructionExecutionTime
-  cet: {
-    startDate: DateObject;
-    endDate: DateObject;
-  };
+  // constructionImplementationTime
+  constructionImplementationTime: string;
   // existingConditionOfTheStructure
   existingConditionOfTheStructure: string;
   repairScope: string;
@@ -45,11 +42,10 @@ export class ConstructionDocument {
 
     this.sourceOfFunds = con.sourceOfFunds;
 
-    // constructionExecutionTime
-    this.cet = {
-      startDate: this.toDateObject(con.constructionExecutionTime.startDate),
-      endDate: this.toDateObject(con.constructionExecutionTime.endDate),
-    };
+    this.constructionImplementationTime =
+      this.formatDate(con.constructionImplementationTime.startDate, 'month') +
+      ' - ' +
+      this.formatDate(con.constructionImplementationTime.endDate, 'month');
 
     this.existingConditionOfTheStructure = con.existingConditionOfTheStructure;
     this.repairScope = con.repairScope;
@@ -77,8 +73,11 @@ export class ConstructionDocument {
     return { dd, mm, yyyy };
   };
 
-  formatDate = (ISOString: string | Date, formatTo?: 'month' | 'year') => {
-    const decisionDate = new Date(ISOString);
+  formatDate = (
+    ISOString: string | Date | null,
+    formatTo?: 'month' | 'year',
+  ) => {
+    const decisionDate = new Date(ISOString ?? '');
     const dd = String(decisionDate.getDate()).padStart(2, '0');
     const mm = String(decisionDate.getMonth() + 1).padStart(2, '0');
     const yyyy = decisionDate.getFullYear();

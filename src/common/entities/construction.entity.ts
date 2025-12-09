@@ -9,7 +9,7 @@ export class ConstructionImp implements Construction {
   budget: number;
   stringBudget: string;
   sourceOfFunds: string;
-  constructionExecutionTime: {
+  constructionImplementationTime: {
     startDate: Date;
     endDate: Date;
   };

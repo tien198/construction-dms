@@ -7,7 +7,7 @@ export class CreateConstructionDto {
   budget: number;
   stringBudget: string;
   sourceOfFunds: string;
-  constructionExecutionTime: {
+  constructionImplementationTime: {
     startDate: string;
     endDate: string;
   };

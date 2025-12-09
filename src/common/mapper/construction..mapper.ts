@@ -16,9 +16,9 @@ export class ConstructionMapper {
     entity.budget = dto.budget ?? 0;
     entity.stringBudget = dto.stringBudget ?? '';
     entity.sourceOfFunds = dto.sourceOfFunds ?? '';
-    entity.constructionExecutionTime = {
-      startDate: new Date(dto.constructionExecutionTime?.startDate ?? ''),
-      endDate: new Date(dto.constructionExecutionTime?.endDate ?? ''),
+    entity.constructionImplementationTime = {
+      startDate: new Date(dto.constructionImplementationTime?.startDate ?? ''),
+      endDate: new Date(dto.constructionImplementationTime?.endDate ?? ''),
     };
     entity.existingConditionOfTheStructure =
       dto.existingConditionOfTheStructure ?? '';
@@ -43,9 +43,9 @@ export class ConstructionMapper {
     dto.budget = entity.budget;
     dto.stringBudget = entity.stringBudget;
     dto.sourceOfFunds = entity.sourceOfFunds;
-    dto.constructionExecutionTime = {
-      startDate: entity.constructionExecutionTime.startDate.toISOString(),
-      endDate: entity.constructionExecutionTime.endDate.toISOString(),
+    dto.constructionImplementationTime = {
+      startDate: entity.constructionImplementationTime.startDate.toISOString(),
+      endDate: entity.constructionImplementationTime.endDate.toISOString(),
     };
     dto.existingConditionOfTheStructure =
       entity.existingConditionOfTheStructure;

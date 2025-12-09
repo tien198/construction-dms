@@ -9,7 +9,7 @@ export interface Construction {
   stringBudget: string;
   sourceOfFunds: string;
   //
-  constructionExecutionTime: {
+  constructionImplementationTime: {
     startDate: Date;
     endDate: Date;
   };
