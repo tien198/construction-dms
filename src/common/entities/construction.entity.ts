@@ -1,4 +1,5 @@
-import { BidPackage, Construction } from '../type/construction.type';
+import { BidPackage } from '../type/bidPackage.type';
+import { Construction } from '../type/construction.type';
 
 export class ConstructionImp implements Construction {
   id?: string;

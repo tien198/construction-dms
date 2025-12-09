@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateConstructionDto } from '../dto/update-construction.dto';
 import { ConstructionImp } from '../entities/construction.entity';
+import { BidPackageMapper } from './bidPackage.mapper';
 
 @Injectable()
 export class ConstructionMapper {
+  constructor(private readonly bidPackageMapper: BidPackageMapper) {}
+
   toEntity(dto: UpdateConstructionDto) {
     const entity = new ConstructionImp();
     entity.id = dto.id;
@@ -24,7 +27,9 @@ export class ConstructionMapper {
       number: dto.decision?.number ?? '',
       date: new Date(dto.decision?.date ?? ''),
     };
-    entity.packages = dto.packages ?? [];
+    entity.packages = dto.packages
+      ? dto.packages.map((pkg) => this.bidPackageMapper.toEntity(pkg))
+      : [];
 
     return entity;
   }
@@ -49,7 +54,9 @@ export class ConstructionMapper {
       number: entity.decision.number,
       date: entity.decision.date.toISOString(),
     };
-    dto.packages = entity.packages;
+    dto.packages = entity.packages
+      ? entity.packages.map((pkg) => this.bidPackageMapper.toDto(pkg))
+      : [];
 
     return dto;
   }

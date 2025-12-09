@@ -1,4 +1,4 @@
-import { BidPackage } from '../type/construction.type';
+import { CreateBidPackageDto } from './create-bidPackage.dto';
 
 export class CreateConstructionDto {
   documentNo: string;
@@ -17,5 +17,5 @@ export class CreateConstructionDto {
     number: string;
     date: string;
   };
-  packages: BidPackage[];
+  packages: CreateBidPackageDto[];
 }

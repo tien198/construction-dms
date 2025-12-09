@@ -1,4 +1,5 @@
-import { BidPackage, Construction } from '../type/construction.type';
+import { CreateBidPackageDto } from '../dto/create-bidPackage.dto';
+import { Construction } from '../type/construction.type';
 
 type DateObject = {
   dd: string;
@@ -28,7 +29,7 @@ export class ConstructionDocument {
     number: string;
     date: string;
   };
-  packages: BidPackage[];
+  packages: CreateBidPackageDto[];
 
   constructor(con: Construction) {
     this.id = con.id;
@@ -58,7 +59,14 @@ export class ConstructionDocument {
       date: this.formatDate(con.decision.date),
     };
 
-    this.packages = con.packages;
+    this.packages = con.packages.map((pkg) => ({
+      ...pkg,
+      price: this.formatCurrency(pkg.price),
+      contractorSelectionTime: this.formatDate(
+        pkg.contractorSelectionTime,
+        'month',
+      ),
+    }));
   }
 
   toDateObject = (ISOString: string | Date): DateObject => {
@@ -69,12 +77,18 @@ export class ConstructionDocument {
     return { dd, mm, yyyy };
   };
 
-  formatDate = (ISOString: string | Date) => {
+  formatDate = (ISOString: string | Date, formatTo?: 'month' | 'year') => {
     const decisionDate = new Date(ISOString);
     const dd = String(decisionDate.getDate()).padStart(2, '0');
     const mm = String(decisionDate.getMonth() + 1).padStart(2, '0');
     const yyyy = decisionDate.getFullYear();
-    return dd + '/' + mm + '/' + yyyy;
+    if (!formatTo) {
+      return dd + '/' + mm + '/' + yyyy;
+    } else if (formatTo === 'month') {
+      return 'Tháng ' + mm + '/' + yyyy;
+    } else {
+      return 'Năm ' + String(yyyy);
+    }
   };
 
   formatCurrency = (amount: number) => {

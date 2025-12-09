@@ -39,6 +39,9 @@ export class ConstructionService {
     const file = await fs.promises.readFile(filePath, 'utf-8');
     const list = JSON.parse(file) as UpdateConstructionDto[];
     const id = Date.now() + '-' + dto.documentNo;
+
+    // sort the packages in Construction by `arrayIndex` in ascending order
+    dto.packages.sort((a, b) => a.arrayIndex! - b.arrayIndex!);
     list.push({
       id,
       ...dto,
