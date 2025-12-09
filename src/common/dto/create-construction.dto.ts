@@ -6,6 +6,7 @@ export class CreateConstructionDto {
   dateOfSigning: string;
   budget: number;
   stringBudget: string;
+  sourceOfFunds: string;
   constructionExecutionTime: {
     startDate: string;
     endDate: string;

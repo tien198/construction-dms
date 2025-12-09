@@ -1,1 +1,0 @@
-async function e(e){try{let t=await fetch(`http://localhost:3000/api/construction/${e.params.id}`);return t.ok||alert(`Lỗi`),await t.json()}catch{return alert(`Lỗi tải dữ liệu công trình`),null}}export{e as loader};

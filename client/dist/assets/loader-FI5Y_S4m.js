@@ -1,1 +1,0 @@
-async function e(){try{return await(await fetch(`http://localhost:3000/api/construction`)).json()}catch{return alert(`Lỗi tải dữ liệu công trình`),[]}}export{e as loader};

@@ -15,6 +15,7 @@ export class ConstructionDocument {
   dos: DateObject;
   budget: string;
   stringBudget: string;
+  sourceOfFunds: string;
   // constructionExecutionTime
   cet: {
     startDate: DateObject;
@@ -40,6 +41,8 @@ export class ConstructionDocument {
 
     this.budget = this.formatCurrency(con.budget);
     this.stringBudget = con.stringBudget;
+
+    this.sourceOfFunds = con.sourceOfFunds;
 
     // constructionExecutionTime
     this.cet = {

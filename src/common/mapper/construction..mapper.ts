@@ -12,6 +12,7 @@ export class ConstructionMapper {
     entity.dateOfSigning = new Date(dto.dateOfSigning ?? '');
     entity.budget = dto.budget ?? 0;
     entity.stringBudget = dto.stringBudget ?? '';
+    entity.sourceOfFunds = dto.sourceOfFunds ?? '';
     entity.constructionExecutionTime = {
       startDate: new Date(dto.constructionExecutionTime?.startDate ?? ''),
       endDate: new Date(dto.constructionExecutionTime?.endDate ?? ''),
@@ -23,6 +24,7 @@ export class ConstructionMapper {
       number: dto.decision?.number ?? '',
       date: new Date(dto.decision?.date ?? ''),
     };
+    entity.packages = dto.packages ?? [];
 
     return entity;
   }
@@ -35,6 +37,7 @@ export class ConstructionMapper {
     dto.dateOfSigning = entity.dateOfSigning.toISOString();
     dto.budget = entity.budget;
     dto.stringBudget = entity.stringBudget;
+    dto.sourceOfFunds = entity.sourceOfFunds;
     dto.constructionExecutionTime = {
       startDate: entity.constructionExecutionTime.startDate.toISOString(),
       endDate: entity.constructionExecutionTime.endDate.toISOString(),
@@ -46,6 +49,7 @@ export class ConstructionMapper {
       number: entity.decision.number,
       date: entity.decision.date.toISOString(),
     };
+    dto.packages = entity.packages;
 
     return dto;
   }
