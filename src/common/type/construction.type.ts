@@ -20,4 +20,5 @@ export interface Construction {
     date: Date;
   };
   packages: BidPackage[];
+  packagesAmount: number;
 }

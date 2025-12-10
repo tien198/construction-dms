@@ -2,15 +2,14 @@ import { Injectable } from '@nestjs/common';
 import fs from 'fs';
 import path from 'path';
 import { ConfigService } from '@nestjs/config';
-import { CreateConstructionDto } from 'src/common/dto/create-construction.dto';
-import { UpdateConstructionDto } from 'src/common/dto/update-construction.dto';
+import { Construction } from 'src/common/type/construction.type';
 
 @Injectable()
 export class ConstructionService {
   constructor(private configService: ConfigService) {}
   // Create
-  async create(dto: CreateConstructionDto) {
-    const doS = new Date(dto.dateOfSigning);
+  async create(construction: Construction) {
+    const doS = new Date(construction.dateOfSigning);
     const rootDir = process.cwd();
 
     const year = doS.getFullYear();
@@ -22,7 +21,13 @@ export class ConstructionService {
       doS.getDate().toString().length < 2 ? '0' + doS.getDate() : doS.getDate();
 
     const fileName =
-      year + '-' + month + '-' + date + '-' + dto.name.replace(/ /g, '-');
+      year +
+      '-' +
+      month +
+      '-' +
+      date +
+      '-' +
+      construction.name.replace(/ /g, '-');
 
     if (!fs.existsSync(path.join(rootDir, 'public')))
       await fs.promises.mkdir(path.join(rootDir, 'public'), {
@@ -37,14 +42,14 @@ export class ConstructionService {
     }
 
     const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as UpdateConstructionDto[];
-    const id = Date.now() + '-' + dto.documentNo;
+    const list = JSON.parse(file) as Construction[];
+    const id = Date.now() + '-' + construction.documentNo;
 
     // sort the packages in Construction by `arrayIndex` in ascending order
-    dto.packages.sort((a, b) => a.arrayIndex! - b.arrayIndex!);
+    construction.packages.sort((a, b) => a.arrayIndex! - b.arrayIndex!);
     list.push({
       id,
-      ...dto,
+      ...construction,
     });
 
     await fs.promises.writeFile(filePath, JSON.stringify(list));
@@ -53,7 +58,7 @@ export class ConstructionService {
       id,
       message: 'Construction created successfully',
       fileName: fileName,
-      ...dto,
+      ...construction,
     };
   }
 
@@ -64,7 +69,7 @@ export class ConstructionService {
     const filePath = path.join(process.cwd(), 'public', dataFile ?? '');
 
     const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as UpdateConstructionDto[];
+    const list = JSON.parse(file) as Construction[];
     return list;
   }
 
@@ -76,7 +81,7 @@ export class ConstructionService {
       path.join(process.cwd(), 'public', dataFile ?? ''),
       'utf-8',
     );
-    const list = JSON.parse(file) as UpdateConstructionDto[];
+    const list = JSON.parse(file) as Construction[];
 
     const construction = list.find((file) => file.id === id);
     if (!construction) throw new Error('Construction not found');
@@ -85,7 +90,7 @@ export class ConstructionService {
   }
 
   /*
-  update(id: number, updateConstructionDto: UpdateConstructionDto) {
+  update(id: number, construction: Construction) {
     return `This action updates a #${id} construction`;
   }
 

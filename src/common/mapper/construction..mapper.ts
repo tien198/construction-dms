@@ -30,6 +30,8 @@ export class ConstructionMapper {
     entity.packages = dto.packages
       ? dto.packages.map((pkg) => this.bidPackageMapper.toEntity(pkg))
       : [];
+    entity.packagesAmount =
+      dto.packages?.reduce((acc, curr) => acc + Number(curr.price), 0) ?? 0;
 
     return entity;
   }

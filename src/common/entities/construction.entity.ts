@@ -20,4 +20,5 @@ export class ConstructionImp implements Construction {
     date: Date;
   };
   packages: BidPackage[];
+  packagesAmount: number;
 }

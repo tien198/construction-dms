@@ -8,4 +8,5 @@ export type CreateBidPackageDto = {
   contractorSelectionMethod: string; // Hình thức lựa chọn nhà thầu: chỉ định thầu rút gọn
   contractType: string; // Loại hợp đồng: Trọn gói
   implementDuration: string; // Thời gian thực hiện gói thầu: 10 ngày
+  isLast?: boolean; // Gói thầu cuối cùng. Dùng để hiển thị trong .docx, quyết định có dấu chấm câu hay không
 };

@@ -16,7 +16,11 @@ export class ConstructionController {
 
   @Post()
   create(@Body() createConstructionDto: CreateConstructionDto) {
-    return this.constructionService.create(createConstructionDto);
+    const construction = this.constructionMapper.toEntity(
+      createConstructionDto,
+    );
+
+    return this.constructionService.create(construction);
   }
 
   @Get()
@@ -35,8 +39,7 @@ export class ConstructionController {
 
   @Post('gen-doc/:id')
   async generateDocument(@Param('id') id: string, @Body() body: GenListDto) {
-    const data = await this.constructionService.findById(id);
-    const doc = this.constructionMapper.toEntity(data);
+    const doc = await this.constructionService.findById(id);
     const formatedDoc = new ConstructionDocument(doc);
     for (const docName of body.list) {
       await this.documentService.generate(docName, formatedDoc);

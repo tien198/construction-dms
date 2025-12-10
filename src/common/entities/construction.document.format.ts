@@ -27,6 +27,7 @@ export class ConstructionDocument {
     date: string;
   };
   packages: CreateBidPackageDto[];
+  packagesAmount: number;
 
   constructor(con: Construction) {
     this.id = con.id;
@@ -55,14 +56,16 @@ export class ConstructionDocument {
       date: this.formatDate(con.decision.date),
     };
 
-    this.packages = con.packages.map((pkg) => ({
+    this.packages = con.packages.map((pkg, i) => ({
       ...pkg,
       price: this.formatCurrency(pkg.price),
       contractorSelectionTime: this.formatDate(
         pkg.contractorSelectionTime,
         'month',
       ),
+      isLast: i === con.packages.length - 1,
     }));
+    this.packagesAmount = con.packagesAmount;
   }
 
   toDateObject = (ISOString: string | Date): DateObject => {
