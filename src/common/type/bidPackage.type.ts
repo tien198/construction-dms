@@ -6,6 +6,6 @@ export type BidPackage = {
   price: number; // Giá gói thầu
   contractorSelectionTime: Date; // Thời gian bắt đầu tổ chức lựa chọn nhà thầu
   contractorSelectionMethod: string; // Hình thức lựa chọn nhà thầu: chỉ định thầu rút gọn
-  contractType: string; // Loại hợp đồng: Trọn gói
+  // contractType: string; // Loại hợp đồng: Trọn gói
   implementDuration: string; // Thời gian thực hiện gói thầu: 10 ngày
 };

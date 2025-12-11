@@ -8,6 +8,6 @@ export class BidPackageImp implements BidPackage {
   price: number;
   contractorSelectionTime: Date;
   contractorSelectionMethod: string;
-  contractType: string;
+  // contractType: string;
   implementDuration: string;
 }

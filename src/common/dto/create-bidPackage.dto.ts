@@ -1,12 +1,12 @@
 export type CreateBidPackageDto = {
-  arrayIndex?: number; // Số thứ tự gói thầu trong mảng, Thiết kế, Thẩm tra, Thi công
   projectOwner: string; // Công ty Trực thăng Miền Nam
   bidPackageName: string;
   shortDescription: string; // Tóm tắt công việc chính của gói thầu
   price: string; // Giá gói thầu
   contractorSelectionTime: string; // Thời gian bắt đầu tổ chức lựa chọn nhà thầu
   contractorSelectionMethod: string; // Hình thức lựa chọn nhà thầu: chỉ định thầu rút gọn
-  contractType: string; // Loại hợp đồng: Trọn gói
+  // contractType: string; // Loại hợp đồng: Trọn gói
   implementDuration: string; // Thời gian thực hiện gói thầu: 10 ngày
+  arrayIndex?: number; // Số thứ tự gói thầu trong mảng, Thiết kế, Thẩm tra, Thi công
   isLast?: boolean; // Gói thầu cuối cùng. Dùng để hiển thị trong .docx, quyết định có dấu chấm câu hay không
 };

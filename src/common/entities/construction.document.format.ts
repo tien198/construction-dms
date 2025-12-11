@@ -27,7 +27,7 @@ export class ConstructionDocument {
     date: string;
   };
   packages: CreateBidPackageDto[];
-  packagesAmount: number;
+  packagesAmount: string;
 
   constructor(con: Construction) {
     this.id = con.id;
@@ -65,7 +65,7 @@ export class ConstructionDocument {
       ),
       isLast: i === con.packages.length - 1,
     }));
-    this.packagesAmount = con.packagesAmount;
+    this.packagesAmount = this.formatCurrency(con.packagesAmount);
   }
 
   toDateObject = (ISOString: string | Date): DateObject => {

@@ -18,4 +18,5 @@ export class CreateConstructionDto {
     date: string;
   };
   packages: CreateBidPackageDto[];
+  packagesAmount: number;
 }

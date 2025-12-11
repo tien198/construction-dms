@@ -17,7 +17,7 @@ export class BidPackageMapper {
     // Convert contractorSelectionTime from string to Date if possible
     entity.contractorSelectionTime = new Date(dto.contractorSelectionTime);
     entity.contractorSelectionMethod = dto.contractorSelectionMethod;
-    entity.contractType = dto.contractType;
+    // entity.contractType = dto.contractType;
     entity.implementDuration = dto.implementDuration;
 
     return entity;
@@ -38,7 +38,7 @@ export class BidPackageMapper {
           ? entity.contractorSelectionTime.toISOString()
           : '',
       contractorSelectionMethod: entity.contractorSelectionMethod,
-      contractType: entity.contractType,
+      // contractType: entity.contractType,
       implementDuration: entity.implementDuration,
     };
     return dto;

@@ -59,6 +59,7 @@ export class ConstructionMapper {
     dto.packages = entity.packages
       ? entity.packages.map((pkg) => this.bidPackageMapper.toDto(pkg))
       : [];
+    dto.packagesAmount = entity.packagesAmount;
 
     return dto;
   }
