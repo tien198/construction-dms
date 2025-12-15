@@ -1,18 +1,9 @@
 import { BidPackage } from './bidPackage.type';
+import { ConstructionDocument } from './document.type';
 
 export interface Construction {
   id?: string;
-  documentNo: string;
   name: string;
-  dateOfSigning: Date;
-  budget: number;
-  stringBudget: string;
-  sourceOfFunds: string;
-  //
-  constructionImplementationTime: {
-    startDate: Date;
-    endDate: Date;
-  };
   existingConditionOfTheStructure: string;
   repairScope: string;
   decision: {
@@ -21,4 +12,8 @@ export interface Construction {
   };
   packages: BidPackage[];
   packagesAmount: number;
+  period: ConstructionPeriod;
+  documents: ConstructionDocument[];
 }
+
+export type ConstructionPeriod = 'TV' | 'TT' | 'BCKTKT';
