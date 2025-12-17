@@ -1,15 +1,14 @@
-import { BidPackage } from '../type/bidPackage.type';
 import { ConstructionPeriod } from '../type/construction.type';
-import { ConstructionInfor } from '../type/construction-infor.type';
+import { Decision } from '../type/decision.type';
 import { Submission } from '../type/submission.type';
 
-export class SubmissionImp implements Submission {
+export class DecisionImp implements Decision {
   no: string;
   level: string;
   date: Date;
   pursuantToDec_TCT: string;
   pursuantToDec_TTMN: string;
   period: ConstructionPeriod;
-  constructionInfor: ConstructionInfor;
-  bidPackages: BidPackage[];
+  submissions: Submission[];
+  isApproved: boolean;
 }

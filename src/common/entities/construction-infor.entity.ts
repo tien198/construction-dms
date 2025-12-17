@@ -1,23 +1,20 @@
+import { BidPackage } from '../type/bidPackage.type';
 import { ConstructionInfor } from '../type/construction-infor.type';
 import { ConstructionPeriod } from '../type/construction.type';
-import { CreateBidPackageDto } from './create-bidPackage.dto';
 
-export class CreateConstructionInforDto
-  implements
-    Omit<ConstructionInfor, 'constructionImplementationTime' | 'bidPackages'>
-{
+export class ConstructionInforImp implements ConstructionInfor {
   name: string;
   budget: number;
   stringBudget: string;
   sourceOfFunds: string;
   constructionImplementationTime: {
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
   };
   existingConditionOfTheStructure: string;
   repairScope: string;
 
-  bidPackages: CreateBidPackageDto[];
+  bidPackages: BidPackage[];
   packagesAmount: number;
   period: ConstructionPeriod;
 }

@@ -2,8 +2,7 @@ import { Bidder } from '../type/bidder.type';
 import { BidPackage } from '../type/bidPackage.type';
 
 export class BidPackageImp implements BidPackage {
-  arrayIndex?: number;
-  projectOwner: string;
+  projectOwner: string; // Công ty Trực thăng Miền Nam
   bidPackageName: string;
   shortDescription: string;
   price: number;

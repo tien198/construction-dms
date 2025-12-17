@@ -2,7 +2,7 @@ import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { ConstructionService } from './construction.service';
 import { CreateConstructionDto } from 'src/common/dto/create-construction.dto';
 import { DocumentService } from 'src/document/document.service';
-import { ConstructionMapper } from 'src/common/mapper/construction..mapper';
+import { ConstructionMapper } from 'src/common/mapper/construction.mapper';
 import { ConstructionDocument } from 'src/common/entities/construction.document.format';
 import { GenListDto } from './dto/genList.dto';
 

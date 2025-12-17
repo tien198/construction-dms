@@ -1,14 +1,17 @@
+import { BidPackage } from '../type/bidPackage.type';
 import { BidderDto } from './bidder.dto';
 
-export type CreateBidPackageDto = {
+export class CreateBidPackageDto
+  implements Omit<BidPackage, 'bidderSelectionTime'>
+{
   projectOwner: string;
   bidPackageName: string;
   shortDescription: string;
   price: number;
-  bidderSelectionTime: Date;
+  bidderSelectionTime: string;
   bidderSelectionMethod: string;
   successfulBidder: BidderDto;
   // contractType: string
   upTo: string;
   isCompleted: boolean;
-};
+}

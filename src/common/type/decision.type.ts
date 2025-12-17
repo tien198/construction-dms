@@ -1,4 +1,4 @@
-import { AdministrativeDocument } from './administrativeDocument. type';
+import { AdministrativeDocument } from './administrative-document. type';
 import { ConstructionPeriod } from './construction.type';
 import { Submission } from './submission.type';
 

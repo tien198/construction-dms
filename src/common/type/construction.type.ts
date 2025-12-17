@@ -1,4 +1,4 @@
-import { ConstructionInfor } from './constructionInfor.type';
+import { ConstructionInfor } from './construction-infor.type';
 import { Decision } from './decision.type';
 
 export interface Construction {
@@ -8,4 +8,5 @@ export interface Construction {
   constructionInfor: ConstructionInfor;
 }
 
-export type ConstructionPeriod = 'TV' | 'TT' | 'BCKTKT';
+export type ConstructionPeriod = 'KH' | 'LCNT_TV_TT' | 'BCKTKT';
+// LCNTT_TV_TT bao gồm 'TV' | 'TT'

@@ -1,4 +1,6 @@
-export class BidderDto {
+import { Bidder } from '../type/bidder.type';
+
+export class BidderDto implements Bidder {
   name: string;
   Daidien: { name: string; position: string };
   address: string;
