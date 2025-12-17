@@ -6,7 +6,7 @@ export interface ConstructionInfor {
   existingConditionOfTheStructure: string;
   repairScope: string;
 
-  packages: BidPackage[];
+  bidPackages: BidPackage[];
   packagesAmount: number;
   period: ConstructionPeriod;
 }
