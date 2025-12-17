@@ -3,13 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import { ConfigService } from '@nestjs/config';
 import { Construction } from 'src/common/type/construction.type';
+import { Submission } from 'src/common/type/submission.type';
 
 @Injectable()
 export class ConstructionService {
   constructor(private configService: ConfigService) {}
   // Create
-  async create(construction: Construction) {
-    const doS = new Date(construction.dateOfSigning);
+  async createSubmission(submission: Submission) {
+    const doS = new Date(submission.date);
     const rootDir = process.cwd();
 
     const year = doS.getFullYear();

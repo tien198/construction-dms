@@ -1,19 +1,11 @@
-import { BidPackage } from './bidPackage.type';
-import { ConstructionDocument } from './document.type';
+import { ConstructionInfor } from './constructionInfor.type';
+import { Decision } from './decision.type';
 
 export interface Construction {
   id?: string;
-  name: string;
-  existingConditionOfTheStructure: string;
-  repairScope: string;
-  decision: {
-    number: string;
-    date: Date;
-  };
-  packages: BidPackage[];
-  packagesAmount: number;
-  period: ConstructionPeriod;
-  documents: ConstructionDocument[];
+  pursuantToDec_TCT: string;
+  decisions: Decision[];
+  constructionInfor: ConstructionInfor;
 }
 
 export type ConstructionPeriod = 'TV' | 'TT' | 'BCKTKT';

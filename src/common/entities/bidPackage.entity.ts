@@ -1,3 +1,4 @@
+import { Bidder } from '../type/bidder.type';
 import { BidPackage } from '../type/bidPackage.type';
 
 export class BidPackageImp implements BidPackage {
@@ -6,8 +7,10 @@ export class BidPackageImp implements BidPackage {
   bidPackageName: string;
   shortDescription: string;
   price: number;
-  contractorSelectionTime: Date;
-  contractorSelectionMethod: string;
+  bidderSelectionTime: Date;
+  bidderSelectionMethod: string;
+  successfulBidder: Bidder;
   // contractType: string;
-  implementDuration: string;
+  upTo: string;
+  isCompleted: boolean;
 }
