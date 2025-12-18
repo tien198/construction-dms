@@ -25,4 +25,21 @@ export class SubmissionMapper {
 
     return entity;
   }
+
+  toDto(entity: SubmissionImp) {
+    const dto = new CreateSubmissionDto();
+
+    dto.no = entity.no;
+    dto.level = entity.level;
+    dto.date = entity.date.toISOString();
+    dto.pursuantToDec_TCT = entity.pursuantToDec_TCT;
+    dto.pursuantToDec_TTMN = entity.pursuantToDec_TTMN;
+    dto.period = entity.period;
+
+    dto.constructionInfor = this.constructionInforMapper.toDto(
+      entity.constructionInfor,
+    );
+
+    return dto;
+  }
 }

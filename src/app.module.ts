@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DocumentModule } from './document/document.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
+import { GlobalModule } from './global.module.';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { resolve } from 'path';
       rootPath: resolve('client', 'dist'),
       exclude: ['/api'],
     }),
+    GlobalModule,
     CatModule,
     ConstructionModule,
     DocumentModule,

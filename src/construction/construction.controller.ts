@@ -1,26 +1,26 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { ConstructionService } from './construction.service';
-import { CreateConstructionDto } from 'src/common/dto/create-construction.dto';
 import { DocumentService } from 'src/document/document.service';
 import { ConstructionMapper } from 'src/common/mapper/construction.mapper';
 import { ConstructionDocument } from 'src/common/entities/construction.document.format';
 import { GenListDto } from './dto/genList.dto';
+import { CreateSubmissionDto } from 'src/common/dto/create-submission.dto';
+import { SubmissionMapper } from 'src/common/mapper/submission.mapper';
 
 @Controller('construction')
 export class ConstructionController {
   constructor(
     private readonly constructionService: ConstructionService,
     private readonly documentService: DocumentService,
+    private readonly submissionMapper: SubmissionMapper,
     private readonly constructionMapper: ConstructionMapper,
   ) {}
 
   @Post()
-  create(@Body() createConstructionDto: CreateConstructionDto) {
-    const construction = this.constructionMapper.toEntity(
-      createConstructionDto,
-    );
+  initConstruction(@Body() submissionDto: CreateSubmissionDto) {
+    const construction = this.submissionMapper.toEntity(submissionDto);
 
-    return this.constructionService.create(construction);
+    return this.constructionService.createSubmission(construction);
   }
 
   @Get()

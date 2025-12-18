@@ -4,63 +4,18 @@ import path from 'path';
 import { ConfigService } from '@nestjs/config';
 import { Construction } from 'src/common/type/construction.type';
 import { Submission } from 'src/common/type/submission.type';
+import { ConstructionRespo } from './construction.respo';
+import { DB } from 'src/common/respo/db';
 
 @Injectable()
 export class ConstructionService {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private readonly db: DB,
+  ) {}
   // Create
   async createSubmission(submission: Submission) {
-    const doS = new Date(submission.date);
-    const rootDir = process.cwd();
-
-    const year = doS.getFullYear();
-    const month =
-      (doS.getMonth() + 1).toString().length < 2
-        ? '0' + (doS.getMonth() + 1)
-        : doS.getMonth() + 1;
-    const date =
-      doS.getDate().toString().length < 2 ? '0' + doS.getDate() : doS.getDate();
-
-    const fileName =
-      year +
-      '-' +
-      month +
-      '-' +
-      date +
-      '-' +
-      construction.name.replace(/ /g, '-');
-
-    if (!fs.existsSync(path.join(rootDir, 'public')))
-      await fs.promises.mkdir(path.join(rootDir, 'public'), {
-        recursive: true,
-      });
-
-    const dataFile = this.configService.get<string>('DATA_FILE');
-    const filePath = path.join(rootDir, 'public', dataFile ?? '');
-
-    if (!fs.existsSync(filePath)) {
-      await fs.promises.writeFile(filePath, JSON.stringify([]));
-    }
-
-    const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as Construction[];
-    const id = Date.now() + '-' + construction.documentNo;
-
-    // sort the packages in Construction by `arrayIndex` in ascending order
-    construction.packages.sort((a, b) => a.arrayIndex! - b.arrayIndex!);
-    list.push({
-      id,
-      ...construction,
-    });
-
-    await fs.promises.writeFile(filePath, JSON.stringify(list));
-
-    return {
-      id,
-      message: 'Construction created successfully',
-      fileName: fileName,
-      ...construction,
-    };
+    const construcionRespo = new ConstructionRespo(this.db, submission);
   }
 
   // FindAll

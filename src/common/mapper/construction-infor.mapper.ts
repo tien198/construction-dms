@@ -21,4 +21,22 @@ export class ConstructionInforMapper {
 
     return entity;
   }
+
+  toDto(entity: ConstructionInforImp) {
+    const dto = new CreateConstructionInforDto();
+    dto.name = entity.name;
+    dto.budget = entity.budget;
+    dto.stringBudget = entity.stringBudget;
+    dto.sourceOfFunds = entity.sourceOfFunds;
+    dto.constructionImplementationTime = {
+      startDate: entity.constructionImplementationTime.startDate.toISOString(),
+      endDate: entity.constructionImplementationTime.endDate.toISOString(),
+    };
+    dto.bidPackages = entity.bidPackages.map((p) => ({
+      ...p,
+      bidderSelectionTime: p.bidderSelectionTime.toISOString(),
+    }));
+
+    return dto;
+  }
 }
