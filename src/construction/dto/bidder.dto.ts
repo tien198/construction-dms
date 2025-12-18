@@ -1,4 +1,4 @@
-import { Bidder } from '../type/bidder.type';
+import { Bidder } from 'src/construction/type/bidder.type';
 
 export class BidderDto implements Bidder {
   name: string;

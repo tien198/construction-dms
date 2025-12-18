@@ -1,14 +1,14 @@
-import { ConstructionInfor } from '../type/construction-infor.type';
-import { ConstructionPeriod } from '../type/construction.type';
-import { CreateBidPackageDto } from './create-bidPackage.dto';
+import { ConstructionInfor } from 'src/construction/type/construction-infor.type';
+import { BidPackageDto } from './bidPackage.dto';
+import { ConstructionPeriod } from 'src/construction/type/construction.type';
 
-export class CreateConstructionInforDto
+export class ConstructionInforDto
   implements
     Omit<ConstructionInfor, 'constructionImplementationTime' | 'bidPackages'>
 {
   name: string;
-  budget: number;
-  stringBudget: string;
+  cost: number;
+  costString: string;
   sourceOfFunds: string;
   constructionImplementationTime: {
     startDate: string;
@@ -17,7 +17,7 @@ export class CreateConstructionInforDto
   existingConditionOfTheStructure: string;
   repairScope: string;
 
-  bidPackages: CreateBidPackageDto[];
+  bidPackages: BidPackageDto[];
   packagesAmount: number;
   period: ConstructionPeriod;
 }

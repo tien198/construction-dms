@@ -1,22 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConstructionService } from './construction.service';
+import { ConstructionService } from './services/construction.service';
 import { ConstructionController } from './construction.controller';
-import { DocumentModule } from 'src/document/document.module';
-import { ConstructionMapper } from 'src/common/mapper/construction.mapper';
-import { BidPackageMapper } from 'src/common/mapper/bidPackage.mapper';
-import { ConstructionInforMapper } from 'src/common/mapper/construction-infor.mapper';
-import { SubmissionMapper } from 'src/common/mapper/submission.mapper';
+import { ConstructionRespo } from './construction.respo';
+import { MapperModule } from './modules/mapper.module';
 
 @Module({
   controllers: [ConstructionController],
-  providers: [
-    ConstructionService,
-    ConstructionMapper,
-    BidPackageMapper,
-    ConstructionInforMapper,
-    SubmissionMapper,
-  ],
-  imports: [DocumentModule],
+  providers: [ConstructionService, ConstructionRespo],
+  imports: [MapperModule],
   exports: [ConstructionService],
 })
 export class ConstructionModule {}

@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateSubmissionDto } from '../dto/create-submission.dto';
 import { SubmissionImp } from '../entities/submission.entity';
 import { ConstructionInforMapper } from './construction-infor.mapper';
+import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 
 @Injectable()
 export class SubmissionMapper {
   constructor(
     private readonly constructionInforMapper: ConstructionInforMapper,
+    private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
   ) {}
 
   toEntity(dto: CreateSubmissionDto) {
@@ -15,8 +17,12 @@ export class SubmissionMapper {
     entity.no = dto.no;
     entity.level = dto.level;
     entity.date = new Date(dto.date);
-    entity.pursuantToDec_TCT = dto.pursuantToDec_TCT;
-    entity.pursuantToDec_TTMN = dto.pursuantToDec_TTMN;
+    entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
+      dto.pursuantToDec_TCT,
+    );
+    entity.pursuantToDec_TTMN = dto.pursuantToDec_TTMN
+      ? this.nestedAdministrativeDocumentMapper.toEntity(dto.pursuantToDec_TTMN)
+      : undefined;
     entity.period = dto.period;
 
     entity.constructionInfor = this.constructionInforMapper.toEntity(
@@ -32,8 +38,12 @@ export class SubmissionMapper {
     dto.no = entity.no;
     dto.level = entity.level;
     dto.date = entity.date.toISOString();
-    dto.pursuantToDec_TCT = entity.pursuantToDec_TCT;
-    dto.pursuantToDec_TTMN = entity.pursuantToDec_TTMN;
+    dto.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toDto(
+      entity.pursuantToDec_TCT,
+    );
+    dto.pursuantToDec_TTMN = entity.pursuantToDec_TTMN
+      ? this.nestedAdministrativeDocumentMapper.toDto(entity.pursuantToDec_TTMN)
+      : undefined;
     dto.period = entity.period;
 
     dto.constructionInfor = this.constructionInforMapper.toDto(

@@ -4,8 +4,8 @@ import { ConstructionPeriod } from '../type/construction.type';
 
 export class ConstructionInforImp implements ConstructionInfor {
   name: string;
-  budget: number;
-  stringBudget: string;
+  cost: number;
+  costString: string;
   sourceOfFunds: string;
   constructionImplementationTime: {
     startDate: Date;

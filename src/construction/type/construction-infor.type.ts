@@ -3,8 +3,8 @@ import { ConstructionPeriod } from './construction.type';
 
 export interface ConstructionInfor {
   name: string;
-  budget: number;
-  stringBudget: string;
+  cost: number;
+  costString: string;
   sourceOfFunds: string;
   constructionImplementationTime: {
     startDate: Date;

@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CatModule } from './cat/cat.module';
 import { ConstructionModule } from './construction/construction.module';
 import { ConfigModule } from '@nestjs/config';
-import { DocumentModule } from './document/document.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { GlobalModule } from './global.module.';
@@ -19,7 +18,6 @@ import { GlobalModule } from './global.module.';
     GlobalModule,
     CatModule,
     ConstructionModule,
-    DocumentModule,
   ],
 })
 export class AppModule {}

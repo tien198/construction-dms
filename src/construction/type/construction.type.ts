@@ -1,9 +1,10 @@
+import { NestedAdministrativeDocument } from './administrative-document. type';
 import { ConstructionInfor } from './construction-infor.type';
 import { Decision } from './decision.type';
 
 export interface Construction {
   id?: string;
-  pursuantToDec_TCT: string;
+  pursuantToDec_TCT: NestedAdministrativeDocument;
   decisions: Decision[];
   constructionInfor: ConstructionInfor;
 }

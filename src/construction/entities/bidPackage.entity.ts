@@ -1,14 +1,14 @@
-import { Bidder } from '../type/bidder.type';
-import { BidPackage } from '../type/bidPackage.type';
+import { Bidder } from 'src/construction/type/bidder.type';
+import { BidPackage } from 'src/construction/type/bidPackage.type';
 
 export class BidPackageImp implements BidPackage {
   projectOwner: string; // Công ty Trực thăng Miền Nam
   bidPackageName: string;
   shortDescription: string;
-  price: number;
+  cost: number;
   bidderSelectionTime: Date;
   bidderSelectionMethod: string;
-  successfulBidder: Bidder;
+  successfulBidder?: Bidder;
   // contractType: string;
   upTo: string;
   isCompleted: boolean;

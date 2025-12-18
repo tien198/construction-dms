@@ -50,6 +50,7 @@ export class DB {
     }
     const file = await fs.promises.readFile(filePath, 'utf-8');
     const list = JSON.parse(file) as T[];
+
     return { filePath, list };
   }
 

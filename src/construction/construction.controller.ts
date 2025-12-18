@@ -1,42 +1,37 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
-import { ConstructionService } from './construction.service';
-import { DocumentService } from 'src/document/document.service';
-import { ConstructionMapper } from 'src/common/mapper/construction.mapper';
-import { ConstructionDocument } from 'src/common/entities/construction.document.format';
-import { GenListDto } from './dto/genList.dto';
-import { CreateSubmissionDto } from 'src/common/dto/create-submission.dto';
-import { SubmissionMapper } from 'src/common/mapper/submission.mapper';
+import { ConstructionService } from './services/construction.service';
+import { SubmissionMapper } from 'src/construction/mapper/submission.mapper';
+import { CreateSubmissionDto } from './dto/create-submission.dto';
 
 @Controller('construction')
 export class ConstructionController {
   constructor(
     private readonly constructionService: ConstructionService,
-    private readonly documentService: DocumentService,
     private readonly submissionMapper: SubmissionMapper,
-    private readonly constructionMapper: ConstructionMapper,
   ) {}
 
   @Post()
-  initConstruction(@Body() submissionDto: CreateSubmissionDto) {
-    const construction = this.submissionMapper.toEntity(submissionDto);
+  async initPlan(@Body() submissionDto: CreateSubmissionDto) {
+    const submission = this.submissionMapper.toEntity(submissionDto);
 
-    return this.constructionService.createSubmission(construction);
+    return await this.constructionService.initPlan(submission);
   }
 
   @Get()
-  findAll() {
-    return this.constructionService.findAll();
+  async findAll() {
+    return await this.constructionService.findAll();
   }
+  /*
   @Get('doc-list')
   getDocumentList() {
     return this.documentService.getDocumentList();
   }
-
+*/
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.constructionService.findById(id);
   }
-
+  /*
   @Post('gen-doc/:id')
   async generateDocument(@Param('id') id: string, @Body() body: GenListDto) {
     const doc = await this.constructionService.findById(id);
@@ -48,6 +43,7 @@ export class ConstructionController {
       message: 'successfully',
     };
   }
+    */
 
   /*
   @Patch(':id')
