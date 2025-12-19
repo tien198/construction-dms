@@ -23,4 +23,6 @@ export class CreateSubmissionDto
   pursuantToDec_TTMN?: NestedAdministrativeDocumentDto;
   period: ConstructionPeriod;
   constructionInfor: ConstructionInforDto;
+  // decision directly for this submission
+  directlyDecision: NestedAdministrativeDocumentDto;
 }

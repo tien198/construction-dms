@@ -4,5 +4,6 @@ export class NestedAdministrativeDocumentDto
   implements Omit<NestedAdministrativeDocument, 'date'>
 {
   no: string;
-  date: string;
+  level: string;
+  date?: string;
 }

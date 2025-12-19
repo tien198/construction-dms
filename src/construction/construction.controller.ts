@@ -2,19 +2,24 @@ import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { ConstructionService } from './services/construction.service';
 import { SubmissionMapper } from 'src/construction/infrastructure/mapper/submission.mapper';
 import { CreateSubmissionDto } from './domain/dto/create-submission.dto';
+import { NestedAdministrativeDocumentMapper } from './infrastructure/mapper/nested-administrative-document.mapper';
 
 @Controller('construction')
 export class ConstructionController {
   constructor(
     private readonly constructionService: ConstructionService,
     private readonly submissionMapper: SubmissionMapper,
+    private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
   ) {}
 
   @Post()
   async initPlan(@Body() submissionDto: CreateSubmissionDto) {
     const submission = this.submissionMapper.toEntity(submissionDto);
+    const decision = this.nestedAdministrativeDocumentMapper.toEntity(
+      submissionDto.directlyDecision,
+    );
 
-    return await this.constructionService.initPlan(submission);
+    return await this.constructionService.initPlan(submission, decision);
   }
 
   @Get()

@@ -7,6 +7,7 @@ import { Submission } from 'src/construction/domain/type/submission.type';
 import { ConstructionRespo } from '../infrastructure/construction.respo';
 import { ConstructionImp } from '../domain/entities/construction.entity';
 import { DecisionImp } from '../domain/entities/decision.entity';
+import { NestedAdministrativeDocument } from '../domain/type/administrative-document. type';
 
 @Injectable()
 export class ConstructionService {
@@ -15,9 +16,13 @@ export class ConstructionService {
     private readonly constructionRespo: ConstructionRespo,
   ) {}
   // Create
-  async initPlan(submission: Submission) {
+  async initPlan(
+    submission: Submission,
+    directlyDecision: NestedAdministrativeDocument,
+  ) {
     const construction = new ConstructionImp();
     const decision = new DecisionImp({
+      ...directlyDecision,
       date: submission.date,
       pursuantToDec_TCT: submission.pursuantToDec_TCT,
       period: 'KH',

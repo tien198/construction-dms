@@ -17,10 +17,9 @@ export class ConstructionMapper {
   toEntity(dto: CreateConstructionDto) {
     const entity = new ConstructionImp();
     entity.id = dto.id;
-    entity.pursuantToDec_TCT = {
-      no: dto.pursuantToDec_TCT.no,
-      date: new Date(dto.pursuantToDec_TCT.date),
-    };
+    entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
+      dto.pursuantToDec_TCT,
+    );
     entity.decisions = dto.decisions.map((dec) =>
       this.decisionMapper.toEntity(dec),
     );

@@ -7,7 +7,8 @@ export class NestedAdministrativeDocumentMapper {
   toEntity(dto: NestedAdministrativeDocumentDto) {
     const entity: NestedAdministrativeDocument = {
       no: dto.no,
-      date: new Date(dto.date),
+      level: dto.level,
+      date: new Date(dto.date ?? ''),
     };
     return entity;
   }
@@ -15,6 +16,7 @@ export class NestedAdministrativeDocumentMapper {
   toDto(entity: NestedAdministrativeDocument) {
     const dto: NestedAdministrativeDocumentDto = {
       no: entity.no,
+      level: entity.level,
       date: entity.date.toISOString(),
     };
     return dto;

@@ -8,5 +8,5 @@ export interface AdministrativeDocument {
 
 export type NestedAdministrativeDocument = Pick<
   AdministrativeDocument,
-  'no' | 'date'
+  'no' | 'level' | 'date'
 >;
