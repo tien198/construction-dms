@@ -1,8 +1,8 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
-import { ConstructionService } from './services/construction.service';
-import { SubmissionMapper } from 'src/construction/infrastructure/mapper/submission.mapper';
-import { CreateSubmissionDto } from './domain/dto/create-submission.dto';
-import { NestedAdministrativeDocumentMapper } from './infrastructure/mapper/nested-administrative-document.mapper';
+import { SubmissionMapper } from './mapper/submission.mapper';
+import { CreateSubmissionDto } from './dto/create-submission.dto';
+import { NestedAdministrativeDocumentMapper } from './mapper/nested-administrative-document.mapper';
+import { ConstructionService } from '../application/construction.service';
 
 @Controller('construction')
 export class ConstructionController {

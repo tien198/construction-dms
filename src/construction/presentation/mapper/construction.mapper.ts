@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateConstructionDto } from '../../domain/dto/update-construction.dto';
+import { UpdateConstructionDto } from '../../presentation/dto/update-construction.dto';
 import { ConstructionImp } from '../../domain/entities/construction.entity';
-import { CreateConstructionDto } from '../../domain/dto/create-construction.dto';
+import { CreateConstructionDto } from '../../presentation/dto/create-construction.dto';
 import { ConstructionInforMapper } from './construction-infor.mapper';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 import { DecisionMapper } from './decision.mapper';

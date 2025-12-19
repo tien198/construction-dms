@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConstructionService } from './services/construction.service';
-import { ConstructionController } from './construction.controller';
+import { ConstructionController } from './presentation/construction.controller';
 import { ConstructionRespo } from './infrastructure/construction.respo';
 import { MapperModule } from './modules/mapper.module';
+import { ConstructionService } from './application/construction.service';
 
 @Module({
   controllers: [ConstructionController],

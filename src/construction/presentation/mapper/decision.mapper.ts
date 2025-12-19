@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DecisionImp } from '../../domain/entities/decision.entity';
-import { DecisionDto } from '../../domain/dto/create-decision.dto';
+import { DecisionDto } from '../../presentation/dto/create-decision.dto';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 import { SubmissionMapper } from './submission.mapper';
 
