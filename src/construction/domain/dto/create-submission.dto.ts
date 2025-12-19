@@ -1,7 +1,7 @@
-import { Submission } from 'src/construction/type/submission.type';
+import { Submission } from 'src/construction/domain/type/submission.type';
 import { ConstructionInforDto } from './create-construction-infor.dto';
 import { NestedAdministrativeDocumentDto } from './nested-administrative-document.dto';
-import { ConstructionPeriod } from 'src/construction/type/construction.type';
+import { ConstructionPeriod } from 'src/construction/domain/type/construction.type';
 
 export class CreateSubmissionDto
   implements

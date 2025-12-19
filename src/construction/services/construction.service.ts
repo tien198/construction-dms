@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import fs from 'fs';
 import path from 'path';
 import { ConfigService } from '@nestjs/config';
-import { Construction } from 'src/construction/type/construction.type';
-import { Submission } from 'src/construction/type/submission.type';
-import { ConstructionRespo } from '../construction.respo';
-import { ConstructionImp } from '../entities/construction.entity';
-import { DecisionImp } from '../entities/decision.entity';
+import { Construction } from 'src/construction/domain/type/construction.type';
+import { Submission } from 'src/construction/domain/type/submission.type';
+import { ConstructionRespo } from '../infrastructure/construction.respo';
+import { ConstructionImp } from '../domain/entities/construction.entity';
+import { DecisionImp } from '../domain/entities/decision.entity';
 
 @Injectable()
 export class ConstructionService {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BidPackageDto } from '../dto/bidPackage.dto';
-import { BidPackageImp } from '../entities/bidPackage.entity';
+import { BidPackageDto } from '../../domain/dto/bidPackage.dto';
+import { BidPackageImp } from '../../domain/entities/bidPackage.entity';
 
 @Injectable()
 export class BidPackageMapper {

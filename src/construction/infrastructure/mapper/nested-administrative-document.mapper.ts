@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { NestedAdministrativeDocument } from '../type/administrative-document. type';
-import { NestedAdministrativeDocumentDto } from 'src/construction/dto/nested-administrative-document.dto';
+import { NestedAdministrativeDocument } from '../../domain/type/administrative-document. type';
+import { NestedAdministrativeDocumentDto } from 'src/construction/domain/dto/nested-administrative-document.dto';
 
 @Injectable()
 export class NestedAdministrativeDocumentMapper {

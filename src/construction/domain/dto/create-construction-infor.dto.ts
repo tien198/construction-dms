@@ -1,6 +1,6 @@
-import { ConstructionInfor } from 'src/construction/type/construction-infor.type';
+import { ConstructionInfor } from 'src/construction/domain/type/construction-infor.type';
 import { BidPackageDto } from './bidPackage.dto';
-import { ConstructionPeriod } from 'src/construction/type/construction.type';
+import { ConstructionPeriod } from 'src/construction/domain/type/construction.type';
 
 export class ConstructionInforDto
   implements

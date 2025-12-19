@@ -1,5 +1,5 @@
-import { ConstructionInforDto } from 'src/construction/dto/create-construction-infor.dto';
-import { CreateConstructionDto } from 'src/construction/dto/create-construction.dto';
+import { ConstructionInforDto } from 'src/construction/domain/dto/create-construction-infor.dto';
+import { CreateConstructionDto } from 'src/construction/domain/dto/create-construction.dto';
 
 const infor: ConstructionInforDto = {
   name: 'Sửa chữa mái tôn khu tập thể độc thân kỹ thuật',

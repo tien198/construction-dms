@@ -1,4 +1,4 @@
-import { BidPackage } from 'src/construction/type/bidPackage.type';
+import { BidPackage } from 'src/construction/domain/type/bidPackage.type';
 import { BidderDto } from './bidder.dto';
 
 export class BidPackageDto

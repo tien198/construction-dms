@@ -1,4 +1,4 @@
-import { NestedAdministrativeDocument } from 'src/construction/type/administrative-document. type';
+import { NestedAdministrativeDocument } from 'src/construction/domain/type/administrative-document. type';
 
 export class NestedAdministrativeDocumentDto
   implements Omit<NestedAdministrativeDocument, 'date'>

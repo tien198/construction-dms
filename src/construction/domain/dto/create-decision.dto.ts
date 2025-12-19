@@ -1,7 +1,7 @@
-import { Decision } from 'src/construction/type/decision.type';
+import { Decision } from 'src/construction/domain/type/decision.type';
 import { CreateSubmissionDto } from './create-submission.dto';
 import { NestedAdministrativeDocumentDto } from './nested-administrative-document.dto';
-import { ConstructionPeriod } from 'src/construction/type/construction.type';
+import { ConstructionPeriod } from 'src/construction/domain/type/construction.type';
 
 export class DecisionDto
   implements

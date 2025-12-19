@@ -1,4 +1,4 @@
-import { Construction } from 'src/construction/type/construction.type';
+import { Construction } from 'src/construction/domain/type/construction.type';
 import { ConstructionInforDto } from './create-construction-infor.dto';
 import { DecisionDto } from './create-decision.dto';
 import { NestedAdministrativeDocumentDto } from './nested-administrative-document.dto';
