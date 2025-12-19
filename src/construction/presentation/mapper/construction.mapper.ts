@@ -7,7 +7,7 @@ import { NestedAdministrativeDocumentMapper } from './nested-administrative-docu
 import { DecisionMapper } from './decision.mapper';
 import { CreateSubmissionDto } from '../dto/create-submission.dto';
 import { SubmissionMapper } from './submission.mapper';
-import { DecisionDto } from '../dto/create-decision.dto';
+import { CreateDecisionDto } from '../dto/create-decision.dto';
 
 @Injectable()
 export class ConstructionMapper {
@@ -20,7 +20,6 @@ export class ConstructionMapper {
 
   toEntity(dto: CreateConstructionDto) {
     const entity = new ConstructionImp();
-    entity.id = dto.id;
     entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
       dto.pursuantToDec_TCT,
     );
@@ -51,7 +50,7 @@ export class ConstructionMapper {
 
   fromSubmissionDto(dto: CreateSubmissionDto) {
     const construction = new CreateConstructionDto();
-    const decision: DecisionDto = {
+    const decision: CreateDecisionDto = {
       no: dto.directlyDecision.no,
       level: dto.directlyDecision.level,
       date: dto.directlyDecision.date ?? dto.date,
@@ -60,9 +59,6 @@ export class ConstructionMapper {
       submissions: [dto],
     };
     construction.pursuantToDec_TCT = dto.pursuantToDec_TCT;
-    if (!construction.decisions) {
-      construction.decisions = [];
-    }
     construction.decisions.push(decision);
     construction.constructionInfor = dto.constructionInfor;
     return construction;

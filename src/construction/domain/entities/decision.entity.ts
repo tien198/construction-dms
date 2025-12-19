@@ -4,6 +4,7 @@ import { Decision } from 'src/construction/domain/type/decision.type';
 import { Submission } from 'src/construction/domain/type/submission.type';
 
 export class DecisionImp implements Partial<Decision> {
+  id: string;
   no: string;
   level: string;
   date: Date;

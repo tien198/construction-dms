@@ -11,7 +11,8 @@
             "runtimeExecutable": "yarn",
             "runtimeArgs": [
                 "start:dev"
-            ]
+            ],
+            "console": "integratedTerminal"
         }
     ]
 }

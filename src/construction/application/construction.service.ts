@@ -38,6 +38,22 @@ export class ConstructionService {
     return construction;
   }
 
+  async approve(constructionId: string, decisionId: string) {
+    const construction = await this.constructionRespo.findOne({
+      id: constructionId,
+    });
+    if (!construction) throw new Error('Construction not found');
+    const decision = construction.decisions.find(
+      (dec) => dec.id === decisionId,
+    );
+    if (!decision)
+      throw new Error('Decision not found for decisionId ' + decisionId);
+    decision.isApproved = true;
+    return await this.constructionRespo.updateById(
+      constructionId,
+      construction,
+    );
+  }
   /*
   update(id: number, construction: Construction) {
     return `This action updates a #${id} construction`;

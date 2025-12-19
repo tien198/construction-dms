@@ -1,7 +1,5 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
-import { SubmissionMapper } from './mapper/submission.mapper';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
-import { NestedAdministrativeDocumentMapper } from './mapper/nested-administrative-document.mapper';
 import { ConstructionService } from '../application/construction.service';
 import { ConstructionMapper } from './mapper/construction.mapper';
 
@@ -9,8 +7,6 @@ import { ConstructionMapper } from './mapper/construction.mapper';
 export class ConstructionController {
   constructor(
     private readonly constructionService: ConstructionService,
-    private readonly submissionMapper: SubmissionMapper,
-    private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
     private readonly constructionMapper: ConstructionMapper,
   ) {}
 
@@ -21,6 +17,14 @@ export class ConstructionController {
     const construction = this.constructionMapper.toEntity(constructionDto);
 
     return await this.constructionService.initPlan(construction);
+  }
+
+  @Post('approve/:constructionId/:decisionId')
+  async approve(
+    @Param('constructionId') conId: string,
+    @Param('decisionId') decId: string,
+  ) {
+    return await this.constructionService.approve(conId, decId);
   }
 
   @Get()

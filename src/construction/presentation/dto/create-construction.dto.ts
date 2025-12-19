@@ -1,6 +1,6 @@
 import { Construction } from 'src/construction/domain/type/construction.type';
 import { ConstructionInforDto } from './create-construction-infor.dto';
-import { DecisionDto } from './create-decision.dto';
+import { CreateDecisionDto } from './create-decision.dto';
 import { NestedAdministrativeDocumentDto } from './nested-administrative-document.dto';
 
 export class CreateConstructionDto
@@ -9,6 +9,6 @@ export class CreateConstructionDto
 {
   id?: string;
   pursuantToDec_TCT: NestedAdministrativeDocumentDto;
-  decisions: DecisionDto[];
+  decisions: CreateDecisionDto[] = [];
   constructionInfor: ConstructionInforDto;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DecisionImp } from '../../domain/entities/decision.entity';
-import { DecisionDto } from '../../presentation/dto/create-decision.dto';
+import { CreateDecisionDto } from '../../presentation/dto/create-decision.dto';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 import { SubmissionMapper } from './submission.mapper';
 
@@ -10,10 +10,10 @@ export class DecisionMapper {
     private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
     private readonly submissionMapper: SubmissionMapper,
   ) {}
-  toEntity(dto: DecisionDto) {
+  toEntity(dto: CreateDecisionDto): DecisionImp {
     const entity = new DecisionImp();
-    entity.no = dto.no ?? '';
-    entity.level = dto.level ?? '';
+    entity.no = dto.no;
+    entity.level = dto.level;
     entity.date = new Date(dto.date);
     entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
       dto.pursuantToDec_TCT,
@@ -30,7 +30,7 @@ export class DecisionMapper {
   }
 
   toDto(entity: DecisionImp) {
-    const dto = new DecisionDto();
+    const dto = new CreateDecisionDto();
     dto.no = entity.no;
     dto.level = entity.level;
     dto.date = entity.date.toISOString();

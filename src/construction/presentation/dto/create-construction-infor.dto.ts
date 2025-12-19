@@ -17,7 +17,7 @@ export class ConstructionInforDto
   existingConditionOfTheStructure: string;
   repairScope: string;
 
-  bidPackages: BidPackageDto[];
+  bidPackages: BidPackageDto[] = [];
   packagesAmount: number;
   period: ConstructionPeriod;
 }

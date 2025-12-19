@@ -21,15 +21,21 @@ export class ConstructionRespo {
   async create(construction: Construction) {
     construction.id =
       construction.decisions[0].date.getTime() + '-' + crypto.randomUUID();
+    construction.decisions[0].id =
+      construction.decisions[0].date.getTime() + '-' + crypto.randomUUID();
     return await this.col.insertOne(construction);
   }
 
-  async updateById(construction: Construction) {
-    if (!construction.id) throw new Error('updated is missing "id" field');
-    return await this.col.updateOne({ id: construction.id }, construction);
+  async updateById(id: string, construction: Construction) {
+    if (!id) throw new Error('updated is missing "id" field');
+    return await this.col.updateOne({ id }, construction);
   }
 
-  async find(filter?: Construction) {
+  async find(filter?: Partial<Construction>) {
     return await this.col.find(filter);
+  }
+
+  async findOne(filter: Partial<Construction>) {
+    return await this.col.findOne(filter);
   }
 }

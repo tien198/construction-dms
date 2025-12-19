@@ -12,25 +12,25 @@ export class Collection<T extends object> {
     return data;
   }
 
-  async findOne(filter: T) {
+  async findOne(filter: Partial<T>) {
     const { list } = await this.accessFile<T>();
     const item = list.find((i) => this.filterFnc(i, filter));
     return item;
   }
 
-  async find(filter?: T) {
+  async find(filter?: Partial<T>) {
     const { list } = await this.accessFile<T>();
 
     if (!filter) return list;
 
-    const item = list.filter((i) => this.filterFnc(i, filter));
-    return item;
+    const items = list.filter((i) => this.filterFnc(i, filter));
+    return items;
   }
 
   async updateOne(filter: Partial<T>, update: T) {
     const { filePath, list } = await this.accessFile<T>();
     const index = list.findIndex((i) => this.filterFnc(i, filter));
-    if (!index) throw new Error('Not found record');
+    if (index < 0) throw new Error('Not found record');
     list[index] = update;
     await fs.promises.writeFile(filePath, JSON.stringify(list));
     return update;
