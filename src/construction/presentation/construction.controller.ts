@@ -3,6 +3,7 @@ import { SubmissionMapper } from './mapper/submission.mapper';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { NestedAdministrativeDocumentMapper } from './mapper/nested-administrative-document.mapper';
 import { ConstructionService } from '../application/construction.service';
+import { ConstructionMapper } from './mapper/construction.mapper';
 
 @Controller('construction')
 export class ConstructionController {
@@ -10,16 +11,16 @@ export class ConstructionController {
     private readonly constructionService: ConstructionService,
     private readonly submissionMapper: SubmissionMapper,
     private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
+    private readonly constructionMapper: ConstructionMapper,
   ) {}
 
   @Post()
   async initPlan(@Body() submissionDto: CreateSubmissionDto) {
-    const submission = this.submissionMapper.toEntity(submissionDto);
-    const decision = this.nestedAdministrativeDocumentMapper.toEntity(
-      submissionDto.directlyDecision,
-    );
+    const constructionDto =
+      this.constructionMapper.fromSubmissionDto(submissionDto);
+    const construction = this.constructionMapper.toEntity(constructionDto);
 
-    return await this.constructionService.initPlan(submission, decision);
+    return await this.constructionService.initPlan(construction);
   }
 
   @Get()

@@ -5,5 +5,5 @@ export class NestedAdministrativeDocumentDto
 {
   no: string;
   level: string;
-  date?: string;
+  date: string;
 }

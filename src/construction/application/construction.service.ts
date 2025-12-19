@@ -3,11 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { ConfigService } from '@nestjs/config';
 import { Construction } from 'src/construction/domain/type/construction.type';
-import { Submission } from 'src/construction/domain/type/submission.type';
 import { ConstructionRespo } from '../infrastructure/construction.respo';
-import { ConstructionImp } from '../domain/entities/construction.entity';
-import { DecisionImp } from '../domain/entities/decision.entity';
-import { NestedAdministrativeDocument } from '../domain/type/administrative-document. type';
 
 @Injectable()
 export class ConstructionService {
@@ -16,22 +12,7 @@ export class ConstructionService {
     private readonly constructionRespo: ConstructionRespo,
   ) {}
   // Create
-  async initPlan(
-    submission: Submission,
-    directlyDecision: NestedAdministrativeDocument,
-  ) {
-    const construction = new ConstructionImp();
-    const decision = new DecisionImp({
-      ...directlyDecision,
-      date: submission.date,
-      pursuantToDec_TCT: submission.pursuantToDec_TCT,
-      period: 'KH',
-      submissions: [submission],
-    });
-    construction.pursuantToDec_TCT = submission.pursuantToDec_TCT;
-    construction.decisions.push(decision);
-    construction.constructionInfor = submission.constructionInfor;
-
+  async initPlan(construction: Construction) {
     return await this.constructionRespo.create(construction);
   }
 

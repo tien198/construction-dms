@@ -5,12 +5,16 @@ import { CreateConstructionDto } from '../../presentation/dto/create-constructio
 import { ConstructionInforMapper } from './construction-infor.mapper';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 import { DecisionMapper } from './decision.mapper';
+import { CreateSubmissionDto } from '../dto/create-submission.dto';
+import { SubmissionMapper } from './submission.mapper';
+import { DecisionDto } from '../dto/create-decision.dto';
 
 @Injectable()
 export class ConstructionMapper {
   constructor(
     private readonly constructionInforMapper: ConstructionInforMapper,
     private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
+    private readonly submissionMapper: SubmissionMapper,
     private readonly decisionMapper: DecisionMapper,
   ) {}
 
@@ -43,5 +47,24 @@ export class ConstructionMapper {
       entity.constructionInfor,
     );
     return dto;
+  }
+
+  fromSubmissionDto(dto: CreateSubmissionDto) {
+    const construction = new CreateConstructionDto();
+    const decision: DecisionDto = {
+      no: dto.directlyDecision.no,
+      level: dto.directlyDecision.level,
+      date: dto.directlyDecision.date ?? dto.date,
+      pursuantToDec_TCT: dto.pursuantToDec_TCT,
+      period: dto.period,
+      submissions: [dto],
+    };
+    construction.pursuantToDec_TCT = dto.pursuantToDec_TCT;
+    if (!construction.decisions) {
+      construction.decisions = [];
+    }
+    construction.decisions.push(decision);
+    construction.constructionInfor = dto.constructionInfor;
+    return construction;
   }
 }
