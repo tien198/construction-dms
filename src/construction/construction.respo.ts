@@ -17,4 +17,8 @@ export class ConstructionRespo {
       construction,
     );
   }
+
+  async find(filter?: Construction) {
+    return await this.db.find<Construction>(filter);
+  }
 }

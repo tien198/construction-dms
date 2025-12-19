@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import path from 'path/win32';
+import path from 'path';
 import fs from 'fs';
 
 @Injectable()
@@ -22,10 +22,10 @@ export class DB {
     return item;
   }
 
-  async find<T extends object>(filter: T) {
-    const { filePath } = await this.accessFile();
-    const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as T[];
+  async find<T extends object>(filter?: T) {
+    const { list } = await this.accessFile<T>();
+
+    if (!filter) return list;
 
     const item = list.filter((i) => this.filterFnc(i, filter));
     return item;
@@ -43,7 +43,14 @@ export class DB {
   // Ultilities
   private async accessFile<T extends object>() {
     const dataFile = this.configService.get<string>('CONSTRUCTIONS_DATA_FILE');
-    const filePath = path.join(process.cwd(), 'public', dataFile ?? '');
+    const dirPath = path.resolve('public');
+    const filePath = path.join(dirPath, dataFile ?? '');
+
+    if (fs.existsSync(dirPath)) {
+      await fs.promises.mkdir(dirPath, {
+        recursive: true,
+      });
+    }
 
     if (!fs.existsSync(filePath)) {
       await fs.promises.writeFile(filePath, JSON.stringify([]));

@@ -32,12 +32,7 @@ export class ConstructionService {
 
   // FindAll
   async findAll() {
-    const dataFile = this.configService.get<string>('CONSTRUCTIONS_DATA_FILE');
-
-    const filePath = path.join(process.cwd(), 'public', dataFile ?? '');
-
-    const file = await fs.promises.readFile(filePath, 'utf-8');
-    const list = JSON.parse(file) as Construction[];
+    const list = await this.constructionRespo.find();
     return list;
   }
 
