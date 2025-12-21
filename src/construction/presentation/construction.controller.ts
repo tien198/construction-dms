@@ -2,34 +2,64 @@ import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { ConstructionService } from '../application/construction.service';
 import { ConstructionMapper } from './mapper/construction.mapper';
+import { Construction } from '../domain/type/construction.type';
+import { SubmissionMapper } from './mapper/submission.mapper';
+import { Submission } from '../domain/type/submission.type';
 
 @Controller('construction')
 export class ConstructionController {
   constructor(
     private readonly constructionService: ConstructionService,
     private readonly constructionMapper: ConstructionMapper,
+    private readonly submissionMapper: SubmissionMapper,
   ) {}
 
   @Post()
-  async initPlan(@Body() submissionDto: CreateSubmissionDto) {
+  initPlan(
+    @Body() submissionDto: Required<CreateSubmissionDto>,
+  ): Promise<Construction> {
     const constructionDto =
-      this.constructionMapper.fromSubmissionDto(submissionDto);
+      this.constructionMapper.initFromSubmissionDto(submissionDto);
     const construction = this.constructionMapper.toEntity(constructionDto);
 
-    return await this.constructionService.initPlan(construction);
+    return this.constructionService.initPlan(construction);
   }
 
   @Post('approve/:constructionId/:decisionId')
-  async approve(
+  approve(
     @Param('constructionId') conId: string,
     @Param('decisionId') decId: string,
-  ) {
-    return await this.constructionService.approve(conId, decId);
+  ): Promise<Construction> {
+    return this.constructionService.approve(conId, decId);
+  }
+
+  @Post('addSubmission-construction-infor/:constructionId/:decisionId')
+  addSubmissionWithConstructionInfor(
+    @Body() submissionDto: Required<CreateSubmissionDto>,
+    @Param('constructionId') conId: string,
+    @Param('decisionId') decId: string,
+  ): Promise<Construction> {
+    const submission = this.submissionMapper.toEntity(
+      submissionDto,
+    ) as Required<Submission>;
+
+    return this.constructionService.addSubmission(submission, conId, decId);
+  }
+
+  @Post('addSubmission/:constructionId/:decisionId')
+  addSubmission(
+    @Body() submissionDto: CreateSubmissionDto,
+    @Param('constructionId') conId: string,
+    @Param('decisionId') decId: string,
+  ): Promise<Construction> {
+    const submission = this.submissionMapper.toEntity(submissionDto);
+
+    return this.constructionService.addSubmission(submission, conId, decId);
   }
 
   @Get()
-  async findAll() {
-    return await this.constructionService.findAll();
+  findAll(): Promise<Construction[]> {
+    return this.constructionService.findAll();
   }
   /*
   @Get('doc-list')
@@ -38,7 +68,7 @@ export class ConstructionController {
   }
 */
   @Get(':id')
-  findById(@Param('id') id: string) {
+  findById(@Param('id') id: string): Promise<Construction> {
     return this.constructionService.findById(id);
   }
   /*

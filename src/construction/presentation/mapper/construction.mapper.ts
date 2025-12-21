@@ -48,7 +48,7 @@ export class ConstructionMapper {
     return dto;
   }
 
-  fromSubmissionDto(dto: CreateSubmissionDto) {
+  initFromSubmissionDto(dto: Required<CreateSubmissionDto>) {
     const construction = new CreateConstructionDto();
     const decision: CreateDecisionDto = {
       no: dto.directlyDecision.no,

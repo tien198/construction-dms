@@ -1,19 +1,57 @@
 import { Injectable } from '@nestjs/common';
-import fs from 'fs';
-import path from 'path';
-import { ConfigService } from '@nestjs/config';
 import { Construction } from 'src/construction/domain/type/construction.type';
 import { ConstructionRespo } from '../infrastructure/construction.respo';
+import { Submission } from '../domain/type/submission.type';
+import { DecisionImp } from '../domain/entities/decision.entity';
 
 @Injectable()
 export class ConstructionService {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly constructionRespo: ConstructionRespo,
-  ) {}
+  constructor(private readonly constructionRespo: ConstructionRespo) {}
   // Create
   async initPlan(construction: Construction) {
     return await this.constructionRespo.create(construction);
+  }
+
+  private async addSubmissionExec(
+    sub: Submission,
+    constructionId: string,
+    decisionId?: string,
+  ) {
+    // finding decion in construction that directly decide for input submission
+    const con = await this.findById(constructionId);
+
+    switch (!!decisionId) {
+      case true: {
+        const dec = con.decisions.find((dec) => dec.id === decisionId);
+        if (!dec) {
+          throw new Error(
+            `Not found decison (with id: ${decisionId}) in construction with id: ${constructionId}`,
+          );
+        }
+        dec.submissions.push(sub);
+        break;
+      }
+      default: {
+        const dec_TTMN = sub.pursuantToDec_TTMN!;
+        const newDec = new DecisionImp({
+          no: dec_TTMN.no,
+          level: dec_TTMN.level,
+          date: dec_TTMN.date,
+          period: sub.period,
+          pursuantToDec_TCT: sub.pursuantToDec_TCT,
+          pursuantToDec_TTMN: sub.pursuantToDec_TTMN,
+          submissions: [sub],
+        });
+        con.decisions.push(newDec);
+        break;
+      }
+    }
+
+    const updated = await this.constructionRespo.updateById(
+      constructionId,
+      con,
+    );
+    return updated;
   }
 
   // FindAll
@@ -22,20 +60,26 @@ export class ConstructionService {
     return list;
   }
 
-  // FindById
-  async findById(id: string) {
-    const dataFile = this.configService.get<string>('CONSTRUCTIONS_DATA_FILE');
-
-    const file = await fs.promises.readFile(
-      path.join(process.cwd(), 'public', dataFile ?? ''),
-      'utf-8',
+  async addSubmission(
+    sub: Submission,
+    constructionId: string,
+    decisionId: string,
+  ) {
+    const updated = await this.addSubmissionExec(
+      sub,
+      constructionId,
+      decisionId,
     );
-    const list = JSON.parse(file) as Construction[];
+    return updated;
+  }
 
-    const construction = list.find((file) => file.id === id);
-    if (!construction) throw new Error('Construction not found');
-
-    return construction;
+  // FindById
+  async findById(constructionId: string): Promise<Construction> {
+    const con = await this.constructionRespo.findById(constructionId);
+    if (!con) {
+      throw new Error('Not found construction with id: ' + constructionId);
+    }
+    return con;
   }
 
   async approve(constructionId: string, decisionId: string) {

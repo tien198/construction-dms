@@ -12,19 +12,21 @@ export class Collection<T extends object> {
     return data;
   }
 
-  async findOne(filter: Partial<T>) {
+  async findOne(filter: Partial<T>): Promise<T | null> {
     const { list } = await this.accessFile<T>();
-    const item = list.find((i) => this.filterFnc(i, filter));
-    return item;
+    const finded = list.find((i) => this.filterFnc(i, filter));
+    return finded ? { ...finded } : null;
   }
 
-  async find(filter?: Partial<T>) {
+  async find(filter?: Partial<T>): Promise<T[]> {
     const { list } = await this.accessFile<T>();
 
-    if (!filter) return list;
+    if (!filter) {
+      return list;
+    }
 
     const items = list.filter((i) => this.filterFnc(i, filter));
-    return items;
+    return [...items];
   }
 
   async updateOne(filter: Partial<T>, update: T) {

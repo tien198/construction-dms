@@ -6,6 +6,7 @@ import { NestedAdministrativeDocumentDto } from 'src/construction/presentation/d
 export class NestedAdministrativeDocumentMapper {
   toEntity(dto: NestedAdministrativeDocumentDto) {
     const entity: NestedAdministrativeDocument = {
+      id: dto.id ?? '',
       no: dto.no,
       level: dto.level,
       date: new Date(dto.date ?? ''),

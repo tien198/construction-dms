@@ -25,9 +25,9 @@ export class SubmissionMapper {
       : undefined;
     entity.period = dto.period;
 
-    entity.constructionInfor = this.constructionInforMapper.toEntity(
-      dto.constructionInfor,
-    );
+    entity.constructionInfor = dto.constructionInfor
+      ? this.constructionInforMapper.toEntity(dto.constructionInfor)
+      : undefined;
 
     return entity;
   }
@@ -46,9 +46,9 @@ export class SubmissionMapper {
       : undefined;
     dto.period = entity.period;
 
-    dto.constructionInfor = this.constructionInforMapper.toDto(
-      entity.constructionInfor,
-    );
+    dto.constructionInfor = entity.constructionInfor
+      ? this.constructionInforMapper.toDto(entity.constructionInfor)
+      : undefined;
 
     return dto;
   }

@@ -4,6 +4,8 @@ import { Collection } from 'src/common/infrastructure/collection';
 import { DB } from 'src/common/infrastructure/db';
 
 import { Construction } from 'src/construction/domain/type/construction.type';
+import { Submission } from '../domain/type/submission.type';
+import { Decision } from '../domain/type/decision.type';
 
 @Injectable()
 export class ConstructionRespo {
@@ -37,5 +39,45 @@ export class ConstructionRespo {
 
   async findOne(filter: Partial<Construction>) {
     return await this.col.findOne(filter);
+  }
+
+  async findById(id: string) {
+    return await this.col.findOne({ id });
+  }
+
+  async addSubmissionForNewDec(sub: Submission, conId: string, dec: Decision) {
+    const con = await this.col.findOne({ id: conId });
+    if (!con) {
+      throw new Error('Not found construction with id: ' + conId);
+    }
+    /*
+      construction -> decison -> submision
+      */
+    sub.id = sub.date.getTime() + '-' + crypto.randomUUID();
+    dec.id = dec.date.getTime() + '-' + crypto.randomUUID();
+    dec.submissions.push(sub);
+    con.decisions.push(dec);
+
+    return await this.updateById(conId, con);
+  }
+
+  async addSubmissionForExistedDec(
+    sub: Submission,
+    conId: string,
+    decId: string,
+  ) {
+    const con = await this.col.findOne({ id: conId });
+    if (!con) {
+      throw new Error('Not found construction with id: ' + conId);
+    }
+    const dec = con.decisions.find((d) => d.id === decId);
+    if (!dec)
+      throw new Error(
+        `Not found decission (with id: ${decId}) in consruction (wich id: ${conId} )`,
+      );
+    sub.id = sub.date.getTime() + '-' + crypto.randomUUID();
+    dec.submissions.push(sub);
+
+    return await this.updateById(conId, con);
   }
 }
