@@ -1,6 +1,6 @@
-import { BidPackage } from '../type/bidPackage.type';
-import { ConstructionInfor } from '../type/construction-infor.type';
-import { ConstructionPeriod } from '../type/construction.type';
+import { BidPackage } from '../../domain/type/bidPackage.type';
+import { ConstructionInfor } from '../../domain/type/construction-infor.type';
+import { ConstructionPeriod } from '../../domain/type/construction.type';
 
 export class ConstructionInforImp implements ConstructionInfor {
   name: string;

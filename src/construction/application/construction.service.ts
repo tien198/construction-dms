@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Construction } from 'src/construction/domain/type/construction.type';
 import { ConstructionRespo } from '../infrastructure/construction.respo';
 import { Submission } from '../domain/type/submission.type';
-import { DecisionImp } from '../domain/entities/decision.entity';
+import { DecisionImp } from '../infrastructure/entities/decision.entity';
 
 @Injectable()
 export class ConstructionService {

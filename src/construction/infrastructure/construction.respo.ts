@@ -53,8 +53,6 @@ export class ConstructionRespo {
     /*
       construction -> decison -> submision
       */
-    sub.id = sub.date.getTime() + '-' + crypto.randomUUID();
-    dec.id = dec.date.getTime() + '-' + crypto.randomUUID();
     dec.submissions.push(sub);
     con.decisions.push(dec);
 
@@ -75,7 +73,6 @@ export class ConstructionRespo {
       throw new Error(
         `Not found decission (with id: ${decId}) in consruction (wich id: ${conId} )`,
       );
-    sub.id = sub.date.getTime() + '-' + crypto.randomUUID();
     dec.submissions.push(sub);
 
     return await this.updateById(conId, con);

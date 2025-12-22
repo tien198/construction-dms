@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConstructionInforDto } from '../../presentation/dto/create-construction-infor.dto';
-import { ConstructionInforImp } from '../../domain/entities/construction-infor.entity';
+import { ConstructionInforImp } from '../../infrastructure/entities/construction-infor.entity';
 import { BidPackageMapper } from './bidPackage.mapper';
 
 @Injectable()

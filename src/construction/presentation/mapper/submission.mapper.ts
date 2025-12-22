@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSubmissionDto } from '../../presentation/dto/create-submission.dto';
-import { SubmissionImp } from '../../domain/entities/submission.entity';
+import { SubmissionImp } from '../../infrastructure/entities/submission.entity';
 import { ConstructionInforMapper } from './construction-infor.mapper';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 
