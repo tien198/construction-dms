@@ -4,6 +4,8 @@ import { ConstructionService } from '../application/construction.service';
 import { ConstructionMapper } from './mapper/construction.mapper';
 import { Construction } from '../domain/type/construction.type';
 import { SubmissionMapper } from './mapper/submission.mapper';
+import { NestedAdministrativeDocumentMapper } from './mapper/nested-administrative-document.mapper';
+import { DecisionImp } from '../infrastructure/entities/decision.entity';
 
 @Controller('construction')
 export class ConstructionController {
@@ -11,6 +13,7 @@ export class ConstructionController {
     private readonly constructionService: ConstructionService,
     private readonly constructionMapper: ConstructionMapper,
     private readonly submissionMapper: SubmissionMapper,
+    private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
   ) {}
 
   @Post()
@@ -32,15 +35,33 @@ export class ConstructionController {
     return this.constructionService.approve(conId, decId);
   }
 
-  @Post('addSubmission/:constructionId/:decisionId')
+  @Post('add-submission/:constructionId/{:decisionId}')
   addSubmission(
     @Body() submissionDto: CreateSubmissionDto,
     @Param('constructionId') conId: string,
-    @Param('decisionId') decId: string,
+    @Param('decisionId') decId?: string,
   ): Promise<Construction> {
     const submission = this.submissionMapper.toEntity(submissionDto);
 
-    return this.constructionService.addSubmission(submission, conId, decId);
+    if (decId)
+      return this.constructionService.addSubmission(conId, submission, decId);
+    else {
+      const directlyDec = submissionDto.directlyDecision;
+      const decision = new DecisionImp({
+        no: directlyDec!.no,
+        level: directlyDec!.level,
+        date: directlyDec!.date ? new Date(directlyDec!.date) : submission.date,
+        pursuantToDec_TCT: submission.pursuantToDec_TCT,
+        pursuantToDec_TTMN: submission.pursuantToDec_TTMN,
+        submissions: [],
+        period: submission.period,
+      });
+      return this.constructionService.addSubmission(
+        conId,
+        submission,
+        decision,
+      );
+    }
   }
 
   @Get()

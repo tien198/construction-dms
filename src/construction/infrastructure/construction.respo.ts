@@ -53,7 +53,10 @@ export class ConstructionRespo {
     /*
       construction -> decison -> submision
       */
-    dec.submissions.push(sub);
+    const subAldeady = dec.submissions.find((s) => s.id === sub.id);
+    if (!subAldeady) {
+      dec.submissions.push(sub);
+    }
     con.decisions.push(dec);
 
     return await this.updateById(conId, con);
@@ -73,7 +76,10 @@ export class ConstructionRespo {
       throw new Error(
         `Not found decission (with id: ${decId}) in consruction (wich id: ${conId} )`,
       );
-    dec.submissions.push(sub);
+    const subAldeady = dec.submissions.find((s) => s.id === sub.id);
+    if (!subAldeady) {
+      dec.submissions.push(sub);
+    }
 
     return await this.updateById(conId, con);
   }

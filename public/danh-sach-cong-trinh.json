@@ -61,9 +61,114 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "id": "1766395557728-dd6a0502-f6e8-4737-b9dd-04bb240af2a7",
+                        "no": "1072/TTr - LCQ",
+                        "level": "LCQ",
+                        "date": "2025-10-31T17:00:00.000Z",
+                        "pursuantToDec_TCT": {
+                            "id": "",
+                            "no": "3052/QĐ – TCT",
+                            "level": "TCT",
+                            "date": "2024-12-29T17:00:00.000Z"
+                        },
+                        "period": "KH",
+                        "constructionInfor": {
+                            "name": "Sửa chữa mái tôn khu tập thể độc thân kỹ thuật",
+                            "cost": 1000000000,
+                            "costString": "Một tỷ đồng",
+                            "sourceOfFunds": "2025",
+                            "constructionImplementationTime": {
+                                "startDate": "2025-11-08T17:00:00.000Z",
+                                "endDate": "2025-11-28T17:00:00.000Z"
+                            },
+                            "bidPackages": [
+                                {
+                                    "projectOwner": "Công ty Trực thăng Miền Nam",
+                                    "bidPackageName": "Tư vấn lập Báo cáo kinh tế kỹ thuật",
+                                    "shortDescription": "Lập bản vẽ thiết kế kỹ thuật thi công, dự toán công trình.",
+                                    "cost": 100000000000,
+                                    "bidderSelectionTime": "2025-12-11T07:52:36.892Z",
+                                    "bidderSelectionMethod": "Chỉ định thầu rút gọn",
+                                    "upTo": "10 ngày",
+                                    "isCompleted": false
+                                },
+                                {
+                                    "projectOwner": "Công ty Trực thăng Miền Nam",
+                                    "bidPackageName": "Thẩm tra Báo cáo kinh tế kỹ thuật",
+                                    "shortDescription": "Thẩm tra bản vẽ thiết kế kỹ thuật thi công, dự toán công trình",
+                                    "cost": 100000000000,
+                                    "bidderSelectionTime": "2025-12-11T07:52:36.892Z",
+                                    "bidderSelectionMethod": "Chỉ định thầu rút gọn",
+                                    "upTo": "5 ngày",
+                                    "isCompleted": false
+                                }
+                            ]
+                        }
                     }
                 ],
                 "isApproved": true
+            },
+            {
+                "id": "1761930000000-6baf8ff1-bd94-4338-bf78-0a18290ac962",
+                "no": "827A/QĐ-TTMN",
+                "level": "TTMN",
+                "date": "2025-10-31T17:00:00.000Z",
+                "pursuantToDec_TCT": {
+                    "id": "",
+                    "no": "3052/QĐ – TCT",
+                    "level": "TCT",
+                    "date": "2024-12-29T17:00:00.000Z"
+                },
+                "submissions": [
+                    {
+                        "id": "1766395768853-87652d3d-3bea-4d27-a3c8-c1addc44624f",
+                        "no": "1072/TTr - LCQ",
+                        "level": "LCQ",
+                        "date": "2025-10-31T17:00:00.000Z",
+                        "pursuantToDec_TCT": {
+                            "id": "",
+                            "no": "3052/QĐ – TCT",
+                            "level": "TCT",
+                            "date": "2024-12-29T17:00:00.000Z"
+                        },
+                        "period": "KH",
+                        "constructionInfor": {
+                            "name": "Sửa chữa mái tôn khu tập thể độc thân kỹ thuật",
+                            "cost": 1000000000,
+                            "costString": "Một tỷ đồng",
+                            "sourceOfFunds": "2025",
+                            "constructionImplementationTime": {
+                                "startDate": "2025-11-08T17:00:00.000Z",
+                                "endDate": "2025-11-28T17:00:00.000Z"
+                            },
+                            "bidPackages": [
+                                {
+                                    "projectOwner": "Công ty Trực thăng Miền Nam",
+                                    "bidPackageName": "Tư vấn lập Báo cáo kinh tế kỹ thuật",
+                                    "shortDescription": "Lập bản vẽ thiết kế kỹ thuật thi công, dự toán công trình.",
+                                    "cost": 100000000000,
+                                    "bidderSelectionTime": "2025-12-11T07:52:36.892Z",
+                                    "bidderSelectionMethod": "Chỉ định thầu rút gọn",
+                                    "upTo": "10 ngày",
+                                    "isCompleted": false
+                                },
+                                {
+                                    "projectOwner": "Công ty Trực thăng Miền Nam",
+                                    "bidPackageName": "Thẩm tra Báo cáo kinh tế kỹ thuật",
+                                    "shortDescription": "Thẩm tra bản vẽ thiết kế kỹ thuật thi công, dự toán công trình",
+                                    "cost": 100000000000,
+                                    "bidderSelectionTime": "2025-12-11T07:52:36.892Z",
+                                    "bidderSelectionMethod": "Chỉ định thầu rút gọn",
+                                    "upTo": "5 ngày",
+                                    "isCompleted": false
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "isApproved": false
             }
         ],
         "constructionInfor": {

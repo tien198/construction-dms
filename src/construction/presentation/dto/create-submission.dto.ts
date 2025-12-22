@@ -24,5 +24,5 @@ export class CreateSubmissionDto
   period: ConstructionPeriod;
   constructionInfor?: ConstructionInforDto;
   // decision directly for this submission
-  directlyDecision: NestedAdministrativeDocumentDto;
+  directlyDecision?: NestedAdministrativeDocumentDto;
 }

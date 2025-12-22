@@ -21,8 +21,8 @@ export class ConstructionService {
   // if decision string (id) => add submission to an existed
   // if decision is instance of Construction => add to a new
   async addSubmission(
-    sub: Submission,
     constructionId: string,
+    sub: Submission,
     decision: string | Decision,
   ) {
     let updated: Construction;
