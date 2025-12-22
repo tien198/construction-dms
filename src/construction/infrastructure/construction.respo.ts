@@ -72,10 +72,14 @@ export class ConstructionRespo {
       throw new Error('Not found construction with id: ' + conId);
     }
     const dec = con.decisions.find((d) => d.id === decId);
+
     if (!dec)
       throw new Error(
         `Not found decission (with id: ${decId}) in consruction (wich id: ${conId} )`,
       );
+    else if (dec?.isApproved) {
+      throw new Error('decission is already approved, can not add submission');
+    }
     const subAldeady = dec.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
       dec.submissions.push(sub);

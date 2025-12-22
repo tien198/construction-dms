@@ -3,6 +3,7 @@ import { DecisionImp } from '../../infrastructure/entities/decision.entity';
 import { CreateDecisionDto } from '../../presentation/dto/create-decision.dto';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
 import { SubmissionMapper } from './submission.mapper';
+import { CreateSubmissionDto } from '../dto/create-submission.dto';
 
 @Injectable()
 export class DecisionMapper {
@@ -46,5 +47,20 @@ export class DecisionMapper {
     );
     dto.isApproved = entity.isApproved;
     return dto;
+  }
+
+  fromSubmissionDto(subDto: CreateSubmissionDto): CreateDecisionDto {
+    const directlyDec = subDto.directlyDecision;
+
+    const dec = new CreateDecisionDto();
+    dec.no = directlyDec!.no;
+    dec.level = directlyDec!.level;
+    dec.date = directlyDec?.date ?? subDto.date;
+    dec.pursuantToDec_TCT = subDto.pursuantToDec_TCT;
+    dec.pursuantToDec_TTMN = subDto.pursuantToDec_TTMN;
+    dec.submissions = [];
+    dec.period = subDto.period;
+
+    return dec;
   }
 }
