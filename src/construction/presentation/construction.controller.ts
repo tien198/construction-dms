@@ -4,7 +4,6 @@ import { ConstructionService } from '../application/construction.service';
 import { ConstructionMapper } from './mapper/construction.mapper';
 import { Construction } from '../domain/type/construction.type';
 import { SubmissionMapper } from './mapper/submission.mapper';
-import { Submission } from '../domain/type/submission.type';
 
 @Controller('construction')
 export class ConstructionController {
@@ -31,19 +30,6 @@ export class ConstructionController {
     @Param('decisionId') decId: string,
   ): Promise<Construction> {
     return this.constructionService.approve(conId, decId);
-  }
-
-  @Post('addSubmission-construction-infor/:constructionId/:decisionId')
-  addSubmissionWithConstructionInfor(
-    @Body() submissionDto: Required<CreateSubmissionDto>,
-    @Param('constructionId') conId: string,
-    @Param('decisionId') decId: string,
-  ): Promise<Construction> {
-    const submission = this.submissionMapper.toEntity(
-      submissionDto,
-    ) as Required<Submission>;
-
-    return this.constructionService.addSubmission(submission, conId, decId);
   }
 
   @Post('addSubmission/:constructionId/:decisionId')
