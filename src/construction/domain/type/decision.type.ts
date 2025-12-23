@@ -7,4 +7,5 @@ export interface Decision extends AdministrativeDocument {
   submissions: Submission[];
   isApproved: boolean;
   approvedSubmissionId: string;
+  isChangedConstructionInfor: boolean;
 }

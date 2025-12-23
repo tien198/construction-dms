@@ -11,6 +11,7 @@ export class DecisionImp
   submissions: Submission[] = [];
   isApproved: boolean = false;
   approvedSubmissionId: string = '';
+  isChangedConstructionInfor: boolean = false;
 
   constructor(dec?: Partial<Decision>) {
     super(dec);

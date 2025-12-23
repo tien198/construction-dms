@@ -73,6 +73,18 @@ export class ConstructionService {
       );
     }
 
+    const approvedSubmission = decision.submissions.find(
+      (sub) => sub.id === submissionId,
+    );
+
+    if (!approvedSubmission) {
+      throw new Error(`Submission not found for submissionId ${submissionId}`);
+    }
+    if (approvedSubmission.constructionInfor) {
+      construction.constructionInfor = approvedSubmission.constructionInfor;
+      decision.isChangedConstructionInfor = true;
+    }
+
     decision.isApproved = true;
     decision.approvedSubmissionId = submissionId;
 
