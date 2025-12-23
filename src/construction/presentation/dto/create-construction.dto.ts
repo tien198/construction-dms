@@ -5,7 +5,10 @@ import { NestedAdministrativeDocumentDto } from './nested-administrative-documen
 
 export class CreateConstructionDto
   implements
-    Omit<Construction, 'pursuantToDec_TCT' | 'decisions' | 'constructionInfor'>
+    Omit<
+      Construction,
+      'id' | 'pursuantToDec_TCT' | 'decisions' | 'constructionInfor'
+    >
 {
   id?: string;
   pursuantToDec_TCT: NestedAdministrativeDocumentDto;

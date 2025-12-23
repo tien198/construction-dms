@@ -12,9 +12,11 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
   pursuantToDec_TTMN?: NestedAdministrativeDocument;
 
   constructor(doc?: Partial<AdministrativeDocument>) {
-    Object.assign(this, doc);
-    if (doc && doc.id) {
-      this.id = doc.id;
+    if (doc) {
+      Object.assign(this, doc);
+      if (!doc.id) {
+        this.id = Date.now() + '-' + crypto.randomUUID();
+      }
     } else {
       this.id = Date.now() + '-' + crypto.randomUUID();
     }

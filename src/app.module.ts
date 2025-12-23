@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { GlobalModule } from './global.module.';
+import { BidderModule } from './bidder/bidder.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { GlobalModule } from './global.module.';
     GlobalModule,
     CatModule,
     ConstructionModule,
+    BidderModule,
   ],
 })
 export class AppModule {}

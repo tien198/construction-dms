@@ -20,32 +20,32 @@ export class ConstructionRespo {
 
   col: Collection<Construction>;
 
-  async create(construction: Construction) {
-    construction.id =
-      construction.decisions[0].date.getTime() + '-' + crypto.randomUUID();
-    construction.decisions[0].id =
-      construction.decisions[0].date.getTime() + '-' + crypto.randomUUID();
-    return await this.col.insertOne(construction);
+  create(construction: Construction): Promise<Construction> {
+    return this.col.insertOne(construction);
   }
 
-  async updateById(id: string, construction: Construction) {
+  updateById(id: string, construction: Construction): Promise<Construction> {
     if (!id) throw new Error('updated is missing "id" field');
-    return await this.col.updateOne({ id }, construction);
+    return this.col.updateOne({ id }, construction);
   }
 
   async find(filter?: Partial<Construction>) {
     return await this.col.find(filter);
   }
 
-  async findOne(filter: Partial<Construction>) {
-    return await this.col.findOne(filter);
+  findOne(filter: Partial<Construction>): Promise<Construction | null> {
+    return this.col.findOne(filter);
   }
 
-  async findById(id: string) {
-    return await this.col.findOne({ id });
+  findById(id: string): Promise<Construction | null> {
+    return this.col.findOne({ id });
   }
 
-  async addSubmissionForNewDec(sub: Submission, conId: string, dec: Decision) {
+  async addSubmissionForNewDec(
+    sub: Submission,
+    conId: string,
+    dec: Decision,
+  ): Promise<Construction> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);
@@ -66,7 +66,7 @@ export class ConstructionRespo {
     sub: Submission,
     conId: string,
     decId: string,
-  ) {
+  ): Promise<Construction> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);

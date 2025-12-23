@@ -10,6 +10,13 @@ export class ConstructionImp implements Construction {
   constructionInfor: ConstructionInfor;
 
   constructor(con?: Partial<Construction>) {
-    if (con) Object.assign(this, con);
+    if (con) {
+      Object.assign(this, con);
+      if (!con.id) {
+        this.id = Date.now() + '-' + crypto.randomUUID();
+      }
+    } else {
+      this.id = Date.now() + '-' + crypto.randomUUID();
+    }
   }
 }
