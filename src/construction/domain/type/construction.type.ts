@@ -1,4 +1,4 @@
-import { NestedAdministrativeDocument } from './administrative-document. type';
+import { NestedAdministrativeDocument } from './administrative-document.type';
 import { ConstructionInfor } from './construction-infor.type';
 import { Decision } from './decision.type';
 

@@ -8,7 +8,7 @@ export interface Bidder {
   legalRepresentative: Person;
   address: string;
   phone: string;
-  email: string;
+  email?: string;
   // Mã Số Thuế
   taxCode: string;
   // Tk ngân hàng

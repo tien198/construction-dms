@@ -8,7 +8,7 @@ export class CreateBidderDto implements Omit<Bidder, 'id'> {
   legalRepresentative: Person;
   address: string;
   phone: string;
-  email: string;
+  email?: string;
   // Mã Số Thuế
   taxCode: string;
   // Tk ngân hàng

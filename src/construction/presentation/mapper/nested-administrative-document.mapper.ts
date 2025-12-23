@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NestedAdministrativeDocument } from '../../domain/type/administrative-document. type';
+import { NestedAdministrativeDocument } from '../../domain/type/administrative-document.type';
 import { NestedAdministrativeDocumentDto } from 'src/construction/presentation/dto/nested-administrative-document.dto';
 
 @Injectable()

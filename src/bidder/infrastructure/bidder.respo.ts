@@ -27,8 +27,8 @@ export class BidderRespo {
     return this.col.updateOne({ id }, bidder);
   }
 
-  async find(filter?: Partial<Bidder>) {
-    return await this.col.find(filter);
+  find(filter?: Partial<Bidder>): Promise<Bidder[]> {
+    return this.col.find(filter);
   }
 
   findOne(filter: Partial<Bidder>): Promise<Bidder | null> {

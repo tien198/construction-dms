@@ -1,7 +1,7 @@
 import {
   AdministrativeDocument,
   NestedAdministrativeDocument,
-} from 'src/construction/domain/type/administrative-document. type';
+} from 'src/construction/domain/type/administrative-document.type';
 
 export class AdministrativeDocumentImp implements AdministrativeDocument {
   id: string;
