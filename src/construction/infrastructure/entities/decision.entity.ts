@@ -8,10 +8,8 @@ export class DecisionImp
   implements Partial<Decision>
 {
   period: ConstructionPeriod;
-  submissions: Submission[] = [];
   isApproved: boolean = false;
-  approvedSubmissionId: string = '';
-  isChangedConstructionInfor: boolean = false;
+  submissions: Submission[] = [];
 
   constructor(dec?: Partial<Decision>) {
     super(dec);

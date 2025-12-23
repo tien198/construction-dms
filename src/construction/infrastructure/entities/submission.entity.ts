@@ -9,6 +9,7 @@ export class SubmissionImp
 {
   period: ConstructionPeriod;
   constructionInfor?: ConstructionInfor;
+  isApproved?: boolean = false;
 
   constructor(sub?: Partial<Submission>) {
     super(sub);

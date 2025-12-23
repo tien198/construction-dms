@@ -5,4 +5,5 @@ import { AdministrativeDocument } from './administrative-document.type';
 export interface Submission extends AdministrativeDocument {
   period: ConstructionPeriod;
   constructionInfor?: ConstructionInfor;
+  isApproved?: boolean;
 }

@@ -82,11 +82,10 @@ export class ConstructionService {
     }
     if (approvedSubmission.constructionInfor) {
       construction.constructionInfor = approvedSubmission.constructionInfor;
-      decision.isChangedConstructionInfor = true;
     }
 
+    approvedSubmission.isApproved = true;
     decision.isApproved = true;
-    decision.approvedSubmissionId = submissionId;
 
     return await this.constructionRespo.updateById(
       constructionId,

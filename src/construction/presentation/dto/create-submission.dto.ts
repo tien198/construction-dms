@@ -25,4 +25,5 @@ export class CreateSubmissionDto
   constructionInfor?: ConstructionInforDto;
   // decision directly for this submission
   directlyDecision?: NestedAdministrativeDocumentDto;
+  isApproved?: boolean;
 }
