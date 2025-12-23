@@ -15,8 +15,6 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
     Object.assign(this, doc);
     if (doc && doc.id) {
       this.id = doc.id;
-    } else if (doc && !doc?.id && doc.date) {
-      this.id = doc.date.getTime() + '-' + crypto.randomUUID();
     } else {
       this.id = Date.now() + '-' + crypto.randomUUID();
     }

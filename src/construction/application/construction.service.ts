@@ -50,17 +50,32 @@ export class ConstructionService {
     return con;
   }
 
-  async approve(constructionId: string, decisionId: string) {
+  async approve(
+    constructionId: string,
+    decisionId: string,
+    submissionId: string,
+  ) {
     const construction = await this.constructionRespo.findOne({
       id: constructionId,
     });
-    if (!construction) throw new Error('Construction not found');
+    if (!construction) {
+      throw new Error('Construction not found');
+    }
+
     const decision = construction.decisions.find(
       (dec) => dec.id === decisionId,
     );
     if (!decision)
       throw new Error('Decision not found for decisionId ' + decisionId);
+    if (decision.isApproved) {
+      throw new Error(
+        `Decision was approved, not accept re-approve, (decisionId: ${decisionId})`,
+      );
+    }
+
     decision.isApproved = true;
+    decision.approvedSubmissionId = submissionId;
+
     return await this.constructionRespo.updateById(
       constructionId,
       construction,

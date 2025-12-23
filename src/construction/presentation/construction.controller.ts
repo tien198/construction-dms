@@ -26,12 +26,13 @@ export class ConstructionController {
     return this.constructionService.initPlan(construction);
   }
 
-  @Post('approve/:constructionId/:decisionId')
+  @Post('approve/:constructionId/:decisionId/:submissionId')
   approve(
     @Param('constructionId') conId: string,
     @Param('decisionId') decId: string,
+    @Param('submissionId') subId: string,
   ): Promise<Construction> {
-    return this.constructionService.approve(conId, decId);
+    return this.constructionService.approve(conId, decId, subId);
   }
 
   @Post('add-submission/:constructionId/{:decisionId}')

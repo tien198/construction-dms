@@ -10,6 +10,7 @@ export class DecisionImp
   period: ConstructionPeriod;
   submissions: Submission[] = [];
   isApproved: boolean = false;
+  approvedSubmissionId: string = '';
 
   constructor(dec?: Partial<Decision>) {
     super(dec);

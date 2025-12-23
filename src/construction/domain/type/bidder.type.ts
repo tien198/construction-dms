@@ -1,12 +1,15 @@
 export interface Bidder {
   name: string;
-  Daidien: { name: string; position: string };
+  // Đại diện pháp luật
+  legalRepresentative: { name: string; position: string };
   address: string;
   phone: string;
   email: string;
-  MST: string;
-  STK: {
-    STKNumber: string;
+  // Mã Số Thuế
+  taxCode: string;
+  // Tk ngân hàng
+  bankAccount: {
+    accountNumber: string;
     bankName: string;
     branch: string;
   };
