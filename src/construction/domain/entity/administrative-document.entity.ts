@@ -14,11 +14,6 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
   constructor(doc?: AdministrativeDocument) {
     if (doc) {
       Object.assign(this, doc);
-      if (!doc.id) {
-        this.id = Date.now() + '-' + crypto.randomUUID();
-      }
-    } else {
-      this.id = Date.now() + '-' + crypto.randomUUID();
     }
   }
 }

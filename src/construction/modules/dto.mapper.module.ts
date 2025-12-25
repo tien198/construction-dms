@@ -24,4 +24,4 @@ import { SubmissionMapper } from 'src/construction/presentation/mapper/submissio
     NestedAdministrativeDocumentMapper,
   ],
 })
-export class MapperModule {}
+export class DtoMapperModule {}

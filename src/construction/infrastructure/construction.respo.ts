@@ -3,51 +3,65 @@ import { ConfigService } from '@nestjs/config';
 import { Collection } from 'src/common/infrastructure/collection';
 import { DB } from 'src/common/infrastructure/db';
 
-import { Construction } from 'src/construction/domain/type/construction.type';
 import { Submission } from '../domain/type/submission.type';
-import { Decision } from '../domain/type/decision.type';
-import { InfraDecisionImp } from './entities/decision.infra.entity';
 import { InfraConstructionImp } from './entities/construction.infra.entity';
+import { Construction } from '../domain/type/construction.type';
+import { ConstructionInfraMapper } from './mapper/construction.mapper';
+import { Decision } from '../domain/type/decision.type';
+import { DecisionInfraMapper } from './mapper/decision.infra.mapper';
 
 @Injectable()
 export class ConstructionRespo {
   constructor(
     private readonly db: DB,
     private readonly configService: ConfigService,
+    private readonly constructionInfraMapper: ConstructionInfraMapper,
+    private readonly decisionInfraMapper: DecisionInfraMapper,
   ) {
     const dataFile =
       this.configService.get<string>('CONSTRUCTIONS_DATA_FILE') ?? '';
-    this.col = this.db.collection<Construction>(dataFile);
+    this.col = this.db.collection<InfraConstructionImp>(dataFile);
   }
 
-  col: Collection<Construction>;
+  col: Collection<InfraConstructionImp>;
 
-  create(construction: Construction): Promise<Construction> {
-    return this.col.insertOne(construction);
+  create(construction: Construction): Promise<InfraConstructionImp> {
+    const constructionInfra =
+      this.constructionInfraMapper.toInfra(construction);
+    return this.col.insertOne(constructionInfra);
   }
 
-  updateById(id: string, construction: Construction): Promise<Construction> {
-    if (!id) throw new Error('updated is missing "id" field');
-    return this.col.updateOne({ id }, construction);
+  updateById(
+    id: string,
+    construction: Construction,
+  ): Promise<InfraConstructionImp> {
+    if (!id) {
+      throw new Error('updated is missing "id" field');
+    }
+    const constructionInfra =
+      this.constructionInfraMapper.toInfra(construction);
+    return this.col.updateOne({ id }, constructionInfra);
   }
 
-  async find(filter?: Partial<Construction>) {
+  async find(filter?: Partial<InfraConstructionImp>) {
     return await this.col.find(filter);
   }
 
-  findOne(filter: Partial<Construction>): Promise<Construction | null> {
+  findOne(
+    filter: Partial<InfraConstructionImp>,
+  ): Promise<InfraConstructionImp | null> {
     return this.col.findOne(filter);
   }
 
-  findById(id: string): Promise<Construction | null> {
+  findById(id: string): Promise<InfraConstructionImp | null> {
     return this.col.findOne({ id });
   }
 
   async addSubmissionForNewDec(
     sub: Submission,
     conId: string,
-    dec: InfraDecisionImp,
-  ): Promise<Construction> {
+    dec: Decision,
+  ): Promise<InfraConstructionImp> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);
@@ -55,11 +69,12 @@ export class ConstructionRespo {
     /*
       construction -> decison -> submision
       */
-    const subAldeady = dec.submissions.find((s) => s.id === sub.id);
+    const decInfra = this.decisionInfraMapper.toInfra(dec);
+    const subAldeady = decInfra.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      dec.submissions.push(sub);
+      decInfra.submissions.push(sub);
     }
-    con.decisions.push(dec);
+    con.decisions.push(decInfra);
 
     return await this.updateById(conId, con);
   }

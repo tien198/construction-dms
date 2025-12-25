@@ -1,15 +1,15 @@
 import { Construction } from '../../domain/type/construction.type';
 import { ConstructionInfor } from '../../domain/type/construction-infor.type';
-import { Decision } from '../../domain/type/decision.type';
 import { NestedAdministrativeDocument } from '../../domain/type/administrative-document.type';
+import { InfraDecisionImp } from './decision.infra.entity';
 
 export class InfraConstructionImp implements Construction {
-  id: string;
+  id?: string;
   pursuantToDec_TCT: NestedAdministrativeDocument;
-  decisions: Decision[] = [];
+  decisions: InfraDecisionImp[] = [];
   constructionInfor: ConstructionInfor;
 
-  constructor(con?: Partial<Construction>) {
+  constructor(con?: InfraConstructionImp) {
     if (con) {
       Object.assign(this, con);
       if (!con.id) {

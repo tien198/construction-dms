@@ -1,17 +1,13 @@
-import { ConstructionInfor } from '../type/construction-infor.type';
 import { ConstructionPeriod } from '../type/construction.type';
 import { Decision } from '../type/decision.type';
 import { Submission } from '../type/submission.type';
 import { AdministrativeDocumentImp } from './administrative-document.entity';
 
-export class DecisionImp
-  extends AdministrativeDocumentImp
-  implements Omit<Decision, 'submissions'>
-{
+export class DecisionImp extends AdministrativeDocumentImp implements Decision {
   period: ConstructionPeriod;
   isApproved: boolean;
-  approvedSubmission?: Submission;
-  constructionInfor: ConstructionInfor;
+  submission?: Submission;
+  isChangeConstructionInfor?: boolean | undefined;
 
   constructor(dec?: DecisionImp) {
     super(dec);
