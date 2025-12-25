@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { DecisionImp } from '../../infrastructure/entities/decision.entity';
-import { CreateDecisionDto } from '../../presentation/dto/create-decision.dto';
-import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
-import { SubmissionMapper } from './submission.mapper';
+import { InfraDecisionImp } from '../../infrastructure/entities/decision.infra.entity';
+import { CreateDecisionDto } from '../dto/create-decision.dto';
+import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.dto.mapper';
+import { SubmissionMapper } from './submission.dto.mapper';
 import { CreateSubmissionDto } from '../dto/create-submission.dto';
 
 @Injectable()
@@ -11,8 +11,8 @@ export class DecisionMapper {
     private readonly nestedAdministrativeDocumentMapper: NestedAdministrativeDocumentMapper,
     private readonly submissionMapper: SubmissionMapper,
   ) {}
-  toEntity(dto: CreateDecisionDto): DecisionImp {
-    const entity = new DecisionImp();
+  toEntity(dto: CreateDecisionDto): InfraDecisionImp {
+    const entity = new InfraDecisionImp();
     entity.no = dto.no;
     entity.level = dto.level;
     entity.date = new Date(dto.date);
@@ -30,7 +30,7 @@ export class DecisionMapper {
     return entity;
   }
 
-  toDto(entity: DecisionImp) {
+  toDto(entity: InfraDecisionImp) {
     const dto = new CreateDecisionDto();
     dto.no = entity.no;
     dto.level = entity.level;
@@ -60,6 +60,9 @@ export class DecisionMapper {
     dec.pursuantToDec_TTMN = subDto.pursuantToDec_TTMN;
     dec.submissions = [];
     dec.period = subDto.period;
+    dec.isApproved = false;
+    dec.isChangeConstructionInfor = !!subDto.constructionInfor;
+    dec.constructionInfor = subDto.constructionInfor;
 
     return dec;
   }

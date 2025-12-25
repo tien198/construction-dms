@@ -2,7 +2,7 @@ import { BidPackage } from '../../domain/type/bidPackage.type';
 import { ConstructionInfor } from '../../domain/type/construction-infor.type';
 import { ConstructionPeriod } from '../../domain/type/construction.type';
 
-export class ConstructionInforImp implements ConstructionInfor {
+export class InfraConstructionInforImp implements ConstructionInfor {
   name: string;
   cost: number;
   costString: string;

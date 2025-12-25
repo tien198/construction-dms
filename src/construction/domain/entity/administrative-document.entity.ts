@@ -11,7 +11,7 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
   pursuantToDec_TCT: NestedAdministrativeDocument;
   pursuantToDec_TTMN?: NestedAdministrativeDocument;
 
-  constructor(doc?: Partial<AdministrativeDocument>) {
+  constructor(doc?: AdministrativeDocument) {
     if (doc) {
       Object.assign(this, doc);
       if (!doc.id) {

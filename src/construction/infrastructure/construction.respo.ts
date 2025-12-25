@@ -6,6 +6,8 @@ import { DB } from 'src/common/infrastructure/db';
 import { Construction } from 'src/construction/domain/type/construction.type';
 import { Submission } from '../domain/type/submission.type';
 import { Decision } from '../domain/type/decision.type';
+import { InfraDecisionImp } from './entities/decision.infra.entity';
+import { InfraConstructionImp } from './entities/construction.infra.entity';
 
 @Injectable()
 export class ConstructionRespo {
@@ -44,7 +46,7 @@ export class ConstructionRespo {
   async addSubmissionForNewDec(
     sub: Submission,
     conId: string,
-    dec: Decision,
+    dec: InfraDecisionImp,
   ): Promise<Construction> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
@@ -66,7 +68,7 @@ export class ConstructionRespo {
     sub: Submission,
     conId: string,
     decId: string,
-  ): Promise<Construction> {
+  ): Promise<InfraConstructionImp> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);

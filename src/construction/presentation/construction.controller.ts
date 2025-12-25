@@ -1,10 +1,10 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { ConstructionService } from '../application/construction.service';
-import { ConstructionMapper } from './mapper/construction.mapper';
+import { ConstructionMapper } from './mapper/construction.dto.mapper';
 import { Construction } from '../domain/type/construction.type';
-import { SubmissionMapper } from './mapper/submission.mapper';
-import { DecisionMapper } from './mapper/decision.mapper';
+import { SubmissionMapper } from './mapper/submission.dto.mapper';
+import { DecisionMapper } from './mapper/decision.dto.mapper';
 
 @Controller('construction')
 export class ConstructionController {

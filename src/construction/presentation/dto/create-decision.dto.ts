@@ -2,6 +2,7 @@ import { Decision } from 'src/construction/domain/type/decision.type';
 import { CreateSubmissionDto } from './create-submission.dto';
 import { NestedAdministrativeDocumentDto } from './nested-administrative-document.dto';
 import { ConstructionPeriod } from 'src/construction/domain/type/construction.type';
+import { ConstructionInforDto } from './create-construction-infor.dto';
 
 export class CreateDecisionDto
   implements
@@ -13,6 +14,7 @@ export class CreateDecisionDto
         | 'submissions'
         | 'pursuantToDec_TCT'
         | 'pursuantToDec_TTMN'
+        | 'constructionInfor'
       >
     >
 {
@@ -24,4 +26,6 @@ export class CreateDecisionDto
   period: ConstructionPeriod;
   submissions: CreateSubmissionDto[];
   isApproved?: boolean;
+  isChangeConstructionInfor?: boolean;
+  constructionInfor?: ConstructionInforDto;
 }

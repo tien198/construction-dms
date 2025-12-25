@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ConstructionInforDto } from '../../presentation/dto/create-construction-infor.dto';
-import { ConstructionInforImp } from '../../infrastructure/entities/construction-infor.entity';
-import { BidPackageMapper } from './bidPackage.mapper';
+import { ConstructionInforDto } from '../dto/create-construction-infor.dto';
+import { InfraConstructionInforImp } from '../../infrastructure/entities/construction-infor.infra.entity';
+import { BidPackageMapper } from './bidPackage.dto.mapper';
 
 @Injectable()
 export class ConstructionInforMapper {
   constructor(private readonly bidPackageMapper: BidPackageMapper) {}
 
   toEntity(dto: ConstructionInforDto) {
-    const entity = new ConstructionInforImp();
+    const entity = new InfraConstructionInforImp();
     entity.name = dto.name;
     entity.cost = dto.cost;
     entity.costString = dto.costString;
@@ -24,7 +24,7 @@ export class ConstructionInforMapper {
     return entity;
   }
 
-  toDto(entity: ConstructionInforImp) {
+  toDto(entity: InfraConstructionInforImp) {
     const dto = new ConstructionInforDto();
     dto.name = entity.name;
     dto.cost = entity.cost;

@@ -81,10 +81,12 @@ export class ConstructionService {
       throw new Error(`Submission not found for submissionId ${submissionId}`);
     }
     if (approvedSubmission.constructionInfor) {
-      construction.constructionInfor = approvedSubmission.constructionInfor;
+      decision.constructionInfor = approvedSubmission.constructionInfor;
+      decision.isChangeConstructionInfor = true;
     }
 
     approvedSubmission.isApproved = true;
+    construction.constructionInfor = decision.constructionInfor;
     decision.isApproved = true;
 
     return await this.constructionRespo.updateById(

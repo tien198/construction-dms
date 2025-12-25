@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { BidPackageDto } from '../../presentation/dto/bidPackage.dto';
-import { BidPackageImp } from '../../infrastructure/entities/bidPackage.entity';
+import { InfraBidPackageImp } from '../../infrastructure/entities/bidPackage.infra.entity';
 
 @Injectable()
 export class BidPackageMapper {
-  toEntity(dto: BidPackageDto): BidPackageImp {
-    const entity = new BidPackageImp();
+  toEntity(dto: BidPackageDto): InfraBidPackageImp {
+    const entity = new InfraBidPackageImp();
     entity.projectOwner = dto.projectOwner;
     entity.bidPackageName = dto.bidPackageName;
     entity.shortDescription = dto.shortDescription;
@@ -19,7 +19,7 @@ export class BidPackageMapper {
     return entity;
   }
 
-  toDto(entity: BidPackageImp): BidPackageDto {
+  toDto(entity: InfraBidPackageImp): BidPackageDto {
     const dto = new BidPackageDto();
     dto.projectOwner = entity.projectOwner;
     dto.bidPackageName = entity.bidPackageName;

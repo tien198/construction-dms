@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateConstructionDto } from '../../presentation/dto/update-construction.dto';
-import { ConstructionImp } from '../../infrastructure/entities/construction.entity';
-import { CreateConstructionDto } from '../../presentation/dto/create-construction.dto';
-import { ConstructionInforMapper } from './construction-infor.mapper';
-import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.mapper';
-import { DecisionMapper } from './decision.mapper';
+import { UpdateConstructionDto } from '../dto/update-construction.dto';
+import { InfraConstructionImp } from '../../infrastructure/entities/construction.infra.entity';
+import { CreateConstructionDto } from '../dto/create-construction.dto';
+import { ConstructionInforMapper } from './construction-infor.dto.mapper';
+import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.dto.mapper';
+import { DecisionMapper } from './decision.dto.mapper';
 import { CreateSubmissionDto } from '../dto/create-submission.dto';
-import { SubmissionMapper } from './submission.mapper';
+import { SubmissionMapper } from './submission.dto.mapper';
 import { CreateDecisionDto } from '../dto/create-decision.dto';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class ConstructionMapper {
   ) {}
 
   toEntity(dto: CreateConstructionDto) {
-    const entity = new ConstructionImp();
+    const entity = new InfraConstructionImp();
     entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
       dto.pursuantToDec_TCT,
     );
@@ -33,7 +33,7 @@ export class ConstructionMapper {
     return entity;
   }
 
-  toDto(entity: ConstructionImp) {
+  toDto(entity: InfraConstructionImp) {
     const dto = new UpdateConstructionDto();
     dto.id = entity.id;
     dto.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toDto(

@@ -1,9 +1,9 @@
 import { ConstructionInfor } from 'src/construction/domain/type/construction-infor.type';
 import { ConstructionPeriod } from 'src/construction/domain/type/construction.type';
 import { Submission } from 'src/construction/domain/type/submission.type';
-import { AdministrativeDocumentImp } from './administrative-document.entity';
+import { AdministrativeDocumentImp } from '../../domain/entity/administrative-document.entity';
 
-export class SubmissionImp
+export class InfraSubmissionImp
   extends AdministrativeDocumentImp
   implements Partial<Submission>
 {
@@ -11,7 +11,7 @@ export class SubmissionImp
   constructionInfor?: ConstructionInfor;
   isApproved?: boolean = false;
 
-  constructor(sub?: Partial<Submission>) {
+  constructor(sub?: Submission) {
     super(sub);
   }
 }
