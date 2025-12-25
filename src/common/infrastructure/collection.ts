@@ -12,10 +12,10 @@ export class Collection<T extends object> {
     return data;
   }
 
-  async findOne(filter: Partial<T>): Promise<T | null> {
+  async findOne(filter: Partial<T>): Promise<T | undefined> {
     const { list } = await this.accessFile<T>();
     const finded = list.find((i) => this.filterFnc(i, filter));
-    return finded ? { ...finded } : null;
+    return finded ? { ...finded } : undefined;
   }
 
   async find(filter?: Partial<T>): Promise<T[]> {

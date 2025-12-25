@@ -49,11 +49,11 @@ export class ConstructionRespo {
 
   findOne(
     filter: Partial<InfraConstructionImp>,
-  ): Promise<InfraConstructionImp | null> {
+  ): Promise<InfraConstructionImp | undefined> {
     return this.col.findOne(filter);
   }
 
-  findById(id: string): Promise<InfraConstructionImp | null> {
+  findById(id: string): Promise<InfraConstructionImp | undefined> {
     return this.col.findOne({ id });
   }
 

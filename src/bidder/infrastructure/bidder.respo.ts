@@ -31,11 +31,11 @@ export class BidderRespo {
     return this.col.find(filter);
   }
 
-  findOne(filter: Partial<Bidder>): Promise<Bidder | null> {
+  findOne(filter: Partial<Bidder>): Promise<Bidder | undefined> {
     return this.col.findOne(filter);
   }
 
-  findById(id: string): Promise<Bidder | null> {
+  findById(id: string): Promise<Bidder | undefined> {
     return this.col.findOne({ id });
   }
 }
