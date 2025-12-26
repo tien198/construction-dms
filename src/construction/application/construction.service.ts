@@ -3,19 +3,34 @@ import { Construction } from 'src/construction/domain/type/construction.type';
 import { ConstructionRespo } from '../infrastructure/construction.respo';
 import { Submission } from '../domain/type/submission.type';
 import { Decision } from '../domain/type/decision.type';
+import { ConstructionInfraMapper } from '../infrastructure/mapper/construction.mapper';
+import { DecisionInfraMapper } from '../infrastructure/mapper/decision.infra.mapper';
+import { SubmissionInfraMapper } from '../infrastructure/mapper/submission.mapper';
+import { InfraConstructionImp } from '../infrastructure/entities/construction.infra.entity';
 
 @Injectable()
 export class ConstructionService {
-  constructor(private readonly constructionRespo: ConstructionRespo) {}
+  constructor(
+    private readonly constructionRespo: ConstructionRespo,
+    private readonly constructionInfraMapper: ConstructionInfraMapper,
+    private readonly decisionInfraMapper: DecisionInfraMapper,
+    private readonly submissionInfraMapper: SubmissionInfraMapper,
+  ) {}
   // Create
-  async initPlan(construction: Construction) {
-    return await this.constructionRespo.create(construction);
+  async initPlan(construction: Construction): Promise<Construction> {
+    const infra = this.constructionInfraMapper.toInfra(construction);
+    const created = await this.constructionRespo.create(infra);
+    const result = this.constructionInfraMapper.toDomain(created);
+    return result;
   }
 
   // FindAll
-  async findAll() {
+  async findAll(): Promise<Construction[]> {
     const list = await this.constructionRespo.find();
-    return list;
+    const result = list.map((infra) =>
+      this.constructionInfraMapper.toDomain(infra),
+    );
+    return result;
   }
 
   // if decision string (id) => add submission to an existed
@@ -24,37 +39,43 @@ export class ConstructionService {
     constructionId: string,
     sub: Submission,
     decision: string | Decision,
-  ) {
-    let updated: Construction;
+  ): Promise<Construction> {
+    const subInfra = this.submissionInfraMapper.toInfra(sub);
+
+    let updated: InfraConstructionImp;
     if (typeof decision === 'string')
       updated = await this.constructionRespo.addSubmissionForExistedDec(
-        sub,
+        subInfra,
         constructionId,
         decision,
       );
-    else
+    else {
+      const decInfra = this.decisionInfraMapper.toInfra(decision);
       updated = await this.constructionRespo.addSubmissionForNewDec(
-        sub,
+        subInfra,
         constructionId,
-        decision,
+        decInfra,
       );
-    return updated;
+    }
+    const result = this.constructionInfraMapper.toDomain(updated);
+    return result;
   }
 
   // FindById
   async findById(constructionId: string): Promise<Construction> {
-    const con = await this.constructionRespo.findById(constructionId);
-    if (!con) {
+    const finded = await this.constructionRespo.findById(constructionId);
+    if (!finded) {
       throw new Error('Not found construction with id: ' + constructionId);
     }
-    return con;
+    const result = this.constructionInfraMapper.toDomain(finded);
+    return result;
   }
 
   async approve(
     constructionId: string,
     decisionId: string,
     submissionId: string,
-  ) {
+  ): Promise<Construction> {
     const construction = await this.constructionRespo.findOne({
       id: constructionId,
     });
@@ -88,10 +109,12 @@ export class ConstructionService {
     approvedSubmission.isApproved = true;
     decision.isApproved = true;
 
-    return await this.constructionRespo.updateById(
+    const updated = await this.constructionRespo.updateById(
       constructionId,
       construction,
     );
+    const result = this.constructionInfraMapper.toDomain(updated);
+    return result;
   }
   /*
   update(id: number, construction: Construction) {

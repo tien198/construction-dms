@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateConstructionDto } from '../dto/update-construction.dto';
-import { InfraConstructionImp } from '../../infrastructure/entities/construction.infra.entity';
 import { CreateConstructionDto } from '../dto/create-construction.dto';
 import { ConstructionInforMapper } from './construction-infor.dto.mapper';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.dto.mapper';
@@ -8,6 +7,7 @@ import { DecisionMapper } from './decision.dto.mapper';
 import { CreateSubmissionDto } from '../dto/create-submission.dto';
 import { SubmissionMapper } from './submission.dto.mapper';
 import { CreateDecisionDto } from '../dto/create-decision.dto';
+import { ConstructionImp } from 'src/construction/domain/entity/construction.entity';
 
 @Injectable()
 export class ConstructionMapper {
@@ -19,7 +19,7 @@ export class ConstructionMapper {
   ) {}
 
   toEntity(dto: CreateConstructionDto) {
-    const entity = new InfraConstructionImp();
+    const entity = new ConstructionImp();
     entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
       dto.pursuantToDec_TCT,
     );
@@ -33,7 +33,7 @@ export class ConstructionMapper {
     return entity;
   }
 
-  toDto(entity: InfraConstructionImp) {
+  toDto(entity: ConstructionImp) {
     const dto = new UpdateConstructionDto();
     dto.id = entity.id;
     dto.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toDto(
@@ -56,7 +56,7 @@ export class ConstructionMapper {
       date: dto.directlyDecision.date ?? dto.date,
       pursuantToDec_TCT: dto.pursuantToDec_TCT,
       period: dto.period,
-      submissions: [dto],
+      submission: dto,
     };
     construction.pursuantToDec_TCT = dto.pursuantToDec_TCT;
     construction.decisions.push(decision);

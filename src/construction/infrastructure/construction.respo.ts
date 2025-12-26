@@ -2,24 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Collection } from 'src/common/infrastructure/collection';
 import { DB } from 'src/common/infrastructure/db';
-
-import { Submission } from '../domain/type/submission.type';
 import { InfraConstructionImp } from './entities/construction.infra.entity';
-import { Construction } from '../domain/type/construction.type';
-import { ConstructionInfraMapper } from './mapper/construction.mapper';
-import { Decision } from '../domain/type/decision.type';
-import { DecisionInfraMapper } from './mapper/decision.infra.mapper';
 import { InfraSubmissionImp } from './entities/submission.infra.entity';
-import { SubmissionInfraMapper } from './mapper/submission.mapper';
+import { InfraDecisionImp } from './entities/decision.infra.entity';
 
 @Injectable()
 export class ConstructionRespo {
   constructor(
     private readonly db: DB,
     private readonly configService: ConfigService,
-    private readonly constructionInfraMapper: ConstructionInfraMapper,
-    private readonly decisionInfraMapper: DecisionInfraMapper,
-    private readonly submissionInfraMapper: SubmissionInfraMapper,
   ) {
     const dataFile =
       this.configService.get<string>('CONSTRUCTIONS_DATA_FILE') ?? '';
@@ -28,22 +19,18 @@ export class ConstructionRespo {
 
   col: Collection<InfraConstructionImp>;
 
-  create(construction: Construction): Promise<InfraConstructionImp> {
-    const constructionInfra =
-      this.constructionInfraMapper.toInfra(construction);
-    return this.col.insertOne(constructionInfra);
+  create(construction: InfraConstructionImp): Promise<InfraConstructionImp> {
+    return this.col.insertOne(construction);
   }
 
   updateById(
     id: string,
-    construction: Construction,
+    construction: InfraConstructionImp,
   ): Promise<InfraConstructionImp> {
     if (!id) {
       throw new Error('updated is missing "id" field');
     }
-    const constructionInfra =
-      this.constructionInfraMapper.toInfra(construction);
-    return this.col.updateOne({ id }, constructionInfra);
+    return this.col.updateOne({ id }, construction);
   }
 
   async find(filter?: Partial<InfraConstructionImp>) {
@@ -61,9 +48,9 @@ export class ConstructionRespo {
   }
 
   async addSubmissionForNewDec(
-    sub: Submission,
+    sub: InfraSubmissionImp,
     conId: string,
-    dec: Decision,
+    dec: InfraDecisionImp,
   ): Promise<InfraConstructionImp> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
@@ -72,19 +59,17 @@ export class ConstructionRespo {
     /*
       construction -> decison -> submision
       */
-    const decInfra = this.decisionInfraMapper.toInfra(dec);
-    const subAldeady = decInfra.submissions.find((s) => s.id === sub.id);
+    const subAldeady = dec.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      const subInfra = this.submissionInfraMapper.toInfra(sub);
-      decInfra.submissions.push(subInfra);
+      dec.submissions.push(sub);
     }
-    con.decisions.push(decInfra);
+    con.decisions.push(dec);
 
     return await this.col.updateOne({ id: conId }, con);
   }
 
   async addSubmissionForExistedDec(
-    sub: Submission,
+    sub: InfraSubmissionImp,
     conId: string,
     decId: string,
   ): Promise<InfraConstructionImp> {
@@ -103,7 +88,7 @@ export class ConstructionRespo {
     }
     const subAldeady = dec.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      dec.submissions.push(sub as InfraSubmissionImp);
+      dec.submissions.push(sub);
     }
 
     return await this.col.updateOne({ id: conId }, con);

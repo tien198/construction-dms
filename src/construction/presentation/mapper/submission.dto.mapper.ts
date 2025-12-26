@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSubmissionDto } from '../../presentation/dto/create-submission.dto';
-import { InfraSubmissionImp } from '../../infrastructure/entities/submission.infra.entity';
 import { ConstructionInforMapper } from './construction-infor.dto.mapper';
 import { NestedAdministrativeDocumentMapper } from './nested-administrative-document.dto.mapper';
+import { SubmissionImp } from 'src/construction/domain/entity/submission.entity';
+import { Submission } from 'src/construction/domain/type/submission.type';
 
 @Injectable()
 export class SubmissionMapper {
@@ -12,7 +13,7 @@ export class SubmissionMapper {
   ) {}
 
   toEntity(dto: CreateSubmissionDto) {
-    const entity = new InfraSubmissionImp();
+    const entity = new SubmissionImp();
 
     entity.no = dto.no;
     entity.level = dto.level;
@@ -33,7 +34,7 @@ export class SubmissionMapper {
     return entity;
   }
 
-  toDto(entity: InfraSubmissionImp) {
+  toDto(entity: Submission) {
     const dto = new CreateSubmissionDto();
 
     dto.no = entity.no;

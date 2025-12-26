@@ -9,10 +9,12 @@ import { Decision } from 'src/construction/domain/type/decision.type';
 export class DecisionInfraMapper {
   constructor(private readonly submissionMapper: SubmissionInfraMapper) {}
   toDomain(infra: InfraDecisionImp): DecisionImp {
+    const approvedSub =
+      infra.submissions.find((sub) => sub.isApproved) ??
+      infra.submissions[infra.submissions.length - 1];
     const domain = new DecisionImp({
       ...infra,
-      submission:
-        infra.submissions.find((sub) => sub.isApproved) ?? new SubmissionImp(),
+      submission: approvedSub ?? new SubmissionImp(),
     });
     return domain;
   }

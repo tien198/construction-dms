@@ -11,7 +11,7 @@ export class CreateDecisionDto
         Decision,
         | 'id'
         | 'date'
-        | 'submissions'
+        | 'submission'
         | 'pursuantToDec_TCT'
         | 'pursuantToDec_TTMN'
         | 'constructionInfor'
@@ -24,7 +24,7 @@ export class CreateDecisionDto
   pursuantToDec_TCT: NestedAdministrativeDocumentDto;
   pursuantToDec_TTMN?: NestedAdministrativeDocumentDto;
   period: ConstructionPeriod;
-  submissions: CreateSubmissionDto[];
+  submission: CreateSubmissionDto;
   isApproved?: boolean;
   isChangeConstructionInfor?: boolean;
   constructionInfor?: ConstructionInforDto;

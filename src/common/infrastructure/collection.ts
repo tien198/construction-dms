@@ -18,7 +18,7 @@ export class Collection<T extends object> {
     return finded ? { ...finded } : undefined;
   }
 
-  async find(filter?: Partial<T>): Promise<T[]> {
+  async find(filter?: object): Promise<T[]> {
     const { list } = await this.accessFile<T>();
 
     if (!filter) {
