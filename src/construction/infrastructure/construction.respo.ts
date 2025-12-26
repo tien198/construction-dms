@@ -9,6 +9,8 @@ import { Construction } from '../domain/type/construction.type';
 import { ConstructionInfraMapper } from './mapper/construction.mapper';
 import { Decision } from '../domain/type/decision.type';
 import { DecisionInfraMapper } from './mapper/decision.infra.mapper';
+import { InfraSubmissionImp } from './entities/submission.infra.entity';
+import { SubmissionInfraMapper } from './mapper/submission.mapper';
 
 @Injectable()
 export class ConstructionRespo {
@@ -17,6 +19,7 @@ export class ConstructionRespo {
     private readonly configService: ConfigService,
     private readonly constructionInfraMapper: ConstructionInfraMapper,
     private readonly decisionInfraMapper: DecisionInfraMapper,
+    private readonly submissionInfraMapper: SubmissionInfraMapper,
   ) {
     const dataFile =
       this.configService.get<string>('CONSTRUCTIONS_DATA_FILE') ?? '';
@@ -72,11 +75,12 @@ export class ConstructionRespo {
     const decInfra = this.decisionInfraMapper.toInfra(dec);
     const subAldeady = decInfra.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      decInfra.submissions.push(sub);
+      const subInfra = this.submissionInfraMapper.toInfra(sub);
+      decInfra.submissions.push(subInfra);
     }
     con.decisions.push(decInfra);
 
-    return await this.updateById(conId, con);
+    return await this.col.updateOne({ id: conId }, con);
   }
 
   async addSubmissionForExistedDec(
@@ -99,9 +103,9 @@ export class ConstructionRespo {
     }
     const subAldeady = dec.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      dec.submissions.push(sub);
+      dec.submissions.push(sub as InfraSubmissionImp);
     }
 
-    return await this.updateById(conId, con);
+    return await this.col.updateOne({ id: conId }, con);
   }
 }

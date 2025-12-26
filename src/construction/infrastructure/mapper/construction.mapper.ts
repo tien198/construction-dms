@@ -6,6 +6,15 @@ import { DecisionInfraMapper } from './decision.infra.mapper';
 @Injectable()
 export class ConstructionInfraMapper {
   constructor(private readonly decisionMapper: DecisionInfraMapper) {}
+  toDomain(infra: InfraConstructionImp): Construction {
+    return {
+      ...infra,
+      decisions: infra.decisions.map((dec) =>
+        this.decisionMapper.toDomain(dec),
+      ),
+      constructionInfor: infra.constructionInfor,
+    };
+  }
 
   toInfra(domain: Construction): InfraConstructionImp {
     return new InfraConstructionImp({

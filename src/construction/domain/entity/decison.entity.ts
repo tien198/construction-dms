@@ -6,7 +6,7 @@ import { AdministrativeDocumentImp } from './administrative-document.entity';
 export class DecisionImp extends AdministrativeDocumentImp implements Decision {
   period: ConstructionPeriod;
   isApproved: boolean;
-  submission?: Submission;
+  submission: Submission;
   isChangeConstructionInfor?: boolean | undefined;
 
   constructor(dec?: DecisionImp) {

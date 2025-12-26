@@ -5,7 +5,7 @@ import { Submission } from './submission.type';
 export interface Decision extends AdministrativeDocument {
   period: ConstructionPeriod;
   isApproved: boolean;
-  submission?: Submission;
+  submission: Submission;
   // submissions: Submission[];
 
   isChangeConstructionInfor?: boolean;

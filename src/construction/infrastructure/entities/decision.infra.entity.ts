@@ -5,14 +5,14 @@ import { InfraAdministrativeDocumentImp } from './administrative-document.infra.
 
 export class InfraDecisionImp
   extends InfraAdministrativeDocumentImp
-  implements Decision
+  implements Omit<Decision, 'submission'>
 {
   period: ConstructionPeriod;
   isApproved: boolean = false;
   submissions: InfraSubmissionImp[] = [];
   isChangeConstructionInfor?: boolean | undefined;
 
-  constructor(dec?: InfraDecisionImp) {
+  constructor(dec?: Omit<InfraDecisionImp, 'formatDate'>) {
     super(dec);
   }
 }

@@ -3,6 +3,7 @@ import { InfraDecisionImp } from '../entities/decision.infra.entity';
 import { DecisionImp } from 'src/construction/domain/entity/decison.entity';
 import { SubmissionInfraMapper } from './submission.mapper';
 import { SubmissionImp } from 'src/construction/domain/entity/submission.entity';
+import { Decision } from 'src/construction/domain/type/decision.type';
 
 @Injectable()
 export class DecisionInfraMapper {
@@ -10,11 +11,12 @@ export class DecisionInfraMapper {
   toDomain(infra: InfraDecisionImp): DecisionImp {
     const domain = new DecisionImp({
       ...infra,
-      submission: infra.submissions.find((sub) => sub.isApproved),
+      submission:
+        infra.submissions.find((sub) => sub.isApproved) ?? new SubmissionImp(),
     });
     return domain;
   }
-  toInfra(domain: DecisionImp): InfraDecisionImp {
+  toInfra(domain: Decision): InfraDecisionImp {
     const sub = this.submissionMapper.toInfra(
       domain.submission ?? new SubmissionImp(),
     );
