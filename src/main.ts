@@ -21,7 +21,7 @@ async function bootstrap() {
       credentials: true,
     },
   ]);
-  /*
+
   app.use((req: Request, res: Response, next: NextFunction) => {
     if (req.originalUrl.startsWith('/api')) {
       return next();
@@ -34,7 +34,7 @@ async function bootstrap() {
 
     next();
   });
-  */
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

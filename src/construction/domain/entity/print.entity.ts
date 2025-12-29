@@ -1,8 +1,9 @@
 import { AdministrativeDocument } from '../type/administrative-document.type';
-import { BidPackage } from '../type/bidPackage.type';
 import { ConstructionInfor } from '../type/construction-infor.type';
 import { ConstructionPeriod } from '../type/construction.type';
-import { AdministrativeDocumentImp } from './administrative-document.entity';
+import { PrintBidPackage } from '../type/print-bid-package.type';
+import { PrintConstructionInfor } from '../type/print-cnstruction-infor.type';
+import { PrintDocumentImp } from './print-document.entity';
 
 type DateObject = {
   dd: string;
@@ -11,9 +12,9 @@ type DateObject = {
 };
 
 // TRANSITION - entity is created in Controller foreach request
-export class ConstructionDocument
-  extends AdministrativeDocumentImp
-  implements Omit<ConstructionInfor, 'constructionImplementationTime'>
+export class ConstructionPrintImp
+  extends PrintDocumentImp
+  implements PrintConstructionInfor
 {
   name: string;
   cost: number;
@@ -23,8 +24,8 @@ export class ConstructionDocument
   existingConditionOfTheStructure: string;
   repairScope: string;
 
-  bidPackages: BidPackage[];
-  packagesAmount: number;
+  bidPackages: PrintBidPackage[];
+  packagesAmount: string;
   period: ConstructionPeriod;
 
   constructor(doc: AdministrativeDocument, conInfor: ConstructionInfor) {
@@ -38,21 +39,7 @@ export class ConstructionDocument
       ' - ' +
       this.formatDate(conInfor.constructionImplementationTime.endDate, 'month');
 
-    this.decision = {
-      number: conInfor.decision?.number,
-      date: this.formatDate(conInfor.decision.date),
-    };
-
-    this.packages = conInfor.packages.map((pkg, i) => ({
-      ...pkg,
-      price: this.formatCurrency(pkg.price),
-      contractorSelectionTime: this.formatDate(
-        pkg.contractorSelectionTime,
-        'month',
-      ),
-      isLast: i === con.packages.length - 1,
-    }));
-    this.packagesAmount = this.formatCurrency(con.packagesAmount);
+    this.packagesAmount = this.formatCurrency(conInfor.packagesAmount);
   }
 
   toDateObject = (ISOString: string | Date): DateObject => {

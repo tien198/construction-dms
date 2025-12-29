@@ -9,7 +9,7 @@ import path from 'path';
 import { Construction } from '../domain/type/construction.type';
 
 @Injectable()
-export class DocumentService {
+export class PrintService {
   async generate(docName: string, construction: Construction) {
     const content = await fs.promises.readFile(
       path.join('public', 'template', docName),

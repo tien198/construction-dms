@@ -16,21 +16,4 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
       Object.assign(this, doc);
     }
   }
-
-  formatDate = (
-    ISOString: string | Date | null,
-    formatTo?: 'month' | 'year',
-  ) => {
-    const decisionDate = new Date(ISOString ?? '');
-    const dd = String(decisionDate.getDate()).padStart(2, '0');
-    const mm = String(decisionDate.getMonth() + 1).padStart(2, '0');
-    const yyyy = decisionDate.getFullYear();
-    if (!formatTo) {
-      return dd + '/' + mm + '/' + yyyy;
-    } else if (formatTo === 'month') {
-      return 'Tháng ' + mm + '/' + yyyy;
-    } else {
-      return 'Năm ' + String(yyyy);
-    }
-  };
 }
