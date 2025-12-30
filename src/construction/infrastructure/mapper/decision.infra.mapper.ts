@@ -22,9 +22,8 @@ export class DecisionInfraMapper {
     const sub = this.submissionMapper.toInfra(
       domain.submission ?? new SubmissionImp(),
     );
-    return new InfraDecisionImp({
-      ...domain,
-      submissions: [sub],
-    });
+
+    const decInfra = new InfraDecisionImp({ ...domain, submissions: [sub] });
+    return decInfra;
   }
 }

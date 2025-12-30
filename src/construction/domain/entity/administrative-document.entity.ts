@@ -13,7 +13,11 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
 
   constructor(doc?: AdministrativeDocument) {
     if (doc) {
-      Object.assign(this, doc);
+      for (const k in doc) {
+        if (Object.hasOwn(this, k)) {
+          this[k] = doc[k as keyof AdministrativeDocument];
+        }
+      }
     }
   }
 }

@@ -11,5 +11,12 @@ export class DecisionImp extends AdministrativeDocumentImp implements Decision {
 
   constructor(dec?: DecisionImp) {
     super(dec);
+    if (dec) {
+      for (const k in dec) {
+        if (Object.hasOwn(this, k)) {
+          this[k] = dec[k as keyof DecisionImp];
+        }
+      }
+    }
   }
 }

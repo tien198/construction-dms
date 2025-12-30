@@ -14,5 +14,12 @@ export class InfraDecisionImp
 
   constructor(dec?: Omit<InfraDecisionImp, 'formatDate'>) {
     super(dec);
+    if (dec) {
+      for (const k in dec) {
+        if (Object.hasOwn(this, k)) {
+          this[k] = dec[k as keyof Omit<Decision, 'submission'>];
+        }
+      }
+    }
   }
 }

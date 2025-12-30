@@ -8,10 +8,17 @@ export class InfraSubmissionImp
   implements Partial<Submission>
 {
   period: ConstructionPeriod;
-  constructionInfor?: ConstructionInfor;
+  constructionInfor: ConstructionInfor;
   isApproved?: boolean = false;
 
   constructor(sub?: Submission) {
     super(sub);
+    if (sub) {
+      for (const k in sub) {
+        if (Object.hasOwn(this, k)) {
+          this[k] = sub[k as keyof Submission];
+        }
+      }
+    }
   }
 }

@@ -4,8 +4,9 @@ import { PrintBidPackage } from './print-bid-package.type';
 export interface PrintConstructionInfor
   extends Omit<
     ConstructionInfor,
-    'constructionImplementationTime' | 'bidPackages' | 'packagesAmount'
+    'cost' | 'constructionImplementationTime' | 'bidPackages' | 'packagesAmount'
   > {
+  cost: string;
   constructionImplementationTime: string;
   bidPackages: PrintBidPackage[];
   packagesAmount: string;

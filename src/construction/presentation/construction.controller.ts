@@ -30,9 +30,8 @@ export class ConstructionController {
   approve(
     @Param('constructionId') conId: string,
     @Param('decisionId') decId: string,
-    @Param('submissionId') subId: string,
   ): Promise<Construction> {
-    return this.constructionService.approve(conId, decId, subId);
+    return this.constructionService.approve(conId, decId);
   }
 
   @Post('add-submission/:constructionId/{:decisionId}')
@@ -70,19 +69,15 @@ export class ConstructionController {
   findById(@Param('id') id: string): Promise<Construction> {
     return this.constructionService.findById(id);
   }
-  /*
-  @Post('gen-doc/:id')
-  async generateDocument(@Param('id') id: string, @Body() body: GenListDto) {
-    const doc = await this.constructionService.findById(id);
-    const formatedDoc = new ConstructionDocument(doc);
-    for (const docName of body.list) {
-      await this.documentService.generate(docName, formatedDoc);
-    }
-    return {
-      message: 'successfully',
-    };
+
+  @Get('find-dec/:conId/:decId')
+  async findDecision(
+    @Param('conId') conId: string,
+    @Param('decId') decId: string,
+  ) {
+    const dec = await this.constructionService.findDecision(conId, decId);
+    return dec;
   }
-    */
 
   /*
   @Patch(':id')

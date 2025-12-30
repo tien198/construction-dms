@@ -6,11 +6,11 @@ import expressionParser from 'docxtemplater/expressions';
 // Builtin file system utilities
 import fs from 'fs';
 import path from 'path';
-import { Construction } from '../domain/type/construction.type';
+import { PrintDocument } from '../domain/type/print-administrative-document.type';
 
 @Injectable()
 export class PrintService {
-  async generate(docName: string, construction: Construction) {
+  async generate(docName: string, construction: PrintDocument) {
     const content = await fs.promises.readFile(
       path.join('public', 'template', docName),
       'binary',
@@ -48,25 +48,14 @@ export class PrintService {
      */
     const buf = doc.toBuffer();
 
-    if (
-      !fs.existsSync(
-        path.resolve('gen-documents', construction.constructionInfor.name),
-      )
-    ) {
-      fs.mkdirSync(
-        path.resolve('gen-documents', construction.constructionInfor.name),
-        {
-          recursive: true,
-        },
-      );
+    if (!fs.existsSync(path.resolve('gen-documents', construction.name))) {
+      fs.mkdirSync(path.resolve('gen-documents', construction.name), {
+        recursive: true,
+      });
     }
     // Write the Buffer to a file
     await fs.promises.writeFile(
-      path.resolve(
-        'gen-documents',
-        construction.constructionInfor.name,
-        docName,
-      ),
+      path.resolve('gen-documents', construction.name, docName),
       buf,
     );
     /*

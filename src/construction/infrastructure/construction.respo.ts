@@ -3,14 +3,21 @@ import { ConfigService } from '@nestjs/config';
 import { Collection } from 'src/common/infrastructure/collection';
 import { DB } from 'src/common/infrastructure/db';
 import { InfraConstructionImp } from './entities/construction.infra.entity';
-import { InfraSubmissionImp } from './entities/submission.infra.entity';
-import { InfraDecisionImp } from './entities/decision.infra.entity';
+import { ConstructionInfraMapper } from '../infrastructure/mapper/construction.mapper';
+import { DecisionInfraMapper } from '../infrastructure/mapper/decision.infra.mapper';
+import { SubmissionInfraMapper } from '../infrastructure/mapper/submission.mapper';
+import { Construction } from '../domain/type/construction.type';
+import { Submission } from '../domain/type/submission.type';
+import { Decision } from '../domain/type/decision.type';
 
 @Injectable()
 export class ConstructionRespo {
   constructor(
     private readonly db: DB,
     private readonly configService: ConfigService,
+    private readonly constructionInfraMapper: ConstructionInfraMapper,
+    private readonly decisionInfraMapper: DecisionInfraMapper,
+    private readonly submissionInfraMapper: SubmissionInfraMapper,
   ) {
     const dataFile =
       this.configService.get<string>('CONSTRUCTIONS_DATA_FILE') ?? '';
@@ -19,22 +26,32 @@ export class ConstructionRespo {
 
   col: Collection<InfraConstructionImp>;
 
-  create(construction: InfraConstructionImp): Promise<InfraConstructionImp> {
-    return this.col.insertOne(construction);
+  async create(construction: Construction): Promise<Construction> {
+    const infra = this.constructionInfraMapper.toInfra(construction);
+    const created = await this.col.insertOne(infra);
+    const result = this.constructionInfraMapper.toDomain(created);
+
+    return result;
   }
 
-  updateById(
+  async updateById(
     id: string,
     construction: InfraConstructionImp,
-  ): Promise<InfraConstructionImp> {
+  ): Promise<Construction> {
     if (!id) {
       throw new Error('updated is missing "id" field');
     }
-    return this.col.updateOne({ id }, construction);
+    const updatedInfra = await this.col.updateOne({ id }, construction);
+    const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
+    return conDomain;
   }
 
-  async find(filter?: Partial<InfraConstructionImp>) {
-    return await this.col.find(filter);
+  async find(filter?: Partial<InfraConstructionImp>): Promise<Construction[]> {
+    const list = await this.col.find(filter);
+    const result = list.map((infra) =>
+      this.constructionInfraMapper.toDomain(infra),
+    );
+    return result;
   }
 
   findOne(
@@ -43,36 +60,72 @@ export class ConstructionRespo {
     return this.col.findOne(filter);
   }
 
-  findById(id: string): Promise<InfraConstructionImp | undefined> {
-    return this.col.findOne({ id });
+  async findById(id: string): Promise<Construction | undefined> {
+    const finded = await this.col.findOne({ id });
+    if (!finded) {
+      return undefined;
+    }
+    const result = this.constructionInfraMapper.toDomain(finded);
+    return result;
+  }
+
+  async findDecision(
+    constructionId: string,
+    decisionId: string,
+  ): Promise<Decision | undefined> {
+    const construction = await this.findById(constructionId);
+    if (!construction) {
+      throw new Error('Construction not found');
+    }
+
+    const decision = construction.decisions.find(
+      (dec) => dec.id === decisionId,
+    );
+    if (!decision) {
+      return undefined;
+    }
+
+    if (!decision.submission.constructionInfor) {
+      decision.submission.constructionInfor = construction.constructionInfor;
+    }
+
+    return decision;
   }
 
   async addSubmissionForNewDec(
-    sub: InfraSubmissionImp,
+    sub: Submission,
     conId: string,
-    dec: InfraDecisionImp,
-  ): Promise<InfraConstructionImp> {
+    dec: Decision,
+  ): Promise<Construction> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);
     }
+    const decInfra = this.decisionInfraMapper.toInfra(dec);
+    const subInfra = this.submissionInfraMapper.toInfra(sub);
+
     /*
       construction -> decison -> submision
       */
-    const subAldeady = dec.submissions.find((s) => s.id === sub.id);
+    const subAldeady = decInfra.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      dec.submissions.push(sub);
+      decInfra.submissions.push(subInfra);
     }
-    con.decisions.push(dec);
+    decInfra.date = sub.date;
+    con.decisions.push(decInfra);
 
-    return await this.col.updateOne({ id: conId }, con);
+    const updatedInfra = await this.col.updateOne({ id: conId }, con);
+    const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
+    return conDomain;
   }
 
   async addSubmissionForExistedDec(
-    sub: InfraSubmissionImp,
+    sub: Submission,
     conId: string,
     decId: string,
-  ): Promise<InfraConstructionImp> {
+  ): Promise<Construction> {
+    const subInfra = this.submissionInfraMapper.toInfra(sub);
+
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);
@@ -88,9 +141,11 @@ export class ConstructionRespo {
     }
     const subAldeady = dec.submissions.find((s) => s.id === sub.id);
     if (!subAldeady) {
-      dec.submissions.push(sub);
+      dec.submissions.push(subInfra);
     }
-
-    return await this.col.updateOne({ id: conId }, con);
+    dec.date = sub.date;
+    const updatedInfra = await this.col.updateOne({ id: conId }, con);
+    const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
+    return conDomain;
   }
 }
