@@ -10,6 +10,7 @@ export class BidPackageMapper {
     entity.bidPackageName = dto.bidPackageName;
     entity.shortDescription = dto.shortDescription;
     entity.cost = dto.cost;
+    entity.costString = dto.costString;
     entity.bidderSelectionTime = new Date(dto.bidderSelectionTime);
     entity.bidderSelectionMethod = dto.bidderSelectionMethod;
     entity.successfulBidder = dto.successfulBidder;
@@ -25,6 +26,7 @@ export class BidPackageMapper {
     dto.bidPackageName = entity.bidPackageName;
     dto.shortDescription = entity.shortDescription;
     dto.cost = entity.cost;
+    dto.costString = entity.costString;
     dto.bidderSelectionTime = entity.bidderSelectionTime.toISOString();
     dto.bidderSelectionMethod = entity.bidderSelectionMethod;
     dto.successfulBidder = entity.successfulBidder;

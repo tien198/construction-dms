@@ -20,6 +20,10 @@ export class ConstructionInforMapper {
     entity.bidPackages = dto.bidPackages.map((p) =>
       this.bidPackageMapper.toEntity(p),
     );
+    entity.packagesAmount = dto.bidPackages.reduce(
+      (sum, pkg) => sum + pkg.cost,
+      0,
+    );
 
     return entity;
   }

@@ -1,5 +1,4 @@
 import { Submission } from '../type/submission.type';
-import { PrintBidPackageImp } from './print-bid-package.entity';
 import { PrintDocumentImp } from './print-document.entity';
 
 export class PrintSubmission extends PrintDocumentImp {
@@ -24,12 +23,9 @@ export class PrintSubmission extends PrintDocumentImp {
     this.existingConditionOfTheStructure =
       sub.constructionInfor!.existingConditionOfTheStructure;
     this.repairScope = sub.constructionInfor!.repairScope;
-    this.bidPackages = sub.constructionInfor!.bidPackages.map((bp) => {
-      const b = new PrintBidPackageImp(bp);
-      b.cost = this.formatCurrency(bp.cost);
-      b.bidderSelectionTime = this.formatDate(bp.bidderSelectionTime, 'month');
-      return b;
-    });
+    this.bidPackages = this.printPackageMapper(
+      sub.constructionInfor!.bidPackages,
+    );
     this.packagesAmount = this.formatCurrency(
       sub.constructionInfor!.packagesAmount,
     );

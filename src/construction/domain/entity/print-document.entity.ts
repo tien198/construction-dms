@@ -8,6 +8,7 @@ import {
 } from '../type/print-administrative-document.type';
 import { PrintBidPackage } from '../type/print-bid-package.type';
 import { ConstructionPeriod } from '../type/construction.type';
+import { BidPackage } from '../type/bidPackage.type';
 
 export class PrintDocumentImp implements PrintDocument {
   id: string;
@@ -66,4 +67,20 @@ export class PrintDocumentImp implements PrintDocument {
   formatCurrency = (amount: number) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
+
+  printPackageMapper(bidPackages: BidPackage[]): PrintBidPackage[] {
+    return bidPackages.map((pkg) => ({
+      type: pkg.type,
+      projectOwner: pkg.projectOwner,
+      bidPackageName: pkg.bidPackageName,
+      shortDescription: pkg.shortDescription,
+      cost: this.formatCurrency(pkg.cost),
+      costString: pkg.costString,
+      bidderSelectionTime: this.formatDate(pkg.bidderSelectionTime, 'month'),
+      bidderSelectionMethod: pkg.bidderSelectionMethod,
+      successfulBidder: pkg.successfulBidder,
+      upTo: pkg.upTo,
+      isCompleted: pkg.isCompleted,
+    }));
+  }
 }
