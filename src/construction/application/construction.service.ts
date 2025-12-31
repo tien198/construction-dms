@@ -3,18 +3,20 @@ import { Construction } from 'src/construction/domain/type/construction.type';
 import { ConstructionRespo } from '../infrastructure/construction.respo';
 import { Submission } from '../domain/type/submission.type';
 import { Decision } from '../domain/type/decision.type';
+import { DecisionViewModel } from '../domain/viewModel/decison.view-model';
+import { ConstructionViewModel } from '../domain/viewModel/construction.view-model';
 
 @Injectable()
 export class ConstructionService {
   constructor(private readonly constructionRespo: ConstructionRespo) {}
   // Create
-  async initPlan(construction: Construction): Promise<Construction> {
+  async initPlan(construction: Construction): Promise<ConstructionViewModel> {
     const created = await this.constructionRespo.create(construction);
     return created;
   }
 
   // FindAll
-  async findAll(): Promise<Construction[]> {
+  async findAll(): Promise<ConstructionViewModel[]> {
     const list = await this.constructionRespo.find();
     return list;
   }
@@ -25,8 +27,8 @@ export class ConstructionService {
     constructionId: string,
     sub: Submission,
     decision: string | Decision,
-  ): Promise<Construction> {
-    let updated: Construction;
+  ): Promise<ConstructionViewModel> {
+    let updated: ConstructionViewModel;
     if (typeof decision === 'string')
       updated = await this.constructionRespo.addSubmissionForExistedDec(
         sub,
@@ -44,7 +46,7 @@ export class ConstructionService {
   }
 
   // FindById
-  async findById(constructionId: string): Promise<Construction> {
+  async findById(constructionId: string): Promise<ConstructionViewModel> {
     const finded = await this.constructionRespo.findById(constructionId);
     if (!finded) {
       throw new Error('Not found construction with id: ' + constructionId);
@@ -56,7 +58,7 @@ export class ConstructionService {
   async findDecision(
     constructionId: string,
     decisionId: string,
-  ): Promise<Decision | undefined> {
+  ): Promise<DecisionViewModel | undefined> {
     const decision = await this.constructionRespo.findDecision(
       constructionId,
       decisionId,
@@ -67,42 +69,10 @@ export class ConstructionService {
   async approve(
     constructionId: string,
     decisionId: string,
-  ): Promise<Construction> {
-    const construction = await this.constructionRespo.findOne({
-      id: constructionId,
-    });
-    if (!construction) {
-      throw new Error('Construction not found');
-    }
-
-    const decision = construction.decisions.find(
-      (dec) => dec.id === decisionId,
-    );
-    if (!decision)
-      throw new Error('Decision not found for decisionId ' + decisionId);
-    if (decision.isApproved) {
-      throw new Error(
-        `Decision was approved, not accept re-approve, (decisionId: ${decisionId})`,
-      );
-    }
-
-    const approvedSubmission =
-      decision.submissions[decision.submissions.length - 1];
-
-    if (!approvedSubmission) {
-      throw new Error(`Submission does not exist`);
-    }
-    if (approvedSubmission.constructionInfor) {
-      decision.isChangeConstructionInfor = true;
-      construction.constructionInfor = approvedSubmission.constructionInfor;
-    }
-    approvedSubmission.isApproved = true;
-    decision.date = approvedSubmission.date;
-    decision.isApproved = true;
-
-    const updated = await this.constructionRespo.updateById(
+  ): Promise<ConstructionViewModel> {
+    const updated = await this.constructionRespo.approve(
       constructionId,
-      construction,
+      decisionId,
     );
     return updated;
   }

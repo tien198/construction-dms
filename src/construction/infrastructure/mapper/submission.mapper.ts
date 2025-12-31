@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InfraSubmissionImp } from '../entities/submission.infra.entity';
-import { SubmissionImp } from 'src/construction/domain/entity/submission.entity';
 import { Submission } from 'src/construction/domain/type/submission.type';
+import { SubmissionViewModel } from 'src/construction/domain/viewModel/submission.view-model';
 
 @Injectable()
 export class SubmissionInfraMapper {
-  toDomain(infra: InfraSubmissionImp): SubmissionImp {
-    const domain = new SubmissionImp(infra);
+  toDomain(infra: InfraSubmissionImp): SubmissionViewModel {
+    const domain = new SubmissionViewModel(infra);
     return domain;
   }
   toInfra(domain: Submission): InfraSubmissionImp {

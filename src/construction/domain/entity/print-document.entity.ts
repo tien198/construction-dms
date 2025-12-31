@@ -6,8 +6,9 @@ import { PrintDocument } from '../type/print-administrative-document.type';
 import { PrintBidPackage } from '../type/print-bid-package.type';
 import { ConstructionPeriod } from '../type/construction.type';
 import { BidPackage } from '../type/bidPackage.type';
+import { ConstructionInfor } from '../type/construction-infor.type';
 
-export abstract class PrintDocumentImp implements PrintDocument {
+export class PrintDocumentImp implements PrintDocument {
   id: string;
   no: string;
   level: string;
@@ -27,13 +28,32 @@ export abstract class PrintDocumentImp implements PrintDocument {
   packagesAmount: string;
   period: ConstructionPeriod;
 
-  constructor(doc: AdministrativeDocument) {
+  constructor(doc: AdministrativeDocument, conInfor: ConstructionInfor) {
     this.id = doc.id;
     this.no = doc.no;
     this.level = doc.level;
     this.date = this.toFormalDate(doc.date);
     this.pursuantToDec_TCT = doc.pursuantToDec_TCT;
     this.pursuantToDec_TTMN = doc.pursuantToDec_TTMN;
+
+    this.name = conInfor.name;
+    this.cost = this.formatCurrency(conInfor.cost);
+    this.costString = conInfor.costString;
+    this.sourceOfFunds = conInfor.sourceOfFunds;
+    this.constructionImplementationTime =
+      this.formatDate(
+        conInfor.constructionImplementationTime.startDate,
+        'month',
+      ) +
+      ' - ' +
+      this.formatDate(conInfor.constructionImplementationTime.endDate, 'month');
+
+    this.existingConditionOfTheStructure =
+      conInfor.existingConditionOfTheStructure;
+    this.repairScope = conInfor.repairScope;
+    this.bidPackages = this.printPackageMapper(conInfor.bidPackages);
+    this.packagesAmount = this.formatCurrency(conInfor.packagesAmount);
+    this.period = conInfor.period;
   }
 
   formatDate = (

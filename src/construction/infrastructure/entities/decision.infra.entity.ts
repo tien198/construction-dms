@@ -10,7 +10,7 @@ export class InfraDecisionImp
   period: ConstructionPeriod;
   isApproved: boolean = false;
   submissions: InfraSubmissionImp[] = [];
-  isChangeConstructionInfor?: boolean | undefined;
+  isChangeConstructionInfor: boolean = false;
 
   constructor(dec?: Omit<InfraDecisionImp, 'formatDate'>) {
     super(dec);

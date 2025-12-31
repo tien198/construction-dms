@@ -9,6 +9,8 @@ import { SubmissionInfraMapper } from '../infrastructure/mapper/submission.mappe
 import { Construction } from '../domain/type/construction.type';
 import { Submission } from '../domain/type/submission.type';
 import { Decision } from '../domain/type/decision.type';
+import { ConstructionViewModel } from '../domain/viewModel/construction.view-model';
+import { DecisionViewModel } from '../domain/viewModel/decison.view-model';
 
 @Injectable()
 export class ConstructionRespo {
@@ -26,7 +28,7 @@ export class ConstructionRespo {
 
   col: Collection<InfraConstructionImp>;
 
-  async create(construction: Construction): Promise<Construction> {
+  async create(construction: Construction): Promise<ConstructionViewModel> {
     const infra = this.constructionInfraMapper.toInfra(construction);
     const created = await this.col.insertOne(infra);
     const result = this.constructionInfraMapper.toDomain(created);
@@ -37,7 +39,7 @@ export class ConstructionRespo {
   async updateById(
     id: string,
     construction: InfraConstructionImp,
-  ): Promise<Construction> {
+  ): Promise<ConstructionViewModel> {
     if (!id) {
       throw new Error('updated is missing "id" field');
     }
@@ -46,7 +48,9 @@ export class ConstructionRespo {
     return conDomain;
   }
 
-  async find(filter?: Partial<InfraConstructionImp>): Promise<Construction[]> {
+  async find(
+    filter?: Partial<InfraConstructionImp>,
+  ): Promise<ConstructionViewModel[]> {
     const list = await this.col.find(filter);
     const result = list.map((infra) =>
       this.constructionInfraMapper.toDomain(infra),
@@ -54,13 +58,18 @@ export class ConstructionRespo {
     return result;
   }
 
-  findOne(
+  async findOne(
     filter: Partial<InfraConstructionImp>,
-  ): Promise<InfraConstructionImp | undefined> {
-    return this.col.findOne(filter);
+  ): Promise<ConstructionViewModel | undefined> {
+    const con = await this.col.findOne(filter);
+    if (!con) {
+      throw new Error('Construction not found');
+    }
+    const result = this.constructionInfraMapper.toDomain(con);
+    return result;
   }
 
-  async findById(id: string): Promise<Construction | undefined> {
+  async findById(id: string): Promise<ConstructionViewModel | undefined> {
     const finded = await this.col.findOne({ id });
     if (!finded) {
       return undefined;
@@ -72,7 +81,7 @@ export class ConstructionRespo {
   async findDecision(
     constructionId: string,
     decisionId: string,
-  ): Promise<Decision | undefined> {
+  ): Promise<DecisionViewModel | undefined> {
     const construction = await this.findById(constructionId);
     if (!construction) {
       throw new Error('Construction not found');
@@ -96,7 +105,7 @@ export class ConstructionRespo {
     sub: Submission,
     conId: string,
     dec: Decision,
-  ): Promise<Construction> {
+  ): Promise<ConstructionViewModel> {
     const con = await this.col.findOne({ id: conId });
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);
@@ -123,7 +132,7 @@ export class ConstructionRespo {
     sub: Submission,
     conId: string,
     decId: string,
-  ): Promise<Construction> {
+  ): Promise<ConstructionViewModel> {
     const subInfra = this.submissionInfraMapper.toInfra(sub);
 
     const con = await this.col.findOne({ id: conId });
@@ -147,5 +156,45 @@ export class ConstructionRespo {
     const updatedInfra = await this.col.updateOne({ id: conId }, con);
     const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
     return conDomain;
+  }
+
+  async approve(
+    constructionId: string,
+    decisionId: string,
+  ): Promise<ConstructionViewModel> {
+    const construction = await this.col.findOne({
+      id: constructionId,
+    });
+    if (!construction) {
+      throw new Error('Construction not found');
+    }
+
+    const decision = construction.decisions.find(
+      (dec) => dec.id === decisionId,
+    );
+    if (!decision)
+      throw new Error('Decision not found for decisionId ' + decisionId);
+    if (decision.isApproved) {
+      throw new Error(
+        `Decision was approved, not accept re-approve, (decisionId: ${decisionId})`,
+      );
+    }
+
+    const approvedSubmission =
+      decision.submissions[decision.submissions.length - 1];
+
+    if (!approvedSubmission) {
+      throw new Error(`Submission does not exist`);
+    }
+    if (approvedSubmission.constructionInfor) {
+      decision.isChangeConstructionInfor = true;
+      construction.constructionInfor = approvedSubmission.constructionInfor;
+    }
+    approvedSubmission.isApproved = true;
+    decision.date = approvedSubmission.date;
+    decision.isApproved = true;
+
+    const updated = await this.updateById(constructionId, construction);
+    return updated;
   }
 }

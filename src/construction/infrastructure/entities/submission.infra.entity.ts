@@ -9,7 +9,7 @@ export class InfraSubmissionImp
 {
   period: ConstructionPeriod;
   constructionInfor: ConstructionInfor;
-  isApproved?: boolean = false;
+  isApproved: boolean = false;
 
   constructor(sub?: Submission) {
     super(sub);

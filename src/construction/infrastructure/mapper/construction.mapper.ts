@@ -2,18 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { Construction } from 'src/construction/domain/type/construction.type';
 import { InfraConstructionImp } from '../entities/construction.infra.entity';
 import { DecisionInfraMapper } from './decision.infra.mapper';
+import { ConstructionViewModel } from 'src/construction/domain/viewModel/construction.view-model';
 
 @Injectable()
 export class ConstructionInfraMapper {
   constructor(private readonly decisionMapper: DecisionInfraMapper) {}
-  toDomain(infra: InfraConstructionImp): Construction {
-    return {
+  toDomain(infra: InfraConstructionImp): ConstructionViewModel {
+    return new ConstructionViewModel({
       ...infra,
+      id: infra.id ?? '',
       decisions: infra.decisions.map((dec) =>
         this.decisionMapper.toDomain(dec),
       ),
       constructionInfor: infra.constructionInfor,
-    };
+    });
   }
 
   toInfra(domain: Construction): InfraConstructionImp {
