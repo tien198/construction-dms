@@ -14,7 +14,7 @@ export class AdministrativeDocumentImp implements AdministrativeDocument {
   constructor(doc?: AdministrativeDocument) {
     if (doc) {
       for (const k in doc) {
-        if (Object.hasOwn(this, k)) {
+        if (Object.hasOwn(this, k) && doc[k]) {
           this[k] = doc[k as keyof AdministrativeDocument];
         }
       }

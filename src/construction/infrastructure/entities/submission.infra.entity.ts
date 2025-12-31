@@ -15,7 +15,7 @@ export class InfraSubmissionImp
     super(sub);
     if (sub) {
       for (const k in sub) {
-        if (Object.hasOwn(this, k)) {
+        if (Object.hasOwn(this, k) && sub[k]) {
           this[k] = sub[k as keyof Submission];
         }
       }

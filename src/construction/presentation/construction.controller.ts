@@ -1,4 +1,11 @@
-import { Controller, Post, Get, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  StreamableFile,
+} from '@nestjs/common';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { ConstructionService } from '../application/construction.service';
 import { ConstructionMapper } from './mapper/construction.dto.mapper';
@@ -87,15 +94,16 @@ export class ConstructionController {
   async decGen(
     @Param('conId') conId: string,
     @Param('decId') decId: string,
-    @Body('docName') docName: string,
+    @Body() doc: { docName: string },
   ) {
     const dec = await this.constructionService.findDecision(conId, decId);
     if (!dec) {
       throw new Error('Not found Decision with id: ' + decId);
     }
     const decPrint = new PrintDecisionImp(dec);
-    const buf = await this.printService.generate(docName, decPrint);
-    return buf;
+    const buf = await this.printService.generate(doc.docName, decPrint);
+
+    return new StreamableFile(buf);
   }
 
   @Post('generate-submission/:conId/:decId')
@@ -110,7 +118,10 @@ export class ConstructionController {
     }
     const subPrint = new PrintSubmissionImp(dec.submission);
     const buf = await this.printService.generate(docName, subPrint);
-    return buf;
+
+    return new StreamableFile(buf, {
+      disposition: `attachment; filename=${docName}`,
+    });
   }
 
   /*

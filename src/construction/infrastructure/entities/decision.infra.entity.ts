@@ -16,7 +16,7 @@ export class InfraDecisionImp
     super(dec);
     if (dec) {
       for (const k in dec) {
-        if (Object.hasOwn(this, k)) {
+        if (Object.hasOwn(this, k) && dec[k]) {
           this[k] = dec[k as keyof Omit<Decision, 'submission'>];
         }
       }
