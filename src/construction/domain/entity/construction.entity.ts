@@ -11,7 +11,11 @@ export class ConstructionImp implements Construction {
 
   constructor(con?: Construction) {
     if (con) {
-      Object.assign(this, con);
+      for (const k in con) {
+        if (Object.hasOwn(this, k)) {
+          this[k] = con[k as keyof Construction];
+        }
+      }
     }
   }
 }

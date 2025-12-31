@@ -63,6 +63,7 @@ export class PrintService {
      * let the user download it, store it in a database,
      * on AWS S3, ...
      */
+    return buf;
   }
   async getDocumentList() {
     const files = await fs.promises.readdir(path.resolve('public', 'template'));

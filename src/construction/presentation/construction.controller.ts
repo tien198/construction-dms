@@ -5,11 +5,15 @@ import { ConstructionMapper } from './mapper/construction.dto.mapper';
 import { Construction } from '../domain/type/construction.type';
 import { SubmissionMapper } from './mapper/submission.dto.mapper';
 import { DecisionMapper } from './mapper/decision.dto.mapper';
+import { PrintService } from '../application/print.service';
+import { PrintDecisionImp } from '../domain/entity/print.decision.entity';
+import { PrintSubmissionImp } from '../domain/entity/print-submission.entity';
 
 @Controller('construction')
 export class ConstructionController {
   constructor(
     private readonly constructionService: ConstructionService,
+    private readonly printService: PrintService,
     private readonly constructionMapper: ConstructionMapper,
     private readonly submissionMapper: SubmissionMapper,
     private readonly decisionMapper: DecisionMapper,
@@ -77,6 +81,36 @@ export class ConstructionController {
   ) {
     const dec = await this.constructionService.findDecision(conId, decId);
     return dec;
+  }
+
+  @Post('generate-decision/:conId/:decId')
+  async decGen(
+    @Param('conId') conId: string,
+    @Param('decId') decId: string,
+    @Body('docName') docName: string,
+  ) {
+    const dec = await this.constructionService.findDecision(conId, decId);
+    if (!dec) {
+      throw new Error('Not found Decision with id: ' + decId);
+    }
+    const decPrint = new PrintDecisionImp(dec);
+    const buf = await this.printService.generate(docName, decPrint);
+    return buf;
+  }
+
+  @Post('generate-submission/:conId/:decId')
+  async subGen(
+    @Param('conId') conId: string,
+    @Param('decId') decId: string,
+    @Body('docName') docName: string,
+  ) {
+    const dec = await this.constructionService.findDecision(conId, decId);
+    if (!dec) {
+      throw new Error('Not found Decision with id: ' + decId);
+    }
+    const subPrint = new PrintSubmissionImp(dec.submission);
+    const buf = await this.printService.generate(docName, subPrint);
+    return buf;
   }
 
   /*

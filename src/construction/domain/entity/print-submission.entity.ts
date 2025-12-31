@@ -1,7 +1,7 @@
 import { Submission } from '../type/submission.type';
 import { PrintDocumentImp } from './print-document.entity';
 
-export class PrintSubmission extends PrintDocumentImp {
+export class PrintSubmissionImp extends PrintDocumentImp {
   constructor(sub: Submission) {
     super(sub);
 

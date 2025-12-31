@@ -2,19 +2,16 @@ import {
   AdministrativeDocument,
   NestedAdministrativeDocument,
 } from 'src/construction/domain/type/administrative-document.type';
-import {
-  DateObject,
-  PrintDocument,
-} from '../type/print-administrative-document.type';
+import { PrintDocument } from '../type/print-administrative-document.type';
 import { PrintBidPackage } from '../type/print-bid-package.type';
 import { ConstructionPeriod } from '../type/construction.type';
 import { BidPackage } from '../type/bidPackage.type';
 
-export class PrintDocumentImp implements PrintDocument {
+export abstract class PrintDocumentImp implements PrintDocument {
   id: string;
   no: string;
   level: string;
-  date: DateObject;
+  date: string;
   pursuantToDec_TCT: NestedAdministrativeDocument;
   pursuantToDec_TTMN?: NestedAdministrativeDocument;
 
@@ -34,7 +31,7 @@ export class PrintDocumentImp implements PrintDocument {
     this.id = doc.id;
     this.no = doc.no;
     this.level = doc.level;
-    this.date = this.toDateObject(doc.date);
+    this.date = this.toFormalDate(doc.date);
     this.pursuantToDec_TCT = doc.pursuantToDec_TCT;
     this.pursuantToDec_TTMN = doc.pursuantToDec_TTMN;
   }
@@ -56,12 +53,12 @@ export class PrintDocumentImp implements PrintDocument {
     }
   };
 
-  toDateObject = (ISOString: string | Date): DateObject => {
+  toFormalDate = (ISOString: string | Date): string => {
     const date = new Date(ISOString);
     const dd = String(date.getDate()).padStart(2, '0');
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const yyyy = String(date.getFullYear());
-    return { dd, mm, yyyy };
+    return `ngày ${dd} tháng ${mm} năm ${yyyy}`;
   };
 
   formatCurrency = (amount: number) => {
