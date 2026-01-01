@@ -18,11 +18,11 @@ export class ConstructionInfraMapper {
     });
   }
 
-  toInfra(domain: Construction): InfraConstructionImp {
+  initInfra(domain: Construction): InfraConstructionImp {
     const infra = new InfraConstructionImp({
       ...domain,
       decisions: domain.decisions.map((dec) =>
-        this.decisionMapper.toInfra(dec),
+        this.decisionMapper.initInfra(dec),
       ),
       constructionInfor: domain.constructionInfor,
     });

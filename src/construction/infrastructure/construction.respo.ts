@@ -29,7 +29,7 @@ export class ConstructionRespo {
   col: Collection<InfraConstructionImp>;
 
   async create(construction: Construction): Promise<ConstructionViewModel> {
-    const infra = this.constructionInfraMapper.toInfra(construction);
+    const infra = this.constructionInfraMapper.initInfra(construction);
     const created = await this.col.insertOne(infra);
     const result = this.constructionInfraMapper.toDomain(created);
 
@@ -87,22 +87,35 @@ export class ConstructionRespo {
       throw new Error('Construction not found');
     }
 
-    const decision = construction.decisions.find(
+    const decIdx = construction.decisions.findIndex(
       (dec) => dec.id === decisionId,
     );
-    if (!decision) {
+    if (decIdx < 0) {
       return undefined;
     }
+    const decision = construction.decisions[decIdx];
 
     if (!decision.submission.constructionInfor) {
-      decision.submission.constructionInfor = construction.constructionInfor;
+      const idxArr: number[] = [];
+      for (let i = 0; i < construction.decisions.length; i++) {
+        if (construction.decisions[i].isChangeConstructionInfor) {
+          if (i === decIdx) break;
+          idxArr.push(i);
+        }
+      }
+      if (idxArr.length === 0) {
+        decision.submission.constructionInfor = construction.constructionInfor;
+      } else {
+        const lastIdx = idxArr[idxArr.length - 1];
+        decision.submission.constructionInfor =
+          construction.decisions[lastIdx].submission.constructionInfor;
+      }
     }
 
     return decision;
   }
 
   async addSubmissionForNewDec(
-    sub: Submission,
     conId: string,
     dec: Decision,
   ): Promise<ConstructionViewModel> {
@@ -110,17 +123,12 @@ export class ConstructionRespo {
     if (!con) {
       throw new Error('Not found construction with id: ' + conId);
     }
-    const decInfra = this.decisionInfraMapper.toInfra(dec);
-    const subInfra = this.submissionInfraMapper.toInfra(sub);
+    const decInfra = this.decisionInfraMapper.initInfra(dec);
 
     /*
       construction -> decison -> submision
       */
-    const subAldeady = decInfra.submissions.find((s) => s.id === sub.id);
-    if (!subAldeady) {
-      decInfra.submissions.push(subInfra);
-    }
-    decInfra.date = sub.date;
+    decInfra.date = decInfra.submissions[0].date;
     con.decisions.push(decInfra);
 
     const updatedInfra = await this.col.updateOne({ id: conId }, con);

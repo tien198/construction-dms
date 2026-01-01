@@ -8,10 +8,12 @@ import { DecisionViewModel } from 'src/construction/domain/viewModel/decison.vie
 @Injectable()
 export class DecisionInfraMapper {
   constructor(private readonly submissionMapper: SubmissionInfraMapper) {}
+
   toDomain(infra: InfraDecisionImp): DecisionViewModel {
     const approvedSub =
       infra.submissions.find((sub) => sub.isApproved) ??
       infra.submissions[infra.submissions.length - 1];
+
     const domain = new DecisionViewModel({
       ...infra,
       submission: approvedSub ?? new SubmissionImp(),
@@ -19,14 +21,10 @@ export class DecisionInfraMapper {
     });
     return domain;
   }
-  toInfra(domain: Decision): InfraDecisionImp {
-    const sub = this.submissionMapper.toInfra(
-      domain.submission ?? new SubmissionImp(),
-    );
 
+  initInfra(domain: Decision): InfraDecisionImp {
     const decInfra = new InfraDecisionImp({
       ...domain,
-      submissions: [sub],
       isChangeConstructionInfor: domain.isChangeConstructionInfor ?? false,
     });
     return decInfra;

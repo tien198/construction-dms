@@ -37,7 +37,6 @@ export class ConstructionService {
       );
     else {
       updated = await this.constructionRespo.addSubmissionForNewDec(
-        sub,
         constructionId,
         decision,
       );
