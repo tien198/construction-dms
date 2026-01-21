@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import type { Filter } from './type/db.type';
 
 export class Collection<T extends object> {
   constructor(private readonly dataFile: string) {}
@@ -12,26 +13,26 @@ export class Collection<T extends object> {
     return data;
   }
 
-  async findOne(filter: Partial<T>): Promise<T | undefined> {
+  async findOne(filter: Filter<T>): Promise<T | undefined> {
     const { list } = await this.accessFile<T>();
-    const finded = list.find((i) => this.filterFnc(i, filter));
+    const finded = list.find((i) => this.filterFnc(filter, i));
     return finded ? { ...finded } : undefined;
   }
 
-  async find(filter?: object): Promise<T[]> {
+  async find(filter?: Filter<T>): Promise<T[]> {
     const { list } = await this.accessFile<T>();
 
     if (!filter) {
       return list;
     }
 
-    const items = list.filter((i) => this.filterFnc(i, filter));
+    const items = list.filter((i) => this.filterFnc(filter, i));
     return [...items];
   }
 
-  async updateOne(filter: Partial<T>, update: T) {
+  async updateOne(filter: Filter<T>, update: T) {
     const { filePath, list } = await this.accessFile<T>();
-    const index = list.findIndex((i) => this.filterFnc(i, filter));
+    const index = list.findIndex((i) => this.filterFnc(filter, i));
     if (index < 0) throw new Error('Not found record');
     list[index] = update;
     await fs.promises.writeFile(filePath, JSON.stringify(list));
@@ -58,15 +59,23 @@ export class Collection<T extends object> {
     return { filePath, list };
   }
 
-  private filterFnc(item: object, filter: object) {
-    let isMathch = true;
-    for (const k in filter) {
-      if (!Object.hasOwn(filter, k)) continue;
-      if (filter[k] !== item[k]) {
-        isMathch = false;
-        break;
+  private filterFnc<T>(filter: Filter<T>, object: T): boolean {
+    let cursor: any = object;
+    // browse each filter key-value pair
+    return Object.entries(filter).every(([fKey, fVal]) => {
+      const pathArr = fKey.split('.');
+      // traverse the object along the path
+      for (let i = 0; i < pathArr.length; i++) {
+        const isLast = i === pathArr.length - 1;
+        const k = pathArr[i];
+        if (isLast) {
+          return cursor[k] === fVal;
+        }
+        cursor = cursor[k];
+        if (cursor == null) {
+          return false;
+        }
       }
-    }
-    return isMathch;
+    });
   }
 }
