@@ -60,22 +60,53 @@ export class Collection<T extends object> {
   }
 
   private filterFnc<T>(filter: Filter<T>, object: T): boolean {
-    let cursor: any = object;
-    // browse each filter key-value pair
-    return Object.entries(filter).every(([fKey, fVal]) => {
-      const pathArr = fKey.split('.');
-      // traverse the object along the path
-      for (let i = 0; i < pathArr.length; i++) {
-        const isLast = i === pathArr.length - 1;
-        const k = pathArr[i];
-        if (isLast) {
-          return cursor[k] === fVal;
-        }
-        cursor = cursor[k];
-        if (cursor == null) {
-          return false;
-        }
+    return Object.entries(filter).every(([fKey, fVal]) =>
+      this.isMatchPath(object, fKey, fVal),
+    );
+  }
+
+  private isMatchPath(obj: any, path: string, value: any): boolean {
+    const keys = path.split('.');
+
+    function recur(current: any, idx: number): boolean {
+      if (current == null) return false;
+
+      if (idx === keys.length) {
+        return current === value;
       }
-    });
+
+      const k = keys[idx];
+      if (Array.isArray(current)) {
+        return current
+          .flatMap((item) => recur(item, idx))
+          .some((i) => i === true);
+      }
+
+      return recur(current[k], idx + 1);
+    }
+
+    return recur(obj, 0);
   }
 }
+
+/* 
+function filterFnc<T>(filter: Filter<T>, object: T): boolean {
+  let cursor: any = object;
+  // browse each filter key-value pair
+  return Object.entries(filter).every(([fKey, fVal]) => {
+    const pathArr = fKey.split('.');
+    // traverse the object along the path
+    for (let i = 0; i < pathArr.length; i++) {
+      const isLast = i === pathArr.length - 1;
+      const k = pathArr[i];
+      if (isLast) {
+        return cursor[k] === fVal;
+      }
+      cursor = cursor[k];
+      if (cursor == null) {
+        return false;
+      }
+    }
+  });
+}
+*/
