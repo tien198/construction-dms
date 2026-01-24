@@ -65,6 +65,16 @@ export class ConstructionService {
     return decision;
   }
 
+  async findDecisionByPeriod(
+    conId: string,
+    period: string,
+  ): Promise<DecisionViewModel | undefined> {
+    const con = await this.findById(conId);
+    return con.decisions.find(
+      (dec) => dec.period.toLowerCase() === period.toLowerCase(),
+    );
+  }
+
   async approve(
     constructionId: string,
     decisionId: string,

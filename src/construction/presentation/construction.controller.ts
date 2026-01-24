@@ -80,6 +80,15 @@ export class ConstructionController {
     return this.constructionService.findById(id);
   }
 
+  // find decision by period
+  @Get('find-dec-by-per/:consId/:period')
+  async findDecisionByPeriod(
+    @Param('consId') conId: string,
+    @Param('period') period: string,
+  ) {
+    return this.constructionService.findDecisionByPeriod(conId, period);
+  }
+
   @Get('find-dec/:decId')
   async findDecision(@Param('decId') decId: string) {
     const dec = await this.constructionService.findDecision(decId);
