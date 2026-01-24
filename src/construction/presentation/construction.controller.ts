@@ -80,22 +80,18 @@ export class ConstructionController {
     return this.constructionService.findById(id);
   }
 
-  @Get('find-dec/:conId/:decId')
-  async findDecision(
-    @Param('conId') conId: string,
-    @Param('decId') decId: string,
-  ) {
-    const dec = await this.constructionService.findDecision(conId, decId);
+  @Get('find-dec/:decId')
+  async findDecision(@Param('decId') decId: string) {
+    const dec = await this.constructionService.findDecision(decId);
     return dec;
   }
 
-  @Post('generate-decision/:conId/:decId')
+  @Post('generate-decision/:decId')
   async decGen(
-    @Param('conId') conId: string,
     @Param('decId') decId: string,
     @Body() doc: { docName: string },
   ) {
-    const dec = await this.constructionService.findDecision(conId, decId);
+    const dec = await this.constructionService.findDecision(decId);
     if (!dec) {
       throw new Error('Not found Decision with id: ' + decId);
     }
@@ -108,13 +104,12 @@ export class ConstructionController {
     return new StreamableFile(buf);
   }
 
-  @Post('generate-submission/:conId/:decId')
+  @Post('generate-submission/:decId')
   async subGen(
-    @Param('conId') conId: string,
     @Param('decId') decId: string,
     @Body('docName') docName: string,
   ) {
-    const dec = await this.constructionService.findDecision(conId, decId);
+    const dec = await this.constructionService.findDecision(decId);
     if (!dec) {
       throw new Error('Not found Decision with id: ' + decId);
     }

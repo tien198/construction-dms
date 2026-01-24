@@ -55,11 +55,11 @@ export class ConstructionService {
 
   // find decision
   async findDecision(
-    constructionId: string,
+    // constructionId: string,
     decisionId: string,
   ): Promise<DecisionViewModel | undefined> {
     const decision = await this.constructionRespo.findDecision(
-      constructionId,
+      // constructionId,
       decisionId,
     );
     return decision;
