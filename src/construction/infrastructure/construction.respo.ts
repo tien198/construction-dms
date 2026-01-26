@@ -79,58 +79,41 @@ export class ConstructionRespo {
     return result;
   }
 
-  // async findDecision(
-  //   constructionId: string,
-  //   decisionId: string,
-  // ): Promise<DecisionViewModel | undefined> {
-  //   const construction = await this.findById(constructionId);
-  //   if (!construction) {
-  //     throw new Error('Construction not found');
-  //   }
-
-  //   const decIdx = construction.decisions.findIndex(
-  //     (dec) => dec.id === decisionId,
-  //   );
-  //   if (decIdx < 0) {
-  //     return undefined;
-  //   }
-  //   const decision = construction.decisions[decIdx];
-
-  //   if (!decision.submission.constructionInfor) {
-  //     const idxArr: number[] = [];
-  //     for (let i = 0; i < construction.decisions.length; i++) {
-  //       if (construction.decisions[i].isChangeConstructionInfor) {
-  //         if (i === decIdx) break;
-  //         idxArr.push(i);
-  //       }
-  //     }
-  //     if (idxArr.length === 0) {
-  //       decision.submission.constructionInfor = construction.constructionInfor;
-  //     } else {
-  //       const lastIdx = idxArr[idxArr.length - 1];
-  //       decision.submission.constructionInfor =
-  //         construction.decisions[lastIdx].submission.constructionInfor;
-  //     }
-  //   }
-
-  //   return decision;
-  // }
-
+  // find decision base on decisionId or { conId + period }
   async findDecision(
-    decisionId: string,
+    decisionId: string | { conId: string; period: string },
   ): Promise<DecisionViewModel | undefined> {
-    const construction = await this.findOne({
-      'decisions.id': decisionId,
-    });
+    let construction: ConstructionViewModel | undefined;
+    if (typeof decisionId === 'string') {
+      construction = await this.findOne({
+        'decisions.id': decisionId,
+      });
+    } else {
+      construction = await this.findById(decisionId.conId);
+    }
     if (!construction) {
       return undefined;
     }
-    const decIdx = construction.decisions.findIndex(
-      (dec) => dec.id === decisionId,
-    );
+
+    // find decision index whether base on decisionId or period
+    const findIndexFilterFnc =
+      typeof decisionId === 'string'
+        ? (dec: DecisionViewModel) => dec.id === decisionId
+        : (dec: DecisionViewModel) =>
+            dec.period.toLowerCase() === decisionId.period.toLowerCase();
+    const decIdx = construction.decisions.findIndex(findIndexFilterFnc);
+
     if (decIdx < 0) {
       return undefined;
     }
+    const decision = this.resultDecWithConstructionInfor(construction, decIdx);
+    return decision;
+  }
+
+  resultDecWithConstructionInfor(
+    construction: ConstructionViewModel,
+    decIdx: number,
+  ): DecisionViewModel {
     const decision = construction.decisions[decIdx];
 
     if (!decision.submission.constructionInfor) {
@@ -149,9 +132,9 @@ export class ConstructionRespo {
           construction.decisions[lastIdx].submission.constructionInfor;
       }
     }
-
     return decision;
   }
+
   async addSubmissionForNewDec(
     conId: string,
     dec: Decision,
