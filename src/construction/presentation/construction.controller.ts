@@ -36,7 +36,7 @@ export class ConstructionController {
     return this.constructionService.initPlan(construction);
   }
 
-  @Post('approve/:constructionId/:decisionId/:submissionId')
+  @Post('approve/:constructionId/:decisionId')
   approve(
     @Param('constructionId') conId: string,
     @Param('decisionId') decId: string,
@@ -76,7 +76,7 @@ export class ConstructionController {
   }
 */
   @Get(':id')
-  findById(@Param('id') id: string): Promise<Construction> {
+  findById(@Param('id') id: string): Promise<Construction | undefined> {
     return this.constructionService.findById(id);
   }
 

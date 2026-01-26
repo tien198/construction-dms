@@ -45,11 +45,10 @@ export class ConstructionService {
   }
 
   // FindById
-  async findById(constructionId: string): Promise<ConstructionViewModel> {
+  async findById(
+    constructionId: string,
+  ): Promise<ConstructionViewModel | undefined> {
     const finded = await this.constructionRespo.findById(constructionId);
-    if (!finded) {
-      throw new Error('Not found construction with id: ' + constructionId);
-    }
     return finded;
   }
 
@@ -69,8 +68,8 @@ export class ConstructionService {
     conId: string,
     period: string,
   ): Promise<DecisionViewModel | undefined> {
-    const con = await this.constructionRespo.findDecision({ conId, period });
-    return con;
+    const dec = await this.constructionRespo.findDecision({ conId, period });
+    return dec;
   }
 
   async approve(
