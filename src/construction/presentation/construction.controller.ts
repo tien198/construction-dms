@@ -95,41 +95,47 @@ export class ConstructionController {
     return dec;
   }
 
-  @Post('generate-decision/:decId')
+  @Post('gen-decision')
   async decGen(
-    @Param('decId') decId: string,
-    @Body() doc: { docName: string },
+    @Body()
+    doc: {
+      decId: string;
+      conId: string;
+      period: string;
+    },
   ) {
-    const dec = await this.constructionService.findDecision(decId);
+    const dec = await this.constructionService.findDecision(doc.decId);
     if (!dec) {
-      throw new Error('Not found Decision with id: ' + decId);
+      throw new Error('Not found Decision with id: ' + doc.decId);
     }
     const decPrint = new PrintDocumentImp(
       dec,
       dec.submission.constructionInfor,
     );
-    const buf = await this.printService.generate(doc.docName, decPrint);
+
+    // create a helper function to convert 'period' to 'document name'
+    // ---
+    // --
+    // -
+    const buf = await this.printService.generate(doc.period, decPrint);
 
     return new StreamableFile(buf);
   }
 
-  @Post('generate-submission/:decId')
-  async subGen(
-    @Param('decId') decId: string,
-    @Body('docName') docName: string,
-  ) {
-    const dec = await this.constructionService.findDecision(decId);
+  @Post('gen-submission')
+  async subGen(@Body() doc: { period: string; decId: string }) {
+    const dec = await this.constructionService.findDecision(doc.decId);
     if (!dec) {
-      throw new Error('Not found Decision with id: ' + decId);
+      throw new Error('Not found Decision with id: ' + doc.decId);
     }
     const subPrint = new PrintDocumentImp(
       dec.submission,
       dec.submission.constructionInfor,
     );
-    const buf = await this.printService.generate(docName, subPrint);
+    const buf = await this.printService.generate(doc.period, subPrint);
 
     return new StreamableFile(buf, {
-      disposition: `attachment; filename=${docName}`,
+      disposition: `attachment; filename=${doc.period}`,
     });
   }
 

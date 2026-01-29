@@ -89,6 +89,7 @@ export class ConstructionRespo {
         'decisions.id': decisionId,
       });
     } else {
+      // `decisionId`  now is constructionId + period
       construction = await this.findById(decisionId.conId);
     }
     if (!construction) {
