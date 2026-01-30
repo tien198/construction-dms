@@ -47,7 +47,8 @@ export class DecisionMapper {
   }
 
   fromSubmissionDto(subDto: CreateSubmissionDto): CreateDecisionDto {
-    const directlyDec = subDto.directlyDecision;
+    // const directlyDec = subDto.directlyDecision;
+    const { directlyDecision: directlyDec, ...sub } = subDto;
 
     const dec = new CreateDecisionDto();
     dec.no = directlyDec!.no;
@@ -55,7 +56,7 @@ export class DecisionMapper {
     dec.date = directlyDec?.date ?? subDto.date;
     dec.pursuantToDec_TCT = subDto.pursuantToDec_TCT;
     dec.pursuantToDec_TTMN = subDto.pursuantToDec_TTMN;
-    dec.submission = subDto;
+    dec.submission = sub;
     dec.period = subDto.period;
     dec.isApproved = false;
     dec.isChangeConstructionInfor = !!subDto.constructionInfor;

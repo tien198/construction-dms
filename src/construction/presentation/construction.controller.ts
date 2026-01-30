@@ -44,16 +44,20 @@ export class ConstructionController {
     return this.constructionService.approve(conId, decId);
   }
 
-  @Post('add-submission/:constructionId/{:decisionId}')
+  // @Post('add-submission/:construction-id/{:decisionId}')
+  @Post('add-submission/construction-id')
   addSubmission(
+    @Param('construction-id') conId: string,
     @Body() submissionDto: CreateSubmissionDto,
-    @Param('constructionId') conId: string,
-    @Param('decisionId') decId?: string,
   ): Promise<Construction> {
     const submission = this.submissionMapper.toEntity(submissionDto);
 
-    if (decId)
-      return this.constructionService.addSubmission(conId, submission, decId);
+    if (submissionDto.directlyDecision?.id)
+      return this.constructionService.addSubmission(
+        conId,
+        submission,
+        submissionDto.directlyDecision.id,
+      );
     else {
       const decDto = this.decisionMapper.fromSubmissionDto(submissionDto);
       const decision = this.decisionMapper.toEntity(decDto);
