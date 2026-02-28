@@ -5,6 +5,7 @@ import {
   Body,
   Param,
   StreamableFile,
+  Header,
 } from '@nestjs/common';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { ConstructionService } from '../application/construction.service';
@@ -101,6 +102,7 @@ export class ConstructionController {
   }
 
   @Post('gen-decision')
+  @Header('Access-Control-Expose-Headers', 'Content-Disposition')
   async decGen(
     @Body()
     doc: {
@@ -123,6 +125,7 @@ export class ConstructionController {
   }
 
   @Post('gen-submission')
+  @Header('Access-Control-Expose-Headers', 'Content-Disposition')
   async subGen(@Body() doc: { decId: string }) {
     const dec = await this.constructionService.findDecision(doc.decId);
     if (!dec) {
