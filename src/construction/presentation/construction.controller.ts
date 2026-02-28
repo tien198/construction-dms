@@ -13,7 +13,8 @@ import { Construction } from '../domain/type/construction.type';
 import { SubmissionMapper } from './mapper/submission.dto.mapper';
 import { DecisionMapper } from './mapper/decision.dto.mapper';
 import { PrintService } from '../application/print.service';
-import { PrintDocumentImp } from '../domain/entity/print-document.entity';
+import { PrintDecisionImp } from '../domain/entity/print-decision.entity';
+import { PrintSubmissionImp } from '../domain/entity/print-submission.entity';
 
 @Controller('construction')
 export class ConstructionController {
@@ -110,10 +111,7 @@ export class ConstructionController {
     if (!dec) {
       throw new Error('Not found Decision with id: ' + doc.decId);
     }
-    const decPrint = new PrintDocumentImp(
-      dec,
-      dec.submission.constructionInfor,
-    );
+    const decPrint = new PrintDecisionImp(dec);
 
     const docName = this.printService.getDocName(dec.period);
     const buf = await this.printService.generate(docName.decision, decPrint);
@@ -130,10 +128,7 @@ export class ConstructionController {
     if (!dec) {
       throw new Error('Not found Decision with id: ' + doc.decId);
     }
-    const subPrint = new PrintDocumentImp(
-      dec.submission,
-      dec.submission.constructionInfor,
-    );
+    const subPrint = new PrintSubmissionImp(dec.submission);
     const docName = this.printService.getDocName(dec.period);
     const buf = await this.printService.generate(docName.submission, subPrint);
     const name = docName.submission;
