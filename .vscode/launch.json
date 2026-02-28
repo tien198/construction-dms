@@ -8,9 +8,10 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "runtimeExecutable": "yarn",
+            "runtimeExecutable": "nest",
             "runtimeArgs": [
-                "start:dev"
+                "start",
+                "--watch"
             ],
             "console": "integratedTerminal"
         }

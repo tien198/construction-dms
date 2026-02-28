@@ -76,7 +76,7 @@ export class PrintService {
       case 'KH':
         return {
           submission: '2. Tờ trình phê duyệt KHLCNT.docx',
-          decision: '3. QD Phê duyệt KHLCNT .docx',
+          decision: '3. QD Phê duyệt KHLCNT.docx',
         };
       case 'TV':
         return {
