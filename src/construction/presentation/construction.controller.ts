@@ -104,8 +104,6 @@ export class ConstructionController {
     @Body()
     doc: {
       decId: string;
-      conId: string;
-      period: string;
     },
   ) {
     const dec = await this.constructionService.findDecision(doc.decId);
@@ -117,17 +115,17 @@ export class ConstructionController {
       dec.submission.constructionInfor,
     );
 
-    // create a helper function to convert 'period' to 'document name'
-    // ---
-    // --
-    // -
-    const buf = await this.printService.generate(doc.period, decPrint);
+    const docName = this.printService.getDocName(dec.period);
+    const buf = await this.printService.generate(docName.decision, decPrint);
 
-    return new StreamableFile(buf);
+    const name = docName.decision;
+    return new StreamableFile(buf, {
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
+    });
   }
 
   @Post('gen-submission')
-  async subGen(@Body() doc: { period: string; decId: string }) {
+  async subGen(@Body() doc: { decId: string }) {
     const dec = await this.constructionService.findDecision(doc.decId);
     if (!dec) {
       throw new Error('Not found Decision with id: ' + doc.decId);
@@ -136,10 +134,11 @@ export class ConstructionController {
       dec.submission,
       dec.submission.constructionInfor,
     );
-    const buf = await this.printService.generate(doc.period, subPrint);
-
+    const docName = this.printService.getDocName(dec.period);
+    const buf = await this.printService.generate(docName.submission, subPrint);
+    const name = docName.submission;
     return new StreamableFile(buf, {
-      disposition: `attachment; filename=${doc.period}`,
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
     });
   }
 

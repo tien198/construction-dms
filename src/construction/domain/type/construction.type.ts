@@ -9,5 +9,5 @@ export interface Construction {
   constructionInfor: ConstructionInfor;
 }
 
-export type ConstructionPeriod = 'KH' | 'LCNT_TV_TT' | 'BCKTKT';
+export type ConstructionPeriod = 'KH' | 'TV' | 'TT' | 'BCKTKT';
 // LCNTT_TV_TT bao gồm 'TV' | 'TT'

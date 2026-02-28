@@ -49,8 +49,8 @@ export class PrintDocumentImp implements PrintDocument {
       this.formatDate(conInfor.constructionImplementationTime.endDate, 'month');
 
     this.existingConditionOfTheStructure =
-      conInfor.existingConditionOfTheStructure;
-    this.repairScope = conInfor.repairScope;
+      conInfor.existingConditionOfTheStructure ?? '';
+    this.repairScope = conInfor.repairScope ?? '';
     this.bidPackages = this.printPackageMapper(conInfor.bidPackages);
     this.packagesAmount = this.formatCurrency(conInfor.packagesAmount);
     this.period = conInfor.period;

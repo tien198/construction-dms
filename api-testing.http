@@ -1,0 +1,18 @@
+```bash
+http POST https://api.example.com/resource \
+    Authorization:"Bearer <token>" \
+    name="John Doe" \
+    email="john@example.com" \
+    active:=true
+```
+
+
+http --download POST :3000/api/construction/gen-submission \
+decId=1767152269045-d461f8fe-2524-4149-a51a-abfd8e82ed4d
+    
+
+http --download POST :3000/api/construction/gen-decision \
+decId=1767152269045-d461f8fe-2524-4149-a51a-abfd8e82ed4d
+    
+
+http GET :3000/api/construction/

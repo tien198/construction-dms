@@ -7,6 +7,7 @@ import expressionParser from 'docxtemplater/expressions';
 import fs from 'fs';
 import path from 'path';
 import { PrintDocument } from '../domain/type/print-administrative-document.type';
+import { ConstructionPeriod } from '../domain/type/construction.type';
 
 @Injectable()
 export class PrintService {
@@ -69,4 +70,34 @@ export class PrintService {
     const files = await fs.promises.readdir(path.resolve('public', 'template'));
     return files;
   }
+
+  getDocName(per: ConstructionPeriod): DocNameObj {
+    switch (per) {
+      case 'KH':
+        return {
+          submission: '2. Tờ trình phê duyệt KHLCNT.docx',
+          decision: '3. QD Phê duyệt KHLCNT .docx',
+        };
+      case 'TV':
+        return {
+          submission: 'tv-submission.docx',
+          decision: 'tv-decision.docx',
+        };
+      case 'TT':
+        return {
+          submission: 'tt-submission.docx',
+          decision: 'tt-decision.docx',
+        };
+      case 'BCKTKT':
+        return {
+          submission: 'bcktkt-submission.docx',
+          decision: 'bcktkt-decision.docx',
+        };
+    }
+  }
 }
+
+type DocNameObj = {
+  submission: string;
+  decision: string;
+};
