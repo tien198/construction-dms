@@ -47,9 +47,9 @@ export class ConstructionController {
   }
 
   // @Post('add-submission/:construction-id/{:decisionId}')
-  @Post('add-submission/:construction-id')
+  @Post('add-submission/:constructionId')
   addSubmission(
-    @Param('construction-id') conId: string,
+    @Param('constructionId') conId: string,
     @Body() submissionDto: CreateSubmissionDto,
   ): Promise<Construction> {
     const submission = this.submissionMapper.toEntity(submissionDto);
