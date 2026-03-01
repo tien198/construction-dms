@@ -47,7 +47,7 @@ export class ConstructionController {
   }
 
   // @Post('add-submission/:construction-id/{:decisionId}')
-  @Post('add-submission/construction-id')
+  @Post('add-submission/:construction-id')
   addSubmission(
     @Param('construction-id') conId: string,
     @Body() submissionDto: CreateSubmissionDto,
