@@ -17,6 +17,10 @@ export class ConstructionInforMapper {
       startDate: new Date(dto.constructionImplementationTime.startDate),
       endDate: new Date(dto.constructionImplementationTime.endDate),
     };
+    entity.existingConditionOfTheStructure =
+      dto.existingConditionOfTheStructure;
+    entity.repairScope = dto.repairScope;
+    entity.period = dto.period;
     entity.bidPackages = dto.bidPackages.map((p) =>
       this.bidPackageMapper.toEntity(p),
     );
@@ -38,6 +42,10 @@ export class ConstructionInforMapper {
       startDate: entity.constructionImplementationTime.startDate.toISOString(),
       endDate: entity.constructionImplementationTime.endDate.toISOString(),
     };
+    dto.existingConditionOfTheStructure =
+      entity.existingConditionOfTheStructure;
+    dto.repairScope = entity.repairScope;
+    dto.period = entity.period;
     dto.bidPackages = entity.bidPackages.map((p) =>
       this.bidPackageMapper.toDto(p),
     );

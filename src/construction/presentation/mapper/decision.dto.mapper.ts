@@ -47,7 +47,6 @@ export class DecisionMapper {
   }
 
   fromSubmissionDto(subDto: CreateSubmissionDto): CreateDecisionDto {
-    // const directlyDec = subDto.directlyDecision;
     const { directlyDecision: directlyDec, ...sub } = subDto;
 
     const dec = new CreateDecisionDto();
