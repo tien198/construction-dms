@@ -151,6 +151,7 @@ export class ConstructionRespo {
       */
     decInfra.date = decInfra.submissions[0].date;
     con.decisions.push(decInfra);
+    con.constructionInfor.period = dec.period;
 
     const updatedInfra = await this.col.updateOne({ id: conId }, con);
     const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
