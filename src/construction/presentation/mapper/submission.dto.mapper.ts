@@ -28,7 +28,10 @@ export class SubmissionMapper {
 
     entity.isApproved = dto.isApproved ?? false;
     entity.constructionInfor = dto.constructionInfor
-      ? this.constructionInforMapper.toEntity(dto.constructionInfor)
+      ? {
+          ...this.constructionInforMapper.toEntity(dto.constructionInfor),
+          period: dto.period,
+        }
       : undefined;
 
     return entity;

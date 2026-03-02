@@ -53,7 +53,6 @@ export class ConstructionController {
     @Body() submissionDto: CreateSubmissionDto,
   ): Promise<Construction> {
     const submission = this.submissionMapper.toEntity(submissionDto);
-
     if (submissionDto.directlyDecision?.id)
       return this.constructionService.addSubmission(
         conId,

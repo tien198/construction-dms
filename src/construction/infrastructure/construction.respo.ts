@@ -183,6 +183,8 @@ export class ConstructionRespo {
       dec.submissions.push(subInfra);
     }
     dec.date = sub.date;
+    dec.pursuantToDec_TCT = sub.pursuantToDec_TCT;
+    dec.pursuantToDec_TTMN = sub.pursuantToDec_TTMN;
     const updatedInfra = await this.col.updateOne({ id: conId }, con);
     const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
     return conDomain;
