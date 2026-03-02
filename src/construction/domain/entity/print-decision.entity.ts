@@ -30,8 +30,12 @@ export class PrintDecisionImp
       id: sub.id,
       no: sub.no,
       level: sub.level,
-      pursuantToDec_TCT: sub.pursuantToDec_TCT,
-      pursuantToDec_TTMN: sub.pursuantToDec_TTMN,
+      pursuantToDec_TCT: this.toPrintNestedAdministrativeDocument(
+        sub.pursuantToDec_TCT,
+      ),
+      pursuantToDec_TTMN: sub.pursuantToDec_TTMN
+        ? this.toPrintNestedAdministrativeDocument(sub.pursuantToDec_TTMN)
+        : undefined,
     };
   }
 }

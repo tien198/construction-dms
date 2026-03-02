@@ -2,7 +2,10 @@ import {
   AdministrativeDocument,
   NestedAdministrativeDocument,
 } from 'src/construction/domain/type/administrative-document.type';
-import { PrintDocument } from '../type/print-administrative-document.type';
+import {
+  PrintDocument,
+  PrintNestedAdministrativeDocument,
+} from '../type/print-administrative-document.type';
 import { PrintBidPackage } from '../type/print-bid-package.type';
 import { ConstructionPeriod } from '../type/construction.type';
 import { BidPackage } from '../type/bidPackage.type';
@@ -13,8 +16,8 @@ export class PrintDocumentImp implements PrintDocument {
   no: string;
   level: string;
   date: string;
-  pursuantToDec_TCT: NestedAdministrativeDocument;
-  pursuantToDec_TTMN?: NestedAdministrativeDocument;
+  pursuantToDec_TCT: PrintNestedAdministrativeDocument;
+  pursuantToDec_TTMN?: PrintNestedAdministrativeDocument;
 
   name: string;
   cost: string;
@@ -30,11 +33,15 @@ export class PrintDocumentImp implements PrintDocument {
 
   constructor(doc: AdministrativeDocument, conInfor: ConstructionInfor) {
     this.id = doc.id;
-    this.no = doc.no;
+    this.no = doc.no.replace(/\s/g, '');
     this.level = doc.level;
     this.date = this.toFormalDate(doc.date);
-    this.pursuantToDec_TCT = doc.pursuantToDec_TCT;
-    this.pursuantToDec_TTMN = doc.pursuantToDec_TTMN;
+    this.pursuantToDec_TCT = this.toPrintNestedAdministrativeDocument(
+      doc.pursuantToDec_TCT,
+    );
+    this.pursuantToDec_TTMN = doc.pursuantToDec_TTMN
+      ? this.toPrintNestedAdministrativeDocument(doc.pursuantToDec_TTMN)
+      : undefined;
 
     this.name = conInfor.name;
     this.cost = this.formatCurrency(conInfor.cost);
@@ -54,6 +61,13 @@ export class PrintDocumentImp implements PrintDocument {
     this.bidPackages = this.printPackageMapper(conInfor.bidPackages);
     this.packagesAmount = this.formatCurrency(conInfor.packagesAmount);
     this.period = conInfor.period;
+  }
+
+  toPrintNestedAdministrativeDocument(doc: NestedAdministrativeDocument) {
+    return {
+      ...doc,
+      date: this.formatDate(doc.date),
+    };
   }
 
   formatDate = (
