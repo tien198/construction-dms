@@ -28,7 +28,7 @@ export class PrintDecisionImp
     return {
       date: this.formatDate(sub.date),
       id: sub.id,
-      no: sub.no,
+      no: sub.no.replace(/\s/g, ''),
       level: sub.level,
       pursuantToDec_TCT: this.toPrintNestedAdministrativeDocument(
         sub.pursuantToDec_TCT,

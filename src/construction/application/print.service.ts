@@ -80,8 +80,8 @@ export class PrintService {
         };
       case 'TV':
         return {
-          submission: 'tv-submission.docx',
-          decision: 'tv-decision.docx',
+          submission: '4. Tờ trình phê duyệt KQLCNT TV.docx',
+          decision: '5. QD Phê duyệt KQLCNT TV.docx',
         };
       case 'TT':
         return {

@@ -6,7 +6,7 @@ http POST https://api.example.com/resource \
     active:=true
 ```
 
-
+``` KH
 http --download POST :3000/api/construction/gen-submission \
 decId=1767152269045-d461f8fe-2524-4149-a51a-abfd8e82ed4d
     
@@ -14,5 +14,15 @@ decId=1767152269045-d461f8fe-2524-4149-a51a-abfd8e82ed4d
 http --download POST :3000/api/construction/gen-decision \
 decId=1767152269045-d461f8fe-2524-4149-a51a-abfd8e82ed4d
     
+
+``` TV
+http --download POST :3000/api/construction/gen-submission \
+decId=1772423841199-07622860-8fbf-449e-b2cc-07569b097f48
+    
+
+http --download POST :3000/api/construction/gen-decision \
+decId=1772423841199-07622860-8fbf-449e-b2cc-07569b097f48
+    
+```
 
 http GET :3000/api/construction/
