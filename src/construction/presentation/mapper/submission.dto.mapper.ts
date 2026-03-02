@@ -17,7 +17,7 @@ export class SubmissionMapper {
 
     entity.no = dto.no;
     entity.level = dto.level;
-    entity.date = new Date(dto.date);
+    entity.date = new Date(dto.date ?? '');
     entity.pursuantToDec_TCT = this.nestedAdministrativeDocumentMapper.toEntity(
       dto.pursuantToDec_TCT,
     );
