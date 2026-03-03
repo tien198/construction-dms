@@ -151,7 +151,9 @@ export class ConstructionRespo {
       */
     decInfra.date = decInfra.submissions[0].date;
     con.decisions.push(decInfra);
-    con.constructionInfor.period = dec.period;
+    const newConInfor = dec.submission.constructionInfor;
+    con.constructionInfor = newConInfor ? newConInfor : con.constructionInfor;
+    con.constructionInfor.period = decInfra.period;
 
     const updatedInfra = await this.col.updateOne({ id: conId }, con);
     const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
@@ -182,9 +184,10 @@ export class ConstructionRespo {
     if (!subAldeady) {
       dec.submissions.push(subInfra);
     }
-    dec.date = sub.date;
-    dec.pursuantToDec_TCT = sub.pursuantToDec_TCT;
-    dec.pursuantToDec_TTMN = sub.pursuantToDec_TTMN;
+    dec.date = subInfra.date;
+    dec.pursuantToDec_TCT = subInfra.pursuantToDec_TCT;
+    dec.pursuantToDec_TTMN = subInfra.pursuantToDec_TTMN;
+    con.constructionInfor = subInfra.constructionInfor;
     const updatedInfra = await this.col.updateOne({ id: conId }, con);
     const conDomain = this.constructionInfraMapper.toDomain(updatedInfra);
     return conDomain;
