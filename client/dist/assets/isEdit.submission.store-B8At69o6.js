@@ -1,0 +1,1 @@
+import{t as e}from"./react-E1OE92LN.js";const t=e((e,t)=>({editingPeriods:[],setEditing:t=>e(e=>({editingPeriods:e.editingPeriods.includes(t)?e.editingPeriods:[...e.editingPeriods,t]})),unsetEditing:t=>e(e=>({editingPeriods:e.editingPeriods.filter(e=>e!==t)})),isEditing:e=>t().editingPeriods.includes(e)}));export{t};

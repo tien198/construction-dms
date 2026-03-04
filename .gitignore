@@ -1,7 +1,7 @@
 /public/danh-sach-cong-trinh.json
 
 # compiled output
-/client/*
+# /client/*
 /dist
 /node_modules
 /build

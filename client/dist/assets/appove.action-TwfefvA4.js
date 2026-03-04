@@ -1,0 +1,1 @@
+async function e(e){try{let t=await e.request.formData(),n=t.get(`conId`),r=t.get(`decId`),i=await fetch(`http://localhost:3000/api/construction/approve/${n}/${r}`,{method:e.request.method});return i.ok||alert(`Lỗi`),await i.json()}catch{return alert(`Lỗi kết nối đến server`),null}}export{e as appoveAction};
