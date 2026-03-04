@@ -28,7 +28,8 @@ export class PrintDocumentImp implements PrintDocument {
   repairScope: string;
 
   bidPackages: PrintBidPackage[];
-  packagesAmount: string;
+  estimatedCost: string;
+  estimatedCostString: string;
   period: ConstructionPeriod;
 
   constructor(doc: AdministrativeDocument, conInfor: ConstructionInfor) {
@@ -59,7 +60,8 @@ export class PrintDocumentImp implements PrintDocument {
       conInfor.existingConditionOfTheStructure ?? '';
     this.repairScope = conInfor.repairScope ?? '';
     this.bidPackages = this.printPackageMapper(conInfor.bidPackages);
-    this.packagesAmount = this.formatCurrency(conInfor.packagesAmount);
+    this.estimatedCost = this.formatCurrency(conInfor.estimatedCost);
+    this.estimatedCostString = conInfor.estimatedCostString;
     this.period = conInfor.period;
   }
 

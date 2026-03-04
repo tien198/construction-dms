@@ -18,6 +18,7 @@ export class ConstructionInforDto
   repairScope: string;
 
   bidPackages: BidPackageDto[] = [];
-  packagesAmount: number;
+  estimatedCost: number;
+  estimatedCostString: string;
   period: ConstructionPeriod;
 }

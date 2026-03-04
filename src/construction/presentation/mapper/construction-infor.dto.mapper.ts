@@ -24,11 +24,8 @@ export class ConstructionInforMapper {
     entity.bidPackages = dto.bidPackages.map((p) =>
       this.bidPackageMapper.toEntity(p),
     );
-    entity.packagesAmount = dto.bidPackages.reduce(
-      (sum, pkg) => sum + pkg.cost,
-      0,
-    );
-
+    entity.estimatedCost = dto.estimatedCost;
+    entity.estimatedCostString = dto.estimatedCostString;
     return entity;
   }
 
@@ -49,7 +46,8 @@ export class ConstructionInforMapper {
     dto.bidPackages = entity.bidPackages.map((p) =>
       this.bidPackageMapper.toDto(p),
     );
-
+    dto.estimatedCost = entity.estimatedCost;
+    dto.estimatedCostString = entity.estimatedCostString;
     return dto;
   }
 }

@@ -14,6 +14,7 @@ export interface ConstructionInfor {
   repairScope: string;
 
   bidPackages: BidPackage[];
-  packagesAmount: number;
+  estimatedCost: number;
+  estimatedCostString: string;
   period: ConstructionPeriod;
 }
