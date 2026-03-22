@@ -1,5 +1,6 @@
-host: 'localhost'
-port:
-user:
-password:
 database:
+  host: 'localhost'
+  port:
+  user:
+  password:
+  database:
