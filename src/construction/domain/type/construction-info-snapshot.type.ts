@@ -1,5 +1,5 @@
 export interface ConstructionInfoSnapshot {
-  id: number;
+  id: string;
   construction_id: string;
 
   name: string;

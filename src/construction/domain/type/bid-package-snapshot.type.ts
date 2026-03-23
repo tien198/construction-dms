@@ -1,8 +1,8 @@
 import { BidPackageType } from '../enum/bid-package.type';
 
 export interface BidPackageSnapshot {
-  id: number;
-  construction_infor_snapshot_id: number;
+  id: string;
+  construction_infor_snapshot_id: string;
 
   type: BidPackageType;
   project_owner: string;
