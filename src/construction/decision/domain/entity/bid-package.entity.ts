@@ -7,7 +7,8 @@ export class BidPackageSnapshot {
   type: BidPackageType;
   project_owner: string;
   name: string;
-  short_description: string;
+  // short_description
+  short_desc: string;
 
   est_cost: number;
   est_cost_str: string;
@@ -26,7 +27,7 @@ export class BidPackageSnapshot {
     type: BidPackageType,
     project_owner: string,
     name: string,
-    short_description: string,
+    short_desc: string,
     est_cost: number,
     est_cost_str: string,
     bidder_selection_time: Date,
@@ -40,7 +41,7 @@ export class BidPackageSnapshot {
     this.type = type;
     this.project_owner = project_owner;
     this.name = name;
-    this.short_description = short_description;
+    this.short_desc = short_desc;
     this.est_cost = est_cost;
     this.est_cost_str = est_cost_str;
     this.bidder_selection_time = bidder_selection_time;
