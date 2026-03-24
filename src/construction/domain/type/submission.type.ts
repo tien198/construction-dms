@@ -4,5 +4,4 @@ export interface Submission {
   decision_id: string;
   construction_infor_snapshot_id: number;
   is_change_construction_infor?: boolean;
-  date?: Date;
 }
