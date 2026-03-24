@@ -1,9 +1,9 @@
 import { Decision } from '../../entity/decision.entity';
-import { CreateSubmissionDto } from '../../../infrastructure/adapter/dto/create-submission.dto';
+import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
 
 export interface IDecisionUseCase {
-  createDecision(data: CreateSubmissionDto): Promise<Decision>;
-  updateDecision(id: string, data: CreateSubmissionDto): Promise<Decision>;
+  createDecision(data: CreateSubmissionCommand): Promise<Decision>;
+  updateDecision(id: string, data: CreateSubmissionCommand): Promise<Decision>;
   deleteDecision(id: string): Promise<void>;
   getDecisionById(id: string): Promise<Decision>;
   getAllDecisions(): Promise<Decision[]>;

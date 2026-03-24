@@ -9,7 +9,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
 
-export class BidPackageSnapshotDto {
+export class BidPackageSnapshotCommand {
   @ApiProperty()
   @IsString()
   @IsOptional()

@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Decision } from '../../domain/entity/decision.entity';
 import { IDecisionUseCase } from '../../domain/port/inbound/decision.use-case';
 import type { IDecisionRepository } from '../../domain/port/outbound/decision.repository.port';
-import { CreateSubmissionDto } from '../../infrastructure/adapter/dto/create-submission.dto';
+import { CreateSubmissionCommand } from '../command/create-submission.command';
 
 @Injectable()
 export class DecisionService implements IDecisionUseCase {
@@ -11,7 +11,7 @@ export class DecisionService implements IDecisionUseCase {
     private readonly repository: IDecisionRepository,
   ) {}
 
-  async createDecision(data: CreateSubmissionDto): Promise<Decision> {
+  async createDecision(data: CreateSubmissionCommand): Promise<Decision> {
     const decision = new Decision(
       data.id || '',
       data.construction_id,
@@ -23,7 +23,7 @@ export class DecisionService implements IDecisionUseCase {
 
   async updateDecision(
     id: string,
-    data: CreateSubmissionDto,
+    data: CreateSubmissionCommand,
   ): Promise<Decision> {
     const existing = await this.repository.findById(id);
     if (!existing) {

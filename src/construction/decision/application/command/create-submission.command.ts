@@ -8,10 +8,10 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ConstructionInfoSnapshotPostDto } from './construction-info-snapshot-post.dto';
-import { DirectlyDecisionDto } from './directly-decision.dto';
+import { ConstructionInfoSnapshotCommand } from './construction-info-snapshot.command';
+import { DirectlyDecisionCommand } from './directly-decision.command';
 
-export class CreateSubmissionDto {
+export class CreateSubmissionCommand {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
@@ -45,16 +45,16 @@ export class CreateSubmissionDto {
   is_change_construction_infor: boolean | null;
 
   @ApiPropertyOptional({
-    type: () => ConstructionInfoSnapshotPostDto,
+    type: () => ConstructionInfoSnapshotCommand,
     nullable: true,
   })
   @IsOptional()
   @ValidateNested()
-  @Type(() => ConstructionInfoSnapshotPostDto)
-  construction_infor_snapshot?: ConstructionInfoSnapshotPostDto;
+  @Type(() => ConstructionInfoSnapshotCommand)
+  construction_infor_snapshot?: ConstructionInfoSnapshotCommand;
 
-  @ApiProperty({ type: () => DirectlyDecisionDto })
+  @ApiProperty({ type: () => DirectlyDecisionCommand })
   @ValidateNested()
-  @Type(() => DirectlyDecisionDto)
-  directlyDecision: DirectlyDecisionDto;
+  @Type(() => DirectlyDecisionCommand)
+  directlyDecision: DirectlyDecisionCommand;
 }

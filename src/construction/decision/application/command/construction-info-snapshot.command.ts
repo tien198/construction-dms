@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { BidPackageSnapshotDto } from './bid-package-snapshot.dto';
+import { BidPackageSnapshotCommand } from './bid-package-snapshot.command';
 
-export class ConstructionInfoSnapshotPostDto {
+export class ConstructionInfoSnapshotCommand {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -50,9 +50,9 @@ export class ConstructionInfoSnapshotPostDto {
   @IsString()
   est_cost_str: string;
 
-  @ApiProperty({ type: () => [BidPackageSnapshotDto] })
+  @ApiProperty({ type: () => [BidPackageSnapshotCommand] })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => BidPackageSnapshotDto)
-  bid_package_snapshots: BidPackageSnapshotDto[];
+  @Type(() => BidPackageSnapshotCommand)
+  bid_package_snapshots: BidPackageSnapshotCommand[];
 }

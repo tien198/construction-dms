@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import type { IDecisionUseCase } from '../../../domain/port/inbound/decision.use-case';
 import { Decision } from '../../../domain/entity/decision.entity';
-import { CreateSubmissionDto } from '../dto/create-submission.dto';
+import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('decision')
@@ -24,7 +24,7 @@ export class DecisionController {
   @Post()
   @ApiOperation({ summary: 'Create a new decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async create(@Body() data: CreateSubmissionDto): Promise<Decision> {
+  async create(@Body() data: CreateSubmissionCommand): Promise<Decision> {
     return this.decisionUseCase.createDecision(data);
   }
 
@@ -44,7 +44,7 @@ export class DecisionController {
   @ApiOperation({ summary: 'Update a decision' })
   async update(
     @Param('id') id: string,
-    @Body() data: CreateSubmissionDto,
+    @Body() data: CreateSubmissionCommand,
   ): Promise<Decision> {
     return this.decisionUseCase.updateDecision(id, data);
   }
