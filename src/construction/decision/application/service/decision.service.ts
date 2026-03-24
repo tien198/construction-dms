@@ -18,30 +18,30 @@ export class DecisionService implements IDecisionUseCase {
       data.period,
       data.is_change_construction_infor,
     );
-    return this.repository.save(decision);
+    return this.repository.saveDecision(decision);
   }
 
   async updateDecision(
     id: string,
     data: CreateSubmissionCommand,
   ): Promise<Decision> {
-    const existing = await this.repository.findById(id);
+    const existing = await this.repository.findDecisionById(id);
     if (!existing) {
       throw new NotFoundException(`Decision with ID ${id} not found`);
     }
-    return this.repository.update(id, data);
+    return this.repository.updateDecision(id, data);
   }
 
   async deleteDecision(id: string): Promise<void> {
-    const existing = await this.repository.findById(id);
+    const existing = await this.repository.findDecisionById(id);
     if (!existing) {
       throw new NotFoundException(`Decision with ID ${id} not found`);
     }
-    await this.repository.delete(id);
+    await this.repository.deleteDecision(id);
   }
 
   async getDecisionById(id: string): Promise<Decision> {
-    const decision = await this.repository.findById(id);
+    const decision = await this.repository.findDecisionById(id);
     if (!decision) {
       throw new NotFoundException(`Decision with ID ${id} not found`);
     }
@@ -49,6 +49,6 @@ export class DecisionService implements IDecisionUseCase {
   }
 
   async getAllDecisions(): Promise<Decision[]> {
-    return this.repository.findAll();
+    return this.repository.findAllDecisions();
   }
 }
