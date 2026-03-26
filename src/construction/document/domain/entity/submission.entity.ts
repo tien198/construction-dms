@@ -1,11 +1,12 @@
-import { ConstructionId } from '../value-objects/construction-id.vo';
-import { DecisionId } from '../value-objects/decision-id.vo';
+import { ConstructionInfoSnapshotId } from '../value-objects/construction-infor.vo';
+import { ConstructionId } from '../value-objects/construction.vo';
+import { DecisionId } from '../value-objects/document.vo';
 import { AdministrativeDocument } from './administrative-document.entity';
 
 export class Submission {
   construction_id: ConstructionId;
   decision_id: DecisionId;
-  construction_infor_snapshot_id: string;
+  construction_infor_snapshot_id: ConstructionInfoSnapshotId | null;
   is_change_construction_infor?: boolean;
 
   // reference to administrative-document
@@ -15,7 +16,7 @@ export class Submission {
     document: AdministrativeDocument,
     construction_id: ConstructionId,
     decision_id: DecisionId,
-    construction_infor_snapshot_id: string,
+    construction_infor_snapshot_id: ConstructionInfoSnapshotId | null = null,
     is_change_construction_infor: boolean = false,
   ) {
     this.construction_id = construction_id;
@@ -30,9 +31,10 @@ export class Submission {
     document: AdministrativeDocument,
     construction_id: ConstructionId,
     decision_id: DecisionId,
-    construction_infor_snapshot_id: string,
-    is_change_construction_infor: boolean = false,
+    construction_infor_snapshot_id: ConstructionInfoSnapshotId | null = null,
   ): Submission {
+    const is_change_construction_infor = !!construction_infor_snapshot_id;
+
     return new Submission(
       document,
       construction_id,
@@ -47,8 +49,8 @@ export class Submission {
     document: AdministrativeDocument,
     construction_id: ConstructionId,
     decision_id: DecisionId,
-    construction_infor_snapshot_id: string,
     is_change_construction_infor: boolean,
+    construction_infor_snapshot_id: ConstructionInfoSnapshotId | null = null,
   ): Submission {
     return new Submission(
       document,

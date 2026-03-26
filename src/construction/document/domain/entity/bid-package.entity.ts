@@ -1,41 +1,52 @@
 import { v7 } from 'uuid';
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.type';
+import { ConstructionInforId } from '../value-objects/construction-infor.vo';
+import {
+  BidderSelectionMethod,
+  BidPackageId,
+  BidPackageName,
+  Duration,
+  EstCostStr,
+  ProjectOwner,
+  ShortDesc,
+  SuccessfulBidderId,
+} from '../value-objects/bid-package-snapshot.vo';
 
 export class BidPackageSnapshot {
-  id: string;
-  construction_infor_snapshot_id: string;
+  id: BidPackageId;
+  construction_infor_snapshot_id: ConstructionInforId;
 
   type: BidPackageType;
-  project_owner: string;
-  name: string;
+  project_owner: ProjectOwner;
+  name: BidPackageName;
   // short_description
-  short_desc: string;
+  short_desc: ShortDesc;
 
   est_cost: number;
-  est_cost_str: string;
+  est_cost_str: EstCostStr;
 
   bidder_selection_time: Date;
-  bidder_selection_method: string;
+  bidder_selection_method: BidderSelectionMethod;
 
-  duration: string;
+  duration: Duration;
   is_completed: boolean;
 
-  successful_bidder_id?: string;
+  successful_bidder_id: SuccessfulBidderId | null;
 
   constructor(
-    id: string,
-    construction_infor_snapshot_id: string,
+    id: BidPackageId,
+    construction_infor_snapshot_id: ConstructionInforId,
     type: BidPackageType,
-    project_owner: string,
-    name: string,
-    short_desc: string,
+    project_owner: ProjectOwner,
+    name: BidPackageName,
+    short_desc: ShortDesc,
     est_cost: number,
-    est_cost_str: string,
+    est_cost_str: EstCostStr,
     bidder_selection_time: Date,
-    bidder_selection_method: string,
-    duration: string,
+    bidder_selection_method: BidderSelectionMethod,
+    duration: Duration,
     is_completed: boolean,
-    successful_bidder_id?: string,
+    successful_bidder_id: SuccessfulBidderId | null = null,
   ) {
     this.id = id;
     this.construction_infor_snapshot_id = construction_infor_snapshot_id;
@@ -53,21 +64,21 @@ export class BidPackageSnapshot {
   }
 
   static create(
-    construction_infor_snapshot_id: string,
+    construction_infor_snapshot_id: ConstructionInforId,
     type: BidPackageType,
-    project_owner: string,
-    name: string,
-    short_desc: string,
+    project_owner: ProjectOwner,
+    name: BidPackageName,
+    short_desc: ShortDesc,
     est_cost: number,
-    est_cost_str: string,
+    est_cost_str: EstCostStr,
     bidder_selection_time: Date,
-    bidder_selection_method: string,
-    duration: string,
+    bidder_selection_method: BidderSelectionMethod,
+    duration: Duration,
     is_completed: boolean,
-    successful_bidder_id?: string,
+    successful_bidder_id: SuccessfulBidderId | null,
   ): BidPackageSnapshot {
     return new BidPackageSnapshot(
-      v7(),
+      BidPackageId.create(v7()),
       construction_infor_snapshot_id,
       type,
       project_owner,
@@ -84,19 +95,19 @@ export class BidPackageSnapshot {
   }
 
   static reconstitute(
-    id: string,
-    construction_infor_snapshot_id: string,
+    id: BidPackageId,
+    construction_infor_snapshot_id: ConstructionInforId,
     type: BidPackageType,
-    project_owner: string,
-    name: string,
-    short_desc: string,
+    project_owner: ProjectOwner,
+    name: BidPackageName,
+    short_desc: ShortDesc,
     est_cost: number,
-    est_cost_str: string,
+    est_cost_str: EstCostStr,
     bidder_selection_time: Date,
-    bidder_selection_method: string,
-    duration: string,
+    bidder_selection_method: BidderSelectionMethod,
+    duration: Duration,
     is_completed: boolean,
-    successful_bidder_id?: string,
+    successful_bidder_id?: SuccessfulBidderId,
   ): BidPackageSnapshot {
     return new BidPackageSnapshot(
       id,

@@ -1,32 +1,41 @@
 import { v7 } from 'uuid';
+import { ConstructionId } from '../value-objects/construction.vo';
+import {
+  ConstructionInforId,
+  ConstructionName,
+  EstCostStr,
+  ExistingCondition,
+  RepairScope,
+  SourceOfFunds,
+} from '../value-objects/construction-infor.vo';
 
 export class ConstructionInfoSnapshot {
-  id: string;
-  construction_id: string;
+  id: ConstructionInforId;
+  construction_id: ConstructionId;
 
-  name: string;
-  source_of_funds: string;
+  name: ConstructionName;
+  source_of_funds: SourceOfFunds;
 
   est_cost: number;
-  est_cost_str: string;
+  est_cost_str: EstCostStr;
 
   impl_start_date: Date;
   impl_end_date: Date;
 
-  existing_condition_of_the_structure: string;
-  repair_scope: string;
+  existing_condition_of_the_structure: ExistingCondition;
+  repair_scope: RepairScope;
 
   constructor(
-    id: string,
-    construction_id: string,
-    name: string,
-    source_of_funds: string,
+    id: ConstructionInforId,
+    construction_id: ConstructionId,
+    name: ConstructionName,
+    source_of_funds: SourceOfFunds,
     est_cost: number,
-    est_cost_str: string,
+    est_cost_str: EstCostStr,
     impl_start_date: Date,
     impl_end_date: Date,
-    existing_condition_of_the_structure: string,
-    repair_scope: string,
+    existing_condition_of_the_structure: ExistingCondition,
+    repair_scope: RepairScope,
   ) {
     this.id = id;
     this.construction_id = construction_id;
@@ -42,18 +51,18 @@ export class ConstructionInfoSnapshot {
   }
 
   static create(
-    construction_id: string,
-    name: string,
-    source_of_funds: string,
+    construction_id: ConstructionId,
+    name: ConstructionName,
+    source_of_funds: SourceOfFunds,
     est_cost: number,
-    est_cost_str: string,
+    est_cost_str: EstCostStr,
     impl_start_date: Date,
     impl_end_date: Date,
-    existing_condition_of_the_structure: string,
-    repair_scope: string,
+    existing_condition_of_the_structure: ExistingCondition,
+    repair_scope: RepairScope,
   ): ConstructionInfoSnapshot {
     return new ConstructionInfoSnapshot(
-      v7(),
+      ConstructionInforId.create(v7()),
       construction_id,
       name,
       source_of_funds,
@@ -67,16 +76,16 @@ export class ConstructionInfoSnapshot {
   }
 
   static reconstitute(
-    id: string,
-    construction_id: string,
-    name: string,
-    source_of_funds: string,
+    id: ConstructionInforId,
+    construction_id: ConstructionId,
+    name: ConstructionName,
+    source_of_funds: SourceOfFunds,
     est_cost: number,
-    est_cost_str: string,
+    est_cost_str: EstCostStr,
     impl_start_date: Date,
     impl_end_date: Date,
-    existing_condition_of_the_structure: string,
-    repair_scope: string,
+    existing_condition_of_the_structure: ExistingCondition,
+    repair_scope: RepairScope,
   ): ConstructionInfoSnapshot {
     return new ConstructionInfoSnapshot(
       id,

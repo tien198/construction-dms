@@ -1,6 +1,7 @@
 import { Submission } from '../../domain/entity/submission.entity';
-import { ConstructionId } from '../../domain/value-objects/construction-id.vo';
-import { DecisionId } from '../../domain/value-objects/decision-id.vo';
+import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
+import { ConstructionId } from '../../domain/value-objects/construction.vo';
+import { DecisionId } from '../../domain/value-objects/document.vo';
 import { CreateSubmissionCommand } from '../command/create-submission.command';
 import { AdministrativeDocumentAssembler } from './administrative-document.assembler';
 
@@ -9,7 +10,7 @@ export class SubmissionAssembler {
     cmd: CreateSubmissionCommand,
     constructionId: ConstructionId,
     decisionId: DecisionId,
-    constructionInforSnapshotId: string,
+    constructionInforId: ConstructionInforId | null = null,
   ): Submission {
     const document = AdministrativeDocumentAssembler.fromCmd(cmd);
 
@@ -17,8 +18,7 @@ export class SubmissionAssembler {
       document,
       constructionId,
       decisionId,
-      constructionInforSnapshotId,
-      cmd.is_change_construction_infor ?? false,
+      constructionInforId,
     );
   }
 }

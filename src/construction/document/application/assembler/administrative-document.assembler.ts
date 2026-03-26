@@ -1,9 +1,9 @@
 import { AdministrativeDocument } from '../../domain/entity/administrative-document.entity';
-import { DocumentNo } from '../../domain/value-objects/document-no.vo';
 import {
+  DocumentNo,
   PursuantToDecTCT,
   PursuantToDecTTMN,
-} from '../../domain/value-objects/pursuant-to-dec.vo';
+} from '../../domain/value-objects/document.vo';
 import { CreateSubmissionCommand } from '../command/create-submission.command';
 
 export class AdministrativeDocumentAssembler {

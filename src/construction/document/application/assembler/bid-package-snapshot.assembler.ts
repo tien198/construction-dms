@@ -1,33 +1,47 @@
 import { BidPackageSnapshot } from '../../domain/entity/bid-package.entity';
+import {
+  BidderSelectionMethod,
+  BidPackageName,
+  Duration,
+  ProjectOwner,
+  ShortDesc,
+  SuccessfulBidderId,
+} from '../../domain/value-objects/bid-package-snapshot.vo';
+import {
+  ConstructionInforId,
+  EstCostStr,
+} from '../../domain/value-objects/construction-infor.vo';
 import { BidPackageSnapshotCommand } from '../command/bid-package-snapshot.command';
 
 export class BidPackageSnapshotAssembler {
   static fromCmd(
     cmd: BidPackageSnapshotCommand,
-    constructionInforSnapshotId: string,
+    constructionInforId: ConstructionInforId,
   ): BidPackageSnapshot {
     return BidPackageSnapshot.create(
-      constructionInforSnapshotId,
+      constructionInforId,
       cmd.type,
-      cmd.project_owner,
-      cmd.name,
-      cmd.short_desc,
+      ProjectOwner.create(cmd.project_owner),
+      BidPackageName.create(cmd.name),
+      ShortDesc.create(cmd.short_desc),
       cmd.est_cost,
-      cmd.est_cost_str,
+      EstCostStr.create(cmd.est_cost_str),
       new Date(cmd.bidder_selection_time),
-      cmd.bidder_selection_method,
-      cmd.duration,
+      BidderSelectionMethod.create(cmd.bidder_selection_method),
+      Duration.create(cmd.duration),
       cmd.is_completed,
-      cmd.successful_bidder_id ?? undefined,
+      cmd.successful_bidder_id
+        ? SuccessfulBidderId.create(cmd.successful_bidder_id)
+        : null,
     );
   }
 
   static fromCmdList(
     cmds: BidPackageSnapshotCommand[],
-    constructionInforSnapshotId: string,
+    constructionInforId: ConstructionInforId,
   ): BidPackageSnapshot[] {
     return cmds.map((cmd) =>
-      BidPackageSnapshotAssembler.fromCmd(cmd, constructionInforSnapshotId),
+      BidPackageSnapshotAssembler.fromCmd(cmd, constructionInforId),
     );
   }
 }

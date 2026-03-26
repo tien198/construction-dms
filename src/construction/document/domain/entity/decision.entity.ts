@@ -1,6 +1,7 @@
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
 import { AdministrativeDocument } from './administrative-document.entity';
-import { ConstructionId } from '../value-objects/construction-id.vo';
+import { ConstructionId } from '../value-objects/construction.vo';
+import { DecisionId } from '../value-objects/document.vo';
 
 export class Decision {
   construction_id: ConstructionId;
@@ -23,7 +24,9 @@ export class Decision {
     this.document = document;
   }
 
-  getId() {}
+  get id(): DecisionId {
+    return this.document.id;
+  }
 
   static create(
     document: AdministrativeDocument,

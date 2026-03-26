@@ -1,16 +1,16 @@
 import { v7 } from 'uuid';
-import { DocumentId } from '../value-objects/document-id.vo';
-import { PursuantToDecTCT } from '../value-objects/pursuant-to-dec.vo';
+import { DocumentId, PursuantToDecTCT } from '../value-objects/document.vo';
+import { ConstructionInfoSnapshotId } from '../value-objects/construction-infor.vo';
 
 export class Construction {
   id: DocumentId;
   pursuant_to_dec_tct_id: PursuantToDecTCT;
-  current_snapshot_id: string | null;
+  current_snapshot_id: ConstructionInfoSnapshotId | null;
 
   constructor(
     id: DocumentId,
     pursuant_to_dec_tct_id: PursuantToDecTCT,
-    current_snapshot_id: string | null,
+    current_snapshot_id: ConstructionInfoSnapshotId | null,
   ) {
     this.id = id;
     this.pursuant_to_dec_tct_id = pursuant_to_dec_tct_id;
@@ -19,7 +19,7 @@ export class Construction {
 
   static create(
     pursuant_to_dec_tct_id: PursuantToDecTCT,
-    current_snapshot_id: string | null,
+    current_snapshot_id: ConstructionInfoSnapshotId | null,
   ): Construction {
     return new Construction(
       new DocumentId(v7()),
@@ -31,7 +31,7 @@ export class Construction {
   static reconstitute(
     id: DocumentId,
     pursuant_to_dec_tct_id: PursuantToDecTCT,
-    current_snapshot_id: string,
+    current_snapshot_id: ConstructionInfoSnapshotId | null,
   ): Construction {
     return new Construction(id, pursuant_to_dec_tct_id, current_snapshot_id);
   }

@@ -4,6 +4,11 @@ import { IDocumentUseCase } from '../../domain/port/inbound/document.use-case';
 import type { IDocumentRepository } from '../../domain/port/outbound/document.repository.port';
 import { CreateSubmissionCommand } from '../command/create-submission.command';
 import { ConstructionAssembler } from '../assembler/construction.assembler';
+import { SubmissionAssembler } from '../assembler/submission.assembler';
+import { DecisionAssembler } from '../assembler/decision.assembler';
+import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
+import { ConstructionInfoSnapshot } from '../../domain/entity/construction-infor.entity';
+import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
 
 @Injectable()
 export class DocumentService implements IDocumentUseCase {
@@ -12,14 +17,31 @@ export class DocumentService implements IDocumentUseCase {
     private readonly repository: IDocumentRepository,
   ) {}
 
-  async initConstruction(data: CreateSubmissionCommand): Promise<Decision> {
+  async initConstruction(cmd: CreateSubmissionCommand): Promise<Decision> {
     await Promise.resolve();
-    const construction = ConstructionAssembler.fromCmd(data);
+    const con = ConstructionAssembler.fromCmd(cmd);
+    const conInfor = cmd.construction_infor_snapshot
+      ? ConstructionInfoSnapshotAssembler.fromCmd(
+          cmd.construction_infor_snapshot,
+          con.id,
+        )
+      : null;
+
+    const bidPackages =
+      cmd.construction_infor_snapshot?.bid_package_snapshots && conInfor
+        ? BidPackageSnapshotAssembler.fromCmdList(
+            cmd.construction_infor_snapshot.bid_package_snapshots,
+            conInfor.id,
+          )
+        : [];
+
+    const dec = DecisionAssembler.fromCmd(cmd, con.id);
+    const sub = SubmissionAssembler.fromCmd(cmd, con.id, dec.id, conInfor?.id);
+
     /*
     ________ Create all in a TRANSACTION (IUnitOfWork) ________
     - construction
     - submission
-    - administrative document
     - bid package snapshot
     - construction info snapshot
     */

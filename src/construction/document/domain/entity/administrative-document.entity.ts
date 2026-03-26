@@ -1,10 +1,10 @@
 import { v7 } from 'uuid';
-import { DocumentId } from '../value-objects/document-id.vo';
-import { DocumentNo } from '../value-objects/document-no.vo';
 import {
+  DocumentId,
+  DocumentNo,
   PursuantToDecTCT,
   PursuantToDecTTMN,
-} from '../value-objects/pursuant-to-dec.vo';
+} from '../value-objects/document.vo';
 
 export class AdministrativeDocument {
   id: DocumentId;
