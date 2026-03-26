@@ -7,17 +7,17 @@ import {
   IsDateString,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
+import { BidPackageType } from 'src/construction/domain/enum/bid-package.type';
 
 export class BidPackageSnapshotCommand {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  id: string;
+  id?: string;
 
-  @ApiProperty({ enum: ConstructionPeriod })
-  @IsEnum(ConstructionPeriod)
-  type: ConstructionPeriod;
+  @ApiProperty({ enum: BidPackageType })
+  @IsEnum(BidPackageType)
+  type: BidPackageType;
 
   @ApiProperty()
   @IsString()

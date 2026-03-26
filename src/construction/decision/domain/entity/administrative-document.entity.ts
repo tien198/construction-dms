@@ -1,3 +1,4 @@
+import { v7 } from 'uuid';
 import { DocumentId } from '../value-objects/document-id.vo';
 import { DocumentNo } from '../value-objects/document-no.vo';
 import {
@@ -27,5 +28,40 @@ export class AdministrativeDocument {
     this.date = date;
     this.pursuant_to_dec_tct_id = pursuant_to_dec_tct_id;
     this.pursuant_to_dec_ttmn_id = pursuant_to_dec_ttmn_id;
+  }
+
+  static create(
+    no: DocumentNo,
+    level: string,
+    date: Date,
+    pursuant_to_dec_tct_id: PursuantToDecTCT,
+    pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
+  ): AdministrativeDocument {
+    return new AdministrativeDocument(
+      new DocumentId(v7()),
+      no,
+      level,
+      date,
+      pursuant_to_dec_tct_id,
+      pursuant_to_dec_ttmn_id,
+    );
+  }
+
+  static reconstitute(
+    id: DocumentId,
+    no: DocumentNo,
+    level: string,
+    date: Date,
+    pursuant_to_dec_tct_id: PursuantToDecTCT,
+    pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
+  ): AdministrativeDocument {
+    return new AdministrativeDocument(
+      id,
+      no,
+      level,
+      date,
+      pursuant_to_dec_tct_id,
+      pursuant_to_dec_ttmn_id,
+    );
   }
 }
