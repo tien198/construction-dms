@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { DocumentController } from './infrastructure/adapter/inbound/document.controller';
-import { DocumentService } from './application/service/decision.service';
-import { PgDocumentRepository } from './infrastructure/adapter/outbound/pg-decision.repository';
+import { DocumentService } from './application/service/document.service';
+import { PgDocumentRepository } from './infrastructure/adapter/outbound/pg-document.repository';
 
-import { PgDecisionRepository } from './infrastructure/adapter/outbound/repositories/pg-base-decision.repository';
+import { PgDecisionRepository } from './infrastructure/adapter/outbound/repositories/pg-decision.repository';
 import { PgSubmissionRepository } from './infrastructure/adapter/outbound/repositories/pg-submission.repository';
 import { PgAdministrativeDocumentRepository } from './infrastructure/adapter/outbound/repositories/pg-administrative-document.repository';
 import { PgBidPackageSnapshotRepository } from './infrastructure/adapter/outbound/repositories/pg-bid-package-snapshot.repository';

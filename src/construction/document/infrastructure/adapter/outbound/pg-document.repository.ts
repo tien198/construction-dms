@@ -7,7 +7,7 @@ import { AdministrativeDocument } from '../../../domain/entity/administrative-do
 import { BidPackageSnapshot } from '../../../domain/entity/bid-package.entity';
 import { ConstructionInfoSnapshot } from '../../../domain/entity/construction-infor.entity';
 
-import { PgDecisionRepository } from './repositories/pg-base-decision.repository';
+import { PgDecisionRepository } from './repositories/pg-decision.repository';
 import { PgSubmissionRepository } from './repositories/pg-submission.repository';
 import { PgAdministrativeDocumentRepository } from './repositories/pg-administrative-document.repository';
 import { PgBidPackageSnapshotRepository } from './repositories/pg-bid-package-snapshot.repository';
