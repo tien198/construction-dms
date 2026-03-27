@@ -1,9 +1,9 @@
-import { Decision } from '../../entity/decision.entity';
-import { Submission } from '../../entity/submission.entity';
-import { AdministrativeDocument } from '../../entity/administrative-document.entity';
-import { BidPackageSnapshot } from '../../entity/bid-package.entity';
-import { ConstructionInfoSnapshot } from '../../entity/construction-infor.entity';
-import { Construction } from '../../entity/construction.entity';
+import { Decision } from '../../../domain/entity/decision.entity';
+import { Submission } from '../../../domain/entity/submission.entity';
+import { AdministrativeDocument } from '../../../domain/entity/administrative-document.entity';
+import { BidPackageSnapshot } from '../../../domain/entity/bid-package.entity';
+import { ConstructionInfoSnapshot } from '../../../domain/entity/construction-infor.entity';
+import { Construction } from '../../../domain/entity/construction.entity';
 
 // construction
 interface IDocumentRepository {

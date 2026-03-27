@@ -1,4 +1,4 @@
-import { Decision } from '../../entity/decision.entity';
+import { Decision } from '../../../domain/entity/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
 
 export interface IDocumentUseCase {

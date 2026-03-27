@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IDocumentRepository } from '../../../../domain/port/outbound/document.repository.port';
+import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Construction } from '../../../../domain/entity/construction.entity';
 
 @Injectable()

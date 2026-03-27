@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IDocumentRepository } from '../../../domain/port/outbound/document.repository.port';
+import { IDocumentRepository } from '../../../application/port/outbound/document.repository.port';
 import { Construction } from 'src/construction/document/domain/entity/construction.entity';
 import { Decision } from '../../../domain/entity/decision.entity';
 import { Submission } from '../../../domain/entity/submission.entity';

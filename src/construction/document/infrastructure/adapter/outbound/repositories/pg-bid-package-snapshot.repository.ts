@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { IDocumentRepository } from '../../../../domain/port/outbound/document.repository.port';
+import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
 import { BidPackageSnapshot } from '../../../../domain/entity/bid-package.entity';
 
 @Injectable()

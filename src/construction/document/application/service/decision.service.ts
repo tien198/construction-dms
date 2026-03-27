@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Decision } from '../../domain/entity/decision.entity';
-import { IDocumentUseCase } from '../../domain/port/inbound/document.use-case';
-import type { IDocumentRepository } from '../../domain/port/outbound/document.repository.port';
+import { IDocumentUseCase } from '../port/inbound/document.use-case';
+import type { IDocumentRepository } from '../port/outbound/document.repository.port';
 import { CreateSubmissionCommand } from '../command/create-submission.command';
 import { ConstructionAssembler } from '../assembler/construction.assembler';
 import { SubmissionAssembler } from '../assembler/submission.assembler';
