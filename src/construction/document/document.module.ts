@@ -8,6 +8,7 @@ import { PgSubmissionRepository } from './infrastructure/adapter/outbound/reposi
 import { PgAdministrativeDocumentRepository } from './infrastructure/adapter/outbound/repositories/pg-administrative-document.repository';
 import { PgBidPackageSnapshotRepository } from './infrastructure/adapter/outbound/repositories/pg-bid-package-snapshot.repository';
 import { PgConstructionInfoSnapshotRepository } from './infrastructure/adapter/outbound/repositories/pg-construction-info-snapshot.repository';
+import { PgConstructionRepository } from './infrastructure/adapter/outbound/repositories/pg-construction.respositoty';
 
 @Module({
   controllers: [DocumentController],
@@ -20,6 +21,7 @@ import { PgConstructionInfoSnapshotRepository } from './infrastructure/adapter/o
       provide: 'IDocumentRepository',
       useClass: PgDocumentRepository,
     },
+    PgConstructionRepository,
     PgDecisionRepository,
     PgSubmissionRepository,
     PgAdministrativeDocumentRepository,

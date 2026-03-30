@@ -1,6 +1,7 @@
-database:
-  host: 'localhost'
-  port:
-  user:
-  password:
-  database:
+db:
+  postgres:
+    host: 'localhost'
+    port: 5432
+    user: 'postgres'
+    password: '9815'
+    database: 'construction-dms'
