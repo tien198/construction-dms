@@ -15,7 +15,7 @@ import { PgPoolModule } from './shared/infrastructure/database/pg-pool.module';
       skipProcessEnv: true,
       isGlobal: true,
     }),
-    PgPoolModule,
+    PgPoolModule.forRoot(),
     DocumentModule,
   ],
   controllers: [AppController],
