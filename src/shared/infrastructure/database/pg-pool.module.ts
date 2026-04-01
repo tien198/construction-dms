@@ -26,13 +26,14 @@ export class PgPoolModule {
           },
           inject: [ConfigService],
         },
-        {
-          provide: PgPoolService,
-          useFactory: (poolConfig: PoolConfig) => {
-            return new PgPoolService(poolConfig);
-          },
-          inject: ['PG_POOL_OPTIONS'],
-        },
+        // {
+        //   provide: PgPoolService,
+        //   useFactory: (poolConfig: PoolConfig) => {
+        //     return new PgPoolService(poolConfig);
+        //   },
+        //   inject: ['PG_POOL_OPTIONS'],
+        // },
+        PgPoolService,
       ],
       exports: [PgPoolService],
     };

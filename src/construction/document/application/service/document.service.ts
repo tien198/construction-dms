@@ -7,14 +7,13 @@ import { ConstructionAssembler } from '../assembler/construction.assembler';
 import { SubmissionAssembler } from '../assembler/submission.assembler';
 import { DecisionAssembler } from '../assembler/decision.assembler';
 import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
-import { ConstructionInfoSnapshot } from '../../domain/entity/construction-infor.entity';
 import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
 
 @Injectable()
 export class DocumentService implements IDocumentUseCase {
   constructor(
     @Inject('IDocumentRepository')
-    private readonly repository: IDocumentRepository,
+    private readonly repo: IDocumentRepository,
   ) {}
 
   async initConstruction(cmd: CreateSubmissionCommand): Promise<Decision> {
@@ -37,6 +36,20 @@ export class DocumentService implements IDocumentUseCase {
 
     const dec = DecisionAssembler.fromCmd(cmd, con.id);
     const sub = SubmissionAssembler.fromCmd(cmd, con.id, dec.id, conInfor?.id);
+
+    console.log('__________________ Init');
+    console.log(con);
+
+    /*
+    await this.repo.saveConstruction(con);
+    if (conInfor) await this.repo.saveConstructionInfoSnapshot(conInfor);
+
+    for (const bidPackage of bidPackages) {
+      await this.repo.saveBidPackageSnapshot(bidPackage);
+    }
+    await this.repo.saveDecision(dec);
+    await this.repo.saveSubmission(sub);
+    */
 
     /*
     ________ Create all in a TRANSACTION (IUnitOfWork) ________

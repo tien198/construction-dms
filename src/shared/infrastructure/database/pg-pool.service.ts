@@ -1,11 +1,11 @@
-import { OnApplicationShutdown } from '@nestjs/common';
-import { PoolConfig } from 'pg';
+import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
+import type { PoolConfig } from 'pg';
 import { PgPool } from './pg-pool';
 
 // @Global()
-// @Injectable()
+@Injectable()
 export class PgPoolService extends PgPool implements OnApplicationShutdown {
-  constructor(poolConf: PoolConfig) {
+  constructor(@Inject('PG_POOL_OPTIONS') private poolConf: PoolConfig) {
     super(poolConf);
     console.log('-------- pool was created');
   }
