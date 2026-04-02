@@ -7,182 +7,216 @@ import { AdministrativeDocument } from '../../../domain/entity/administrative-do
 import { BidPackageSnapshot } from '../../../domain/entity/bid-package.entity';
 import { ConstructionInfoSnapshot } from '../../../domain/entity/construction-infor.entity';
 
-import { PgDecisionRepository } from './repositories/pg-decision.repository';
-import { PgSubmissionRepository } from './repositories/pg-submission.repository';
-import { PgAdministrativeDocumentRepository } from './repositories/pg-administrative-document.repository';
-import { PgBidPackageSnapshotRepository } from './repositories/pg-bid-package-snapshot.repository';
-import { PgConstructionInfoSnapshotRepository } from './repositories/pg-construction-info-snapshot.repository';
-import { PgConstructionRepository } from './repositories/pg-construction.respositoty';
+import { PgDecisionRepository as DecRepo } from './repositories/pg-decision.repository';
+import { PgSubmissionRepository as SubRepo } from './repositories/pg-submission.repository';
+import { PgAdministrativeDocumentRepository as AdminDocRepo } from './repositories/pg-administrative-document.repository';
+import { PgBidPackageSnapshotRepository as BidPkgSnapRepo } from './repositories/pg-bid-package-snapshot.repository';
+import { PgConstructionInfoSnapshotRepository as ConInforSnapRepo } from './repositories/pg-construction-info-snapshot.repository';
+import { PgConstructionRepository as ConRepo } from './repositories/pg-construction.respositoty';
 import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
+import { PoolClient } from 'pg';
 
 @Injectable()
 export class PgDocumentRepository implements IDocumentRepository {
-  private readonly constructionRepository: PgConstructionRepository;
-  private readonly decisionRepository: PgDecisionRepository;
-  private readonly submissionRepository: PgSubmissionRepository;
-  private readonly administrativeDocumentRepository: PgAdministrativeDocumentRepository;
-  private readonly bidPackageSnapshotRepository: PgBidPackageSnapshotRepository;
-  private readonly constructionInfoSnapshotRepository: PgConstructionInfoSnapshotRepository;
+  private readonly _consRepo: ConRepo;
+  private readonly _decRepo: DecRepo;
+  private readonly _subRepo: SubRepo;
+  private readonly _adminDocRepo: AdminDocRepo;
+  private readonly _bidPkgSnapRepo: BidPkgSnapRepo;
+  private readonly _conInforSnapRepo: ConInforSnapRepo;
 
   constructor(@Inject('IPgPoolService') poolService: PgPoolService) {
-    this.constructionRepository =
-      PgConstructionRepository.getInstance(poolService);
-    this.decisionRepository = PgDecisionRepository.getInstance(poolService);
-    this.submissionRepository = PgSubmissionRepository.getInstance(poolService);
-    this.administrativeDocumentRepository =
-      PgAdministrativeDocumentRepository.getInstance(poolService);
-    this.bidPackageSnapshotRepository =
-      PgBidPackageSnapshotRepository.getInstance(poolService);
-    this.constructionInfoSnapshotRepository =
-      PgConstructionInfoSnapshotRepository.getInstance(poolService);
+    // getInstance the first time to lazy instantiate singleton instances
+    this._consRepo = ConRepo.getInstance(poolService);
+    this._decRepo = DecRepo.getInstance(poolService);
+    this._subRepo = SubRepo.getInstance(poolService);
+    this._adminDocRepo = AdminDocRepo.getInstance(poolService);
+    this._bidPkgSnapRepo = BidPkgSnapRepo.getInstance(poolService);
+    this._conInforSnapRepo = ConInforSnapRepo.getInstance(poolService);
   }
   // Construction
-  saveConstruction(construction: Construction): Promise<Construction> {
-    return this.constructionRepository.saveConstruction(construction);
+  saveConstruction(
+    construction: Construction,
+    client?: PoolClient,
+  ): Promise<Construction> {
+    return this._consRepo.saveConstruction(construction, client);
   }
   updateConstruction(
     id: string,
     construction: Partial<Construction>,
+    client?: PoolClient,
   ): Promise<Construction> {
-    return this.constructionRepository.updateConstruction(id, construction);
+    return this._consRepo.updateConstruction(id, construction, client);
   }
-  deleteConstruction(id: string): Promise<void> {
-    return this.constructionRepository.deleteConstruction(id);
+  deleteConstruction(id: string, client?: PoolClient): Promise<void> {
+    return this._consRepo.deleteConstruction(id, client);
   }
-  findConstructionById(id: string): Promise<Construction | null> {
-    return this.constructionRepository.findConstructionById(id);
+  findConstructionById(
+    id: string,
+    client?: PoolClient,
+  ): Promise<Construction | null> {
+    return this._consRepo.findConstructionById(id, client);
   }
-  findAllConstructions(): Promise<Construction[]> {
-    return this.constructionRepository.findAllConstructions();
+  findAllConstructions(client?: PoolClient): Promise<Construction[]> {
+    return this._consRepo.findAllConstructions(client);
   }
 
   // Decision
-  saveDecision(decision: Decision): Promise<Decision> {
-    return this.decisionRepository.saveDecision(decision);
+  saveDecision(decision: Decision, client?: PoolClient): Promise<Decision> {
+    return this._decRepo.saveDecision(decision, client);
   }
-  updateDecision(id: string, decision: Partial<Decision>): Promise<Decision> {
-    return this.decisionRepository.updateDecision(id, decision);
+  updateDecision(
+    id: string,
+    decision: Partial<Decision>,
+    client?: PoolClient,
+  ): Promise<Decision> {
+    return this._decRepo.updateDecision(id, decision, client);
   }
-  deleteDecision(id: string): Promise<void> {
-    return this.decisionRepository.deleteDecision(id);
+  deleteDecision(id: string, client?: PoolClient): Promise<void> {
+    return this._decRepo.deleteDecision(id, client);
   }
-  findDecisionById(id: string): Promise<Decision | null> {
-    return this.decisionRepository.findDecisionById(id);
+  findDecisionById(id: string, client?: PoolClient): Promise<Decision | null> {
+    return this._decRepo.findDecisionById(id, client);
   }
-  findAllDecisions(): Promise<Decision[]> {
-    return this.decisionRepository.findAllDecisions();
+  findAllDecisions(client?: PoolClient): Promise<Decision[]> {
+    return this._decRepo.findAllDecisions(client);
   }
 
   // Submission
-  saveSubmission(submission: Submission): Promise<Submission> {
-    return this.submissionRepository.saveSubmission(submission);
+  saveSubmission(
+    submission: Submission,
+    client?: PoolClient,
+  ): Promise<Submission> {
+    return this._subRepo.saveSubmission(submission, client);
   }
   updateSubmission(
     id: string,
     submission: Partial<Submission>,
+    client?: PoolClient,
   ): Promise<Submission> {
-    return this.submissionRepository.updateSubmission(id, submission);
+    return this._subRepo.updateSubmission(id, submission, client);
   }
-  deleteSubmission(id: string): Promise<void> {
-    return this.submissionRepository.deleteSubmission(id);
+  deleteSubmission(id: string, client?: PoolClient): Promise<void> {
+    return this._subRepo.deleteSubmission(id, client);
   }
-  findSubmissionById(id: string): Promise<Submission | null> {
-    return this.submissionRepository.findSubmissionById(id);
+  findSubmissionById(
+    id: string,
+    client?: PoolClient,
+  ): Promise<Submission | null> {
+    return this._subRepo.findSubmissionById(id, client);
   }
-  findAllSubmissions(): Promise<Submission[]> {
-    return this.submissionRepository.findAllSubmissions();
+  findAllSubmissions(client?: PoolClient): Promise<Submission[]> {
+    return this._subRepo.findAllSubmissions(client);
   }
 
   // Administrative Document
   saveAdministrativeDocument(
     administrativeDocument: AdministrativeDocument,
+    client?: PoolClient,
   ): Promise<AdministrativeDocument> {
-    return this.administrativeDocumentRepository.saveAdministrativeDocument(
+    return this._adminDocRepo.saveAdministrativeDocument(
       administrativeDocument,
+      client,
     );
   }
   updateAdministrativeDocument(
     id: string,
     administrativeDocument: Partial<AdministrativeDocument>,
+    client?: PoolClient,
   ): Promise<AdministrativeDocument> {
-    return this.administrativeDocumentRepository.updateAdministrativeDocument(
+    return this._adminDocRepo.updateAdministrativeDocument(
       id,
       administrativeDocument,
+      client,
     );
   }
-  deleteAdministrativeDocument(id: string): Promise<void> {
-    return this.administrativeDocumentRepository.deleteAdministrativeDocument(
-      id,
-    );
+  deleteAdministrativeDocument(id: string, client?: PoolClient): Promise<void> {
+    return this._adminDocRepo.deleteAdministrativeDocument(id, client);
   }
   findAdministrativeDocumentById(
     id: string,
+    client?: PoolClient,
   ): Promise<AdministrativeDocument | null> {
-    return this.administrativeDocumentRepository.findAdministrativeDocumentById(
-      id,
-    );
+    return this._adminDocRepo.findAdministrativeDocumentById(id, client);
   }
-  findAllAdministrativeDocuments(): Promise<AdministrativeDocument[]> {
-    return this.administrativeDocumentRepository.findAllAdministrativeDocuments();
+  findAllAdministrativeDocuments(
+    client?: PoolClient,
+  ): Promise<AdministrativeDocument[]> {
+    return this._adminDocRepo.findAllAdministrativeDocuments(client);
   }
 
   // Bid Package Snapshot
   saveBidPackageSnapshot(
     bidPackageSnapshot: BidPackageSnapshot,
+    client?: PoolClient,
   ): Promise<BidPackageSnapshot> {
-    return this.bidPackageSnapshotRepository.saveBidPackageSnapshot(
+    return this._bidPkgSnapRepo.saveBidPackageSnapshot(
       bidPackageSnapshot,
+      client,
     );
   }
   updateBidPackageSnapshot(
     id: string,
     bidPackageSnapshot: Partial<BidPackageSnapshot>,
+    client?: PoolClient,
   ): Promise<BidPackageSnapshot> {
-    return this.bidPackageSnapshotRepository.updateBidPackageSnapshot(
+    return this._bidPkgSnapRepo.updateBidPackageSnapshot(
       id,
       bidPackageSnapshot,
+      client,
     );
   }
-  deleteBidPackageSnapshot(id: string): Promise<void> {
-    return this.bidPackageSnapshotRepository.deleteBidPackageSnapshot(id);
+  deleteBidPackageSnapshot(id: string, client?: PoolClient): Promise<void> {
+    return this._bidPkgSnapRepo.deleteBidPackageSnapshot(id, client);
   }
-  findBidPackageSnapshotById(id: string): Promise<BidPackageSnapshot | null> {
-    return this.bidPackageSnapshotRepository.findBidPackageSnapshotById(id);
+  findBidPackageSnapshotById(
+    id: string,
+    client?: PoolClient,
+  ): Promise<BidPackageSnapshot | null> {
+    return this._bidPkgSnapRepo.findBidPackageSnapshotById(id, client);
   }
-  findAllBidPackageSnapshots(): Promise<BidPackageSnapshot[]> {
-    return this.bidPackageSnapshotRepository.findAllBidPackageSnapshots();
+  findAllBidPackageSnapshots(
+    client?: PoolClient,
+  ): Promise<BidPackageSnapshot[]> {
+    return this._bidPkgSnapRepo.findAllBidPackageSnapshots(client);
   }
 
   // Construction Info Snapshot
   saveConstructionInfoSnapshot(
     constructionInfoSnapshot: ConstructionInfoSnapshot,
+    client?: PoolClient,
   ): Promise<ConstructionInfoSnapshot> {
-    return this.constructionInfoSnapshotRepository.saveConstructionInfoSnapshot(
+    return this._conInforSnapRepo.saveConstructionInfoSnapshot(
       constructionInfoSnapshot,
+      client,
     );
   }
   updateConstructionInfoSnapshot(
     id: string,
     constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
+    client?: PoolClient,
   ): Promise<ConstructionInfoSnapshot> {
-    return this.constructionInfoSnapshotRepository.updateConstructionInfoSnapshot(
+    return this._conInforSnapRepo.updateConstructionInfoSnapshot(
       id,
       constructionInfoSnapshot,
+      client,
     );
   }
-  deleteConstructionInfoSnapshot(id: string): Promise<void> {
-    return this.constructionInfoSnapshotRepository.deleteConstructionInfoSnapshot(
-      id,
-    );
+  deleteConstructionInfoSnapshot(
+    id: string,
+    client?: PoolClient,
+  ): Promise<void> {
+    return this._conInforSnapRepo.deleteConstructionInfoSnapshot(id, client);
   }
   findConstructionInfoSnapshotById(
     id: string,
+    client?: PoolClient,
   ): Promise<ConstructionInfoSnapshot | null> {
-    return this.constructionInfoSnapshotRepository.findConstructionInfoSnapshotById(
-      id,
-    );
+    return this._conInforSnapRepo.findConstructionInfoSnapshotById(id, client);
   }
-  findAllConstructionInfoSnapshots(): Promise<ConstructionInfoSnapshot[]> {
-    return this.constructionInfoSnapshotRepository.findAllConstructionInfoSnapshots();
+  findAllConstructionInfoSnapshots(
+    client?: PoolClient,
+  ): Promise<ConstructionInfoSnapshot[]> {
+    return this._conInforSnapRepo.findAllConstructionInfoSnapshots(client);
   }
 }

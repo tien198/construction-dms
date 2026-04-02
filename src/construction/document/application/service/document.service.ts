@@ -8,12 +8,16 @@ import { SubmissionAssembler } from '../assembler/submission.assembler';
 import { DecisionAssembler } from '../assembler/decision.assembler';
 import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
 import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
+import type { IUnitOfWork } from '../port/outbound/i-unit-of-work.port';
+import { PoolClient } from 'pg';
 
 @Injectable()
 export class DocumentService implements IDocumentUseCase {
   constructor(
     @Inject('IDocumentRepository')
     private readonly repo: IDocumentRepository,
+    @Inject('IUnitOfWork')
+    private readonly uow: IUnitOfWork,
   ) {}
 
   async initConstruction(cmd: CreateSubmissionCommand): Promise<Decision> {
@@ -37,28 +41,29 @@ export class DocumentService implements IDocumentUseCase {
     const dec = DecisionAssembler.fromCmd(cmd, con.id);
     const sub = SubmissionAssembler.fromCmd(cmd, con.id, dec.id, conInfor?.id);
 
-    console.log('__________________ Init');
-    console.log(con);
+    // Begin transaction
+    const client = (await this.uow.begin()) as PoolClient;
 
-    /*
-    await this.repo.saveConstruction(con);
-    if (conInfor) await this.repo.saveConstructionInfoSnapshot(conInfor);
+    try {
+      // Save all entities
+      await this.repo.saveConstruction(con, client);
+      if (conInfor) {
+        await this.repo.saveConstructionInfoSnapshot(conInfor, client);
+      }
 
-    for (const bidPackage of bidPackages) {
-      await this.repo.saveBidPackageSnapshot(bidPackage);
+      for (const bidPackage of bidPackages) {
+        await this.repo.saveBidPackageSnapshot(bidPackage, client);
+      }
+      await this.repo.saveDecision(dec, client);
+      await this.repo.saveSubmission(sub, client);
+
+      await this.uow.commit(client);
+    } catch (error) {
+      await this.uow.rollback(client);
+      throw error;
     }
-    await this.repo.saveDecision(dec);
-    await this.repo.saveSubmission(sub);
-    */
 
-    /*
-    ________ Create all in a TRANSACTION (IUnitOfWork) ________
-    - construction
-    - submission
-    - bid package snapshot
-    - construction info snapshot
-    */
-    return {} as Decision;
+    return dec;
   }
   /*
   async createDecision(data: CreateSubmissionCommand): Promise<Decision> {
