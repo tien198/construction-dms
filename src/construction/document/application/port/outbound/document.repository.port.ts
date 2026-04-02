@@ -5,83 +5,109 @@ import { BidPackageSnapshot } from '../../../domain/entity/bid-package.entity';
 import { ConstructionInfoSnapshot } from '../../../domain/entity/construction-infor.entity';
 import { Construction } from '../../../domain/entity/construction.entity';
 
+// client is a dedicated db client (maybe pool client), used for transaction
+
 // construction
 interface IDocumentRepository {
-  saveConstruction(construction: Construction): Promise<Construction>;
+  saveConstruction(
+    construction: Construction,
+    client?: any,
+  ): Promise<Construction>;
   updateConstruction(
     id: string,
     construction: Partial<Construction>,
+    client?: any,
   ): Promise<Construction>;
-  deleteConstruction(id: string): Promise<void>;
-  findConstructionById(id: string): Promise<Construction | null>;
-  findAllConstructions(): Promise<Construction[]>;
+  deleteConstruction(id: string, client?: any): Promise<void>;
+  findConstructionById(id: string, client?: any): Promise<Construction | null>;
+  findAllConstructions(client?: any): Promise<Construction[]>;
 }
 
 // Decitsion
 interface IDocumentRepository {
-  saveDecision(decision: Decision): Promise<Decision>;
-  updateDecision(id: string, decision: Partial<Decision>): Promise<Decision>;
-  deleteDecision(id: string): Promise<void>;
-  findDecisionById(id: string): Promise<Decision | null>;
-  findAllDecisions(): Promise<Decision[]>;
+  saveDecision(decision: Decision, client?: any): Promise<Decision>;
+  updateDecision(
+    id: string,
+    decision: Partial<Decision>,
+    client?: any,
+  ): Promise<Decision>;
+  deleteDecision(id: string, client?: any): Promise<void>;
+  findDecisionById(id: string, client?: any): Promise<Decision | null>;
+  findAllDecisions(client?: any): Promise<Decision[]>;
 }
 
 // submission
 interface IDocumentRepository {
-  saveSubmission(submission: Submission): Promise<Submission>;
+  saveSubmission(submission: Submission, client?: any): Promise<Submission>;
   updateSubmission(
     id: string,
     submission: Partial<Submission>,
+    client?: any,
   ): Promise<Submission>;
-  deleteSubmission(id: string): Promise<void>;
-  findSubmissionById(id: string): Promise<Submission | null>;
-  findAllSubmissions(): Promise<Submission[]>;
+  deleteSubmission(id: string, client?: any): Promise<void>;
+  findSubmissionById(id: string, client?: any): Promise<Submission | null>;
+  findAllSubmissions(client?: any): Promise<Submission[]>;
 }
 
 // administrative document
 interface IDocumentRepository {
   saveAdministrativeDocument(
     administrativeDocument: AdministrativeDocument,
+    client?: any,
   ): Promise<AdministrativeDocument>;
   updateAdministrativeDocument(
     id: string,
     administrativeDocument: Partial<AdministrativeDocument>,
+    client?: any,
   ): Promise<AdministrativeDocument>;
-  deleteAdministrativeDocument(id: string): Promise<void>;
+  deleteAdministrativeDocument(id: string, client?: any): Promise<void>;
   findAdministrativeDocumentById(
     id: string,
+    client?: any,
   ): Promise<AdministrativeDocument | null>;
-  findAllAdministrativeDocuments(): Promise<AdministrativeDocument[]>;
+  findAllAdministrativeDocuments(
+    client?: any,
+  ): Promise<AdministrativeDocument[]>;
 }
 
 // bid package snapshot
 interface IDocumentRepository {
   saveBidPackageSnapshot(
     bidPackageSnapshot: BidPackageSnapshot,
+    client?: any,
   ): Promise<BidPackageSnapshot>;
   updateBidPackageSnapshot(
     id: string,
     bidPackageSnapshot: Partial<BidPackageSnapshot>,
+    client?: any,
   ): Promise<BidPackageSnapshot>;
-  deleteBidPackageSnapshot(id: string): Promise<void>;
-  findBidPackageSnapshotById(id: string): Promise<BidPackageSnapshot | null>;
-  findAllBidPackageSnapshots(): Promise<BidPackageSnapshot[]>;
+  deleteBidPackageSnapshot(id: string, client?: any): Promise<void>;
+  findBidPackageSnapshotById(
+    id: string,
+    client?: any,
+  ): Promise<BidPackageSnapshot | null>;
+  findAllBidPackageSnapshots(client?: any): Promise<BidPackageSnapshot[]>;
 }
 
 // construction info snapshot
 interface IDocumentRepository {
   saveConstructionInfoSnapshot(
     constructionInfoSnapshot: ConstructionInfoSnapshot,
+    client?: any,
   ): Promise<ConstructionInfoSnapshot>;
   updateConstructionInfoSnapshot(
     id: string,
     constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
+    client?: any,
   ): Promise<ConstructionInfoSnapshot>;
-  deleteConstructionInfoSnapshot(id: string): Promise<void>;
+  deleteConstructionInfoSnapshot(id: string, client?: any): Promise<void>;
   findConstructionInfoSnapshotById(
     id: string,
+    client?: any,
   ): Promise<ConstructionInfoSnapshot | null>;
-  findAllConstructionInfoSnapshots(): Promise<ConstructionInfoSnapshot[]>;
+  findAllConstructionInfoSnapshots(
+    client?: any,
+  ): Promise<ConstructionInfoSnapshot[]>;
 }
 
 export type { IDocumentRepository };

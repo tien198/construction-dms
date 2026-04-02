@@ -3,12 +3,7 @@ import { DocumentController } from './infrastructure/adapter/inbound/document.co
 import { DocumentService } from './application/service/document.service';
 import { PgDocumentRepository } from './infrastructure/adapter/outbound/pg-document.repository';
 
-import { PgDecisionRepository } from './infrastructure/adapter/outbound/repositories/pg-decision.repository';
-import { PgSubmissionRepository } from './infrastructure/adapter/outbound/repositories/pg-submission.repository';
-import { PgAdministrativeDocumentRepository } from './infrastructure/adapter/outbound/repositories/pg-administrative-document.repository';
-import { PgBidPackageSnapshotRepository } from './infrastructure/adapter/outbound/repositories/pg-bid-package-snapshot.repository';
-import { PgConstructionInfoSnapshotRepository } from './infrastructure/adapter/outbound/repositories/pg-construction-info-snapshot.repository';
-import { PgConstructionRepository } from './infrastructure/adapter/outbound/repositories/pg-construction.respositoty';
+import { UnitOfWork } from './infrastructure/adapter/outbound/unit-of-work';
 
 @Module({
   controllers: [DocumentController],
@@ -21,12 +16,10 @@ import { PgConstructionRepository } from './infrastructure/adapter/outbound/repo
       provide: 'IDocumentRepository',
       useClass: PgDocumentRepository,
     },
-    PgConstructionRepository,
-    PgDecisionRepository,
-    PgSubmissionRepository,
-    PgAdministrativeDocumentRepository,
-    PgBidPackageSnapshotRepository,
-    PgConstructionInfoSnapshotRepository,
+    {
+      provide: 'IUnitOfWork',
+      useClass: UnitOfWork,
+    },
   ],
   exports: ['IDocumentUseCase'],
 })

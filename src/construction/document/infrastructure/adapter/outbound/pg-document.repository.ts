@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IDocumentRepository } from '../../../application/port/outbound/document.repository.port';
 import { Construction } from 'src/construction/document/domain/entity/construction.entity';
 import { Decision } from '../../../domain/entity/decision.entity';
@@ -13,17 +13,29 @@ import { PgAdministrativeDocumentRepository } from './repositories/pg-administra
 import { PgBidPackageSnapshotRepository } from './repositories/pg-bid-package-snapshot.repository';
 import { PgConstructionInfoSnapshotRepository } from './repositories/pg-construction-info-snapshot.repository';
 import { PgConstructionRepository } from './repositories/pg-construction.respositoty';
+import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
 
 @Injectable()
 export class PgDocumentRepository implements IDocumentRepository {
-  constructor(
-    private readonly constructionRepository: PgConstructionRepository,
-    private readonly decisionRepository: PgDecisionRepository,
-    private readonly submissionRepository: PgSubmissionRepository,
-    private readonly administrativeDocumentRepository: PgAdministrativeDocumentRepository,
-    private readonly bidPackageSnapshotRepository: PgBidPackageSnapshotRepository,
-    private readonly constructionInfoSnapshotRepository: PgConstructionInfoSnapshotRepository,
-  ) {}
+  private readonly constructionRepository: PgConstructionRepository;
+  private readonly decisionRepository: PgDecisionRepository;
+  private readonly submissionRepository: PgSubmissionRepository;
+  private readonly administrativeDocumentRepository: PgAdministrativeDocumentRepository;
+  private readonly bidPackageSnapshotRepository: PgBidPackageSnapshotRepository;
+  private readonly constructionInfoSnapshotRepository: PgConstructionInfoSnapshotRepository;
+
+  constructor(@Inject('IPgPoolService') poolService: PgPoolService) {
+    this.constructionRepository =
+      PgConstructionRepository.getInstance(poolService);
+    this.decisionRepository = PgDecisionRepository.getInstance(poolService);
+    this.submissionRepository = PgSubmissionRepository.getInstance(poolService);
+    this.administrativeDocumentRepository =
+      PgAdministrativeDocumentRepository.getInstance(poolService);
+    this.bidPackageSnapshotRepository =
+      PgBidPackageSnapshotRepository.getInstance(poolService);
+    this.constructionInfoSnapshotRepository =
+      PgConstructionInfoSnapshotRepository.getInstance(poolService);
+  }
   // Construction
   saveConstruction(construction: Construction): Promise<Construction> {
     return this.constructionRepository.saveConstruction(construction);

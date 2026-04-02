@@ -1,12 +1,31 @@
-import { IDocumentRepository } from '../../../application/port/outbound/document.repository.port';
+import { Injectable } from '@nestjs/common';
+import { PoolClient } from 'pg';
 import { IUnitOfWork } from '../../../application/port/outbound/i-unit-of-work.port';
+import { PgPoolService } from '../../../../../shared/infrastructure/database/pg-pool.service';
 
+@Injectable()
 export class UnitOfWork implements IUnitOfWork {
-  async begin(): Promise<void> {}
+  constructor(private readonly poolService: PgPoolService) {}
 
-  async commit(): Promise<void> {}
+  async begin(): Promise<PoolClient> {
+    const client = await this.poolService.connect();
+    await client.query('BEGIN');
+    return client;
+  }
 
-  async rollback(): Promise<void> {}
+  async commit(client: PoolClient): Promise<void> {
+    try {
+      await client.query('COMMIT');
+    } finally {
+      client.release();
+    }
+  }
 
-  docRepo: IDocumentRepository;
+  async rollback(client: PoolClient): Promise<void> {
+    try {
+      await client.query('ROLLBACK');
+    } finally {
+      client.release();
+    }
+  }
 }

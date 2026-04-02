@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
+import { PoolClient } from 'pg';
+import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
 import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Construction } from '../../../../domain/entity/construction.entity';
 
@@ -11,22 +14,41 @@ export class PgConstructionRepository implements Pick<
   | 'findConstructionById'
   | 'findAllConstructions'
 > {
-  saveConstruction(construction: Construction): Promise<Construction> {
+  private static instance: PgConstructionRepository;
+  private constructor(private readonly poolService: PgPoolService) {}
+
+  static getInstance(poolService: PgPoolService) {
+    if (!PgConstructionRepository.instance) {
+      PgConstructionRepository.instance = new PgConstructionRepository(
+        poolService,
+      );
+    }
+    return PgConstructionRepository.instance;
+  }
+
+  saveConstruction(
+    construction: Construction,
+    client?: PoolClient,
+  ): Promise<Construction> {
     throw new Error('Method not implemented.');
   }
   updateConstruction(
     id: string,
     construction: Partial<Construction>,
+    client?: PoolClient,
   ): Promise<Construction> {
     throw new Error('Method not implemented.');
   }
-  deleteConstruction(id: string): Promise<void> {
+  deleteConstruction(id: string, client?: PoolClient): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  findConstructionById(id: string): Promise<Construction | null> {
+  findConstructionById(
+    id: string,
+    client?: PoolClient,
+  ): Promise<Construction | null> {
     throw new Error('Method not implemented.');
   }
-  findAllConstructions(): Promise<Construction[]> {
+  findAllConstructions(client?: PoolClient): Promise<Construction[]> {
     throw new Error('Method not implemented.');
   }
 }
