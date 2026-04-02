@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IDocumentRepository } from '../../../application/port/outbound/document.repository.port';
 import { Construction } from 'src/construction/document/domain/entity/construction.entity';
 import { Decision } from '../../../domain/entity/decision.entity';
@@ -25,7 +25,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   private readonly _bidPkgSnapRepo: BidPkgSnapRepo;
   private readonly _conInforSnapRepo: ConInforSnapRepo;
 
-  constructor(@Inject('IPgPoolService') poolService: PgPoolService) {
+  constructor(poolService: PgPoolService) {
     // getInstance the first time to lazy instantiate singleton instances
     this._consRepo = ConRepo.getInstance(poolService);
     this._decRepo = DecRepo.getInstance(poolService);
