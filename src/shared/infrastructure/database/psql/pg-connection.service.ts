@@ -7,6 +7,7 @@ import {
 import type { PoolConfig } from 'pg';
 import { PgConnection } from './pg-connection';
 import { PgSchemaInitializerService } from './schema/pg-shema-initializer.service';
+import { ModuleRef } from '@nestjs/core';
 
 // @Global()
 @Injectable()
@@ -16,14 +17,15 @@ export class PgConnectionService
 {
   constructor(
     @Inject('PG_POOL_OPTIONS') private readonly poolConf: PoolConfig,
+    private readonly moduleRef: ModuleRef,
   ) {
     super(poolConf);
     console.log('-------- pool was created');
   }
 
   async onApplicationBootstrap() {
-    const initializer = new PgSchemaInitializerService(this.poolConf);
-    await initializer.init();
+    const initializer = this.moduleRef.create(PgSchemaInitializerService);
+    await (await initializer).init();
   }
 
   onApplicationShutdown(signal?: string) {

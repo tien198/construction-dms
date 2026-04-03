@@ -1,13 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
 import { log } from 'console';
 import { Client, type PoolConfig } from 'pg';
 
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class PgSchemaInitializerService {
   client: Client;
-  constructor(readonly poolConf: PoolConfig) {
+  constructor(@Inject('PG_POOL_OPTIONS') readonly poolConf: PoolConfig) {
     log(poolConf);
     this.client = new Client({ ...poolConf, database: 'postgres' });
   }
