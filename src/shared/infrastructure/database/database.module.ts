@@ -1,14 +1,14 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { PgPoolService } from './pg-pool.service';
+import { PgConnectionService } from './psql/pg-connection.service';
 import { ConfigService } from '@nestjs/config';
 import { DbConfig } from 'config/database.config.type';
 import { PoolConfig } from 'pg';
 
 @Module({})
-export class PgPoolModule {
+export class DatabaseModule {
   static forRoot(): DynamicModule {
     return {
-      module: PgPoolModule,
+      module: DatabaseModule,
       global: true,
       providers: [
         {
@@ -33,9 +33,9 @@ export class PgPoolModule {
         //   },
         //   inject: ['PG_POOL_OPTIONS'],
         // },
-        PgPoolService,
+        PgConnectionService,
       ],
-      exports: [PgPoolService],
+      exports: [PgConnectionService],
     };
   }
 }

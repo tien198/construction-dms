@@ -13,7 +13,7 @@ import { PgAdministrativeDocumentRepository as AdminDocRepo } from './repositori
 import { PgBidPackageSnapshotRepository as BidPkgSnapRepo } from './repositories/pg-bid-package-snapshot.repository';
 import { PgConstructionInfoSnapshotRepository as ConInforSnapRepo } from './repositories/pg-construction-info-snapshot.repository';
 import { PgConstructionRepository as ConRepo } from './repositories/pg-construction.respositoty';
-import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
+import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { PoolClient } from 'pg';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   private readonly _bidPkgSnapRepo: BidPkgSnapRepo;
   private readonly _conInforSnapRepo: ConInforSnapRepo;
 
-  constructor(poolService: PgPoolService) {
+  constructor(poolService: PgConnectionService) {
     // getInstance the first time to lazy instantiate singleton instances
     this._consRepo = ConRepo.getInstance(poolService);
     this._decRepo = DecRepo.getInstance(poolService);

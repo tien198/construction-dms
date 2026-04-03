@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
-import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
+import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Submission } from '../../../../domain/entity/submission.entity';
 
@@ -15,9 +15,9 @@ export class PgSubmissionRepository implements Pick<
   | 'findAllSubmissions'
 > {
   private static instance: PgSubmissionRepository;
-  private constructor(private readonly poolService: PgPoolService) {}
+  private constructor(private readonly poolService: PgConnectionService) {}
 
-  static getInstance(poolService: PgPoolService) {
+  static getInstance(poolService: PgConnectionService) {
     if (!PgSubmissionRepository.instance) {
       PgSubmissionRepository.instance = new PgSubmissionRepository(poolService);
     }

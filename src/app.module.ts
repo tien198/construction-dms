@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DocumentModule } from './construction/document/document.module';
 import config from 'config/config';
 import databaseConfig from 'config/database.config';
-import { PgPoolModule } from './shared/infrastructure/database/pg-pool.module';
+import { DatabaseModule } from './shared/infrastructure/database/database.module';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { PgPoolModule } from './shared/infrastructure/database/pg-pool.module';
       skipProcessEnv: true,
       isGlobal: true,
     }),
-    PgPoolModule.forRoot(),
+    DatabaseModule.forRoot(),
     DocumentModule,
   ],
   controllers: [AppController],

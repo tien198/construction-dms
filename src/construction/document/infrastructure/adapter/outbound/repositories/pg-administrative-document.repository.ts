@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
 import { AdministrativeDocument } from '../../../../domain/entity/administrative-document.entity';
 import { PoolClient } from 'pg';
-import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
+import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 
 @Injectable()
 export class PgAdministrativeDocumentRepository implements Pick<
@@ -15,9 +15,9 @@ export class PgAdministrativeDocumentRepository implements Pick<
   | 'findAllAdministrativeDocuments'
 > {
   private static instance: PgAdministrativeDocumentRepository;
-  private constructor(private readonly poolService: PgPoolService) {}
+  private constructor(private readonly poolService: PgConnectionService) {}
 
-  static getInstance(poolService: PgPoolService) {
+  static getInstance(poolService: PgConnectionService) {
     if (!PgAdministrativeDocumentRepository.instance) {
       PgAdministrativeDocumentRepository.instance =
         new PgAdministrativeDocumentRepository(poolService);

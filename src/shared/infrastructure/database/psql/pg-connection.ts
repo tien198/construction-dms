@@ -1,7 +1,7 @@
 import { Pool, PoolConfig } from 'pg';
 
-export class PgPool {
-  protected pool: Pool;
+export class PgConnection {
+  readonly pool: Pool;
 
   constructor(config?: PoolConfig) {
     this.pool = new Pool(config);

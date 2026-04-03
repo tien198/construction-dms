@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { IUnitOfWork } from '../../../application/port/outbound/i-unit-of-work.port';
-import { PgPoolService } from '../../../../../shared/infrastructure/database/pg-pool.service';
+import { PgConnectionService } from '../../../../../shared/infrastructure/database/psql/pg-connection.service';
 
 @Injectable()
 export class UnitOfWork implements IUnitOfWork {
-  constructor(private readonly poolService: PgPoolService) {}
+  constructor(private readonly pgService: PgConnectionService) {}
 
   async begin(): Promise<PoolClient> {
-    const client = await this.poolService.connect();
+    const client = await this.pgService.pool.connect();
     await client.query('BEGIN');
     return client;
   }

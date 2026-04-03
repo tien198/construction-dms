@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
-import { PgPoolService } from 'src/shared/infrastructure/database/pg-pool.service';
+import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Construction } from '../../../../domain/entity/construction.entity';
 
@@ -15,9 +15,9 @@ export class PgConstructionRepository implements Pick<
   | 'findAllConstructions'
 > {
   private static instance: PgConstructionRepository;
-  private constructor(private readonly poolService: PgPoolService) {}
+  private constructor(private readonly poolService: PgConnectionService) {}
 
-  static getInstance(poolService: PgPoolService) {
+  static getInstance(poolService: PgConnectionService) {
     if (!PgConstructionRepository.instance) {
       PgConstructionRepository.instance = new PgConstructionRepository(
         poolService,
