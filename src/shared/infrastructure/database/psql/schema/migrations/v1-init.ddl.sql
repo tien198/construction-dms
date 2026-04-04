@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-02T08:30:14.934Z
+-- Generated at: 2026-04-04T08:13:27.573Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_TV_TT',
@@ -19,7 +19,7 @@ CREATE TABLE "administrative_documents" (
   "id" varchar PRIMARY KEY,
   "no" varchar NOT NULL,
   "level" varchar NOT NULL,
-  "date" datetime NOT NULL,
+  "date" timestamptz NOT NULL,
   "pursuant_to_dec_tct_id" varchar,
   "pursuant_to_dec_ttmn_id" varchar
 );
@@ -37,8 +37,8 @@ CREATE TABLE "construction_info_snapshots" (
   "source_of_funds" varchar NOT NULL,
   "est_cost" decimal NOT NULL,
   "est_cost_str" varchar NOT NULL,
-  "impl_start_date" datetime NOT NULL,
-  "impl_end_date" datetime NOT NULL,
+  "impl_start_date" timestamptz NOT NULL,
+  "impl_end_date" timestamptz NOT NULL,
   "existing_condition_of_the_structure" text NOT NULL,
   "repair_scope" text NOT NULL
 );
@@ -52,7 +52,7 @@ CREATE TABLE "bid_package_snapshots" (
   "short_description" text NOT NULL,
   "est_cost" decimal NOT NULL,
   "est_cost_str" varchar NOT NULL,
-  "bidder_selection_time" datetime NOT NULL,
+  "bidder_selection_time" timestamptz NOT NULL,
   "bidder_selection_method" varchar NOT NULL,
   "successful_bidder_id" varchar,
   "duration" varchar NOT NULL,

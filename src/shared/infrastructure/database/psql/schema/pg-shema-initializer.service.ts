@@ -1,46 +1,65 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
-import { log } from 'console';
-import { Client, type PoolConfig } from 'pg';
+import { Client, ClientConfig, type PoolConfig } from 'pg';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class PgSchemaInitializerService {
-  client: Client;
-  constructor(@Inject('PG_POOL_OPTIONS') readonly poolConf: PoolConfig) {
-    log(poolConf);
-    this.client = new Client({ ...poolConf, database: 'postgres' });
-  }
+  constructor(@Inject('PG_POOL_OPTIONS') readonly poolConf: PoolConfig) {}
 
   async init() {
-    // open
-    await this.client.connect();
-    const isExisted = await this.isExisted();
-    if (!isExisted) {
-      await this.createDatabase();
-      await this.initSchema();
-    }
-    // close
-    await this.client.end();
+    const pgClientConf: ClientConfig = {
+      ...this.poolConf,
+      database: 'postgres',
+    };
+    await this.withClient(pgClientConf, async (client) => {
+      const isExisted = await this.isExisted(client);
+      if (isExisted) return;
+      await this.createDatabase(client);
+      await this.withClient(this.poolConf, async (client) => {
+        await this.initSchema(client);
+      });
+    });
   }
 
-  async isExisted() {
-    log('------------------------------------');
-    const res = await this.client.query(
+  async isExisted(client: Client) {
+    const res = await client.query(
       'SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname=$1)',
       [this.poolConf.database],
     );
     return res.rows[0].exists as boolean;
   }
 
-  async createDatabase() {
-    await this.client.query(`CREATE DATABASE "${this.poolConf.database}"`);
+  async createDatabase(client: Client) {
+    await client.query(`CREATE DATABASE "${this.poolConf.database}"`);
   }
 
-  async initSchema() {
+  async initSchema(client: Client) {
     const ddlPath = path.join(__dirname, 'migrations', 'v1-init.ddl.sql');
     const DDL = fs.readFileSync(ddlPath, 'utf-8');
+    const ddlList = DDL.split(';');
 
-    await this.client.query(DDL);
+    try {
+      // await client.query('BEGIN');
+      for (const ddl of ddlList) {
+        await client.query(ddl);
+      }
+      // await client.query('COMMIT');
+    } catch (error) {
+      // await client.query('ROLLBACK');
+      console.error(error);
+    }
+  }
+
+  async withClient(
+    config: ClientConfig,
+    fn: (client: Client) => Promise<void>,
+  ): Promise<void> {
+    const client = new Client(config);
+    // open
+    await client.connect();
+    await fn(client);
+    // close
+    await client.end();
   }
 }
