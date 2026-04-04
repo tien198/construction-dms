@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-04T08:13:27.573Z
+-- Generated at: 2026-04-04T16:29:00.930Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_TV_TT',
@@ -45,7 +45,7 @@ CREATE TABLE "construction_info_snapshots" (
 
 CREATE TABLE "bid_package_snapshots" (
   "id" varchar PRIMARY KEY,
-  "construction_infor_snapshot_id" int NOT NULL,
+  "construction_infor_snapshot_id" varchar NOT NULL,
   "type" bid_package_type NOT NULL,
   "project_owner" varchar NOT NULL,
   "name" varchar NOT NULL,
@@ -74,7 +74,19 @@ CREATE TABLE "decisions" (
   "is_change_construction_infor" boolean
 );
 
+COMMENT ON COLUMN "constructions"."pursuant_to_dec_tct_id" IS 'refers to [administrative_documents.id]';
+
+COMMENT ON COLUMN "constructions"."current_snapshot_id" IS 'refers to [construction_info_snapshots.id] and can be null if there are no snapshots available for the construction.';
+
+COMMENT ON COLUMN "construction_info_snapshots"."construction_id" IS 'refers to [constructions.id]';
+
 COMMENT ON TABLE "bid_package_snapshots" IS 'Bidder schema not provided';
+
+COMMENT ON COLUMN "bid_package_snapshots"."successful_bidder_id" IS 'refers to [bidders.id] and can be null if there are no snapshots available for the construction.';
+
+COMMENT ON COLUMN "submissions"."construction_id" IS 'refers to [constructions.id]';
+
+COMMENT ON COLUMN "decisions"."construction_id" IS 'refers to [constructions.id]';
 
 ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_tct_id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
@@ -84,18 +96,10 @@ ALTER TABLE "submissions" ADD FOREIGN KEY ("id") REFERENCES "administrative_docu
 
 ALTER TABLE "decisions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "constructions" ADD FOREIGN KEY ("pursuant_to_dec_tct_id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
-
-ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("id") REFERENCES "constructions" ("current_snapshot_id") DEFERRABLE INITIALLY IMMEDIATE;
-
-ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
-
-ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("id") REFERENCES "submissions" ("construction_infor_snapshot_id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "submissions" ADD FOREIGN KEY ("construction_infor_snapshot_id") REFERENCES "construction_info_snapshots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("construction_infor_snapshot_id") REFERENCES "construction_info_snapshots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "submissions" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "decisions" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "submissions" ADD FOREIGN KEY ("decision_id") REFERENCES "decisions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
-
-ALTER TABLE "decisions" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;

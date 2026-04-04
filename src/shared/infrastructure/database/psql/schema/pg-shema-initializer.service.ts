@@ -40,13 +40,13 @@ export class PgSchemaInitializerService {
     const ddlList = DDL.split(';');
 
     try {
-      // await client.query('BEGIN');
+      await client.query('BEGIN');
       for (const ddl of ddlList) {
         await client.query(ddl);
       }
-      // await client.query('COMMIT');
+      await client.query('COMMIT');
     } catch (error) {
-      // await client.query('ROLLBACK');
+      await client.query('ROLLBACK');
       console.error(error);
     }
   }

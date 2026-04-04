@@ -1,0 +1,199 @@
+{
+  "version": "1.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "detailLevel": "All",
+  "tablePositions": [
+    {
+      "name": "administrative_documents",
+      "schemaName": "public",
+      "x": 816.1388065056603,
+      "y": 48.86145263361077
+    },
+    {
+      "name": "constructions",
+      "schemaName": "public",
+      "x": -80.69095473024112,
+      "y": 80.86145263361078
+    },
+    {
+      "name": "construction_info_snapshots",
+      "schemaName": "public",
+      "x": 340.2877901869316,
+      "y": 515.9244097519562
+    },
+    {
+      "name": "bid_package_snapshots",
+      "schemaName": "public",
+      "x": -106.97030758395528,
+      "y": 532.1753670323205
+    },
+    {
+      "name": "submissions",
+      "schemaName": "public",
+      "x": 347.8735266872268,
+      "y": 251.64269893006218
+    },
+    {
+      "name": "decisions",
+      "schemaName": "public",
+      "x": 376.0262382350721,
+      "y": 48.86145263361077
+    }
+  ],
+  "tableGroupCollapseStates": [],
+  "stickyNoteLayouts": [],
+  "referencePaths": [
+    {
+      "firstFieldNames": [
+        "pursuant_to_dec_tct_id"
+      ],
+      "firstTableName": "administrative_documents",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "administrative_documents",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": [
+        {
+          "x": 1147.1746543127033,
+          "y": 224.86145263361078
+        },
+        {
+          "x": 1147.1746543127033,
+          "y": 96.86145263361077
+        }
+      ]
+    },
+    {
+      "firstFieldNames": [
+        "pursuant_to_dec_ttmn_id"
+      ],
+      "firstTableName": "administrative_documents",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "administrative_documents",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "administrative_documents",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "submissions",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "administrative_documents",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "decisions",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "construction_info_snapshots",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "construction_infor_snapshot_id"
+      ],
+      "secondTableName": "submissions",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "firstEndpointSide": "left",
+      "secondEndpointSide": "left",
+      "checkPoints": [
+        {
+          "x": 264.9095084666392,
+          "y": 563.9244097519562
+        },
+        {
+          "x": 264.9095084666392,
+          "y": 395.6426989300622
+        }
+      ]
+    },
+    {
+      "firstFieldNames": [
+        "construction_infor_snapshot_id"
+      ],
+      "firstTableName": "bid_package_snapshots",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "construction_info_snapshots",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "construction_id"
+      ],
+      "firstTableName": "decisions",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "constructions",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "decision_id"
+      ],
+      "firstTableName": "submissions",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "id"
+      ],
+      "secondTableName": "decisions",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "firstEndpointSide": "left",
+      "secondEndpointSide": "left",
+      "checkPoints": [
+        {
+          "x": 299.7211697373937,
+          "y": 363.6426989300622
+        },
+        {
+          "x": 299.7211697373937,
+          "y": 96.86145263361077
+        }
+      ]
+    }
+  ]
+}

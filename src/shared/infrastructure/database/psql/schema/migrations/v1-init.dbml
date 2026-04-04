@@ -1,0 +1,104 @@
+Project my_project {
+  database_type: 'PostgreSQL'
+  Note: '''
+    Some relationships are not defined as foreign keys due to write operation performance concerns.
+    it is all mentioned in the Note section, Notice to "refers to" keyword.
+  '''
+}
+
+
+enum construction_period {
+  KH_TV_TT
+  TV
+  TT
+  BCKTKT
+}
+
+Enum bid_package_type {
+  TV
+  TT
+  TC
+}
+
+Table administrative_documents {
+  id varchar [pk]
+  no varchar [not null]
+  level varchar [not null]
+  date datetime [not null]
+  pursuant_to_dec_tct_id varchar
+  pursuant_to_dec_ttmn_id varchar
+}
+
+Table constructions {
+  id varchar [pk]
+  pursuant_to_dec_tct_id varchar [not null, note: 'refers to [administrative_documents.id]']
+  current_snapshot_id varchar [note: 'refers to [construction_info_snapshots.id] and can be null if there are no snapshots available for the construction.']
+}
+
+Table construction_info_snapshots {
+  id varchar [pk, not null]
+  construction_id varchar [not null, note: 'refers to [constructions.id]']
+
+  name varchar [not null]
+  source_of_funds varchar [not null]
+
+  est_cost decimal [not null]
+  est_cost_str varchar [not null]
+
+  impl_start_date datetime [not null]
+  impl_end_date datetime [not null]
+
+  existing_condition_of_the_structure text [not null]
+  repair_scope text [not null]  
+}
+
+Table bid_package_snapshots {
+  id varchar [pk]
+  construction_infor_snapshot_id varchar [not null]
+
+  type bid_package_type [not null]
+  project_owner varchar [not null]
+  name varchar [not null]
+  short_description text [not null]
+
+  est_cost decimal [not null]
+  est_cost_str varchar [not null]
+
+  bidder_selection_time datetime [not null]
+  bidder_selection_method varchar [not null]
+
+  successful_bidder_id varchar [note: 'refers to [bidders.id] and can be null if there are no snapshots available for the construction.']
+  duration varchar [not null]
+  is_completed boolean [not null]
+
+  Note: 'Bidder schema not provided'
+}
+
+Table submissions {
+  id varchar [pk]
+  construction_id varchar [not null, note: 'refers to [constructions.id]']
+  decision_id varchar [not null]
+  construction_infor_snapshot_id varchar [not null]
+  is_change_construction_infor boolean
+}
+
+Table decisions {
+  id varchar [pk]
+  construction_id varchar [not null, note: 'refers to [constructions.id]']
+  period construction_period [not null]
+  is_change_construction_infor boolean
+}
+
+Ref: administrative_documents.pursuant_to_dec_tct_id > administrative_documents.id
+Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents.id
+Ref: administrative_documents.id - submissions.id
+Ref: administrative_documents.id - decisions.id
+
+Ref: construction_info_snapshots.id - submissions.construction_infor_snapshot_id 
+
+Ref: bid_package_snapshots.construction_infor_snapshot_id > construction_info_snapshots.id
+
+Ref: decisions.construction_id > constructions.id
+Ref: submissions.decision_id > decisions.id
+
+
