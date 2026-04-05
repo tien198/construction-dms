@@ -5,7 +5,7 @@ import { Client, ClientConfig, type PoolConfig } from 'pg';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class PgSchemaInitializerService {
-  private _client: Client;
+  private _client: Client | undefined;
 
   constructor(@Inject('PG_POOL_OPTIONS') readonly poolConf: PoolConfig) {}
 
@@ -32,7 +32,7 @@ export class PgSchemaInitializerService {
   }
 
   async isDatabaseExisted() {
-    const res = await this._client.query(
+    const res = await this._client!.query(
       'SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname=$1)',
       [this.poolConf.database],
     );
@@ -44,10 +44,7 @@ export class PgSchemaInitializerService {
     this._client = new Client(this.poolConf);
 
     await this._client.connect();
-    const isTablesExisted = await this._client.query(
-      'SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema=$1)',
-      ['public'],
-    );
+    const isTablesExisted = await this.isTablesExisted();
 
     if (isTablesExisted.rows[0].exists) {
       return;
@@ -69,6 +66,13 @@ export class PgSchemaInitializerService {
     } finally {
       await this._client.end();
     }
+  }
+
+  async isTablesExisted() {
+    return this._client!.query(
+      'SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema=$1)',
+      ['public'],
+    );
   }
   /*
   async withClient(
