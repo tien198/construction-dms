@@ -9,32 +9,29 @@ export class PgSchemaInitializerService {
 
   constructor(@Inject('PG_POOL_OPTIONS') readonly poolConf: PoolConfig) {}
 
+  // Main Method for the service
   async init() {
+    await this.createDatabase();
+    await this.initSchema();
+  }
+
+  // Client connect to root "postgres" database to create database
+  async createDatabase() {
     const pgClientConf: ClientConfig = {
       ...this.poolConf,
       database: 'postgres',
     };
-    // Client connect to root database postgres
     this._client = new Client(pgClientConf);
     await this._client.connect();
-    const existed = await this.isExisted();
 
-    if (existed) {
-      await this._client.end();
-      return;
+    const existed = await this.isDatabaseExisted();
+    if (!existed) {
+      await this._client.query(`CREATE DATABASE "${this.poolConf.database}"`);
     }
-    await this.createDatabase();
-    await this._client.end();
-
-    // Client connect to target database to init schema
-    this._client = new Client(this.poolConf);
-
-    await this._client.connect();
-    await this.initSchema();
     await this._client.end();
   }
 
-  async isExisted() {
+  async isDatabaseExisted() {
     const res = await this._client.query(
       'SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname=$1)',
       [this.poolConf.database],
@@ -42,11 +39,20 @@ export class PgSchemaInitializerService {
     return res.rows[0].exists as boolean;
   }
 
-  async createDatabase() {
-    await this._client.query(`CREATE DATABASE "${this.poolConf.database}"`);
-  }
-
+  // Client connect to target database, then init schema
   async initSchema() {
+    this._client = new Client(this.poolConf);
+
+    await this._client.connect();
+    const isTablesExisted = await this._client.query(
+      'SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema=$1)',
+      ['public'],
+    );
+
+    if (isTablesExisted.rows[0].exists) {
+      return;
+    }
+
     const ddlPath = path.join(__dirname, 'migrations', 'v1-init.ddl.sql');
     const DDL = fs.readFileSync(ddlPath, 'utf-8');
     const ddlList = DDL.split(';');
@@ -60,6 +66,8 @@ export class PgSchemaInitializerService {
     } catch (error) {
       await this._client.query('ROLLBACK');
       console.error(error);
+    } finally {
+      await this._client.end();
     }
   }
   /*
