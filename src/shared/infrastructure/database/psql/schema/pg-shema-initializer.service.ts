@@ -5,6 +5,8 @@ import { Client, ClientConfig, type PoolConfig } from 'pg';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class PgSchemaInitializerService {
+  private _client: Client;
+
   constructor(@Inject('PG_POOL_OPTIONS') readonly poolConf: PoolConfig) {}
 
   async init() {
@@ -12,45 +14,55 @@ export class PgSchemaInitializerService {
       ...this.poolConf,
       database: 'postgres',
     };
-    await this.withClient(pgClientConf, async (client) => {
-      const isExisted = await this.isExisted(client);
-      if (isExisted) return;
-      await this.createDatabase(client);
-      await this.withClient(this.poolConf, async (client) => {
-        await this.initSchema(client);
-      });
-    });
+    // Client connect to root database postgres
+    this._client = new Client(pgClientConf);
+    await this._client.connect();
+    const existed = await this.isExisted();
+
+    if (existed) {
+      await this._client.end();
+      return;
+    }
+    await this.createDatabase();
+    await this._client.end();
+
+    // Client connect to target database to init schema
+    this._client = new Client(this.poolConf);
+
+    await this._client.connect();
+    await this.initSchema();
+    await this._client.end();
   }
 
-  async isExisted(client: Client) {
-    const res = await client.query(
+  async isExisted() {
+    const res = await this._client.query(
       'SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname=$1)',
       [this.poolConf.database],
     );
     return res.rows[0].exists as boolean;
   }
 
-  async createDatabase(client: Client) {
-    await client.query(`CREATE DATABASE "${this.poolConf.database}"`);
+  async createDatabase() {
+    await this._client.query(`CREATE DATABASE "${this.poolConf.database}"`);
   }
 
-  async initSchema(client: Client) {
+  async initSchema() {
     const ddlPath = path.join(__dirname, 'migrations', 'v1-init.ddl.sql');
     const DDL = fs.readFileSync(ddlPath, 'utf-8');
     const ddlList = DDL.split(';');
 
     try {
-      await client.query('BEGIN');
+      await this._client.query('BEGIN');
       for (const ddl of ddlList) {
-        await client.query(ddl);
+        await this._client.query(ddl);
       }
-      await client.query('COMMIT');
+      await this._client.query('COMMIT');
     } catch (error) {
-      await client.query('ROLLBACK');
+      await this._client.query('ROLLBACK');
       console.error(error);
     }
   }
-
+  /*
   async withClient(
     config: ClientConfig,
     fn: (client: Client) => Promise<void>,
@@ -62,4 +74,5 @@ export class PgSchemaInitializerService {
     // close
     await client.end();
   }
+  */
 }
