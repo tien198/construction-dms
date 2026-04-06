@@ -1,8 +1,18 @@
 import { Decision } from '../../../domain/entity/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
 
-export interface IDocumentUseCase {
-  initConstruction(data: CreateSubmissionCommand): Promise<Decision>;
+export interface IDocumentCreateUseCase {
+  initConstruction(data: CreateSubmissionCommand): Promise<Decision | void>;
+
+  addSubmissionForNewDecision(
+    conId: string,
+    data: CreateSubmissionCommand,
+  ): Promise<Decision | void>;
+
+  addSubmissionForExistedDecision(
+    decId: string,
+    data: CreateSubmissionCommand,
+  ): Promise<Decision | void>;
 
   // createDecision(data: CreateSubmissionCommand): Promise<Decision>;
   // updateDecision(id: string, data: CreateSubmissionCommand): Promise<Decision>;

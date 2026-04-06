@@ -45,10 +45,7 @@ export class PgSubmissionRepository implements ISubmissionRepository {
   deleteSubmission(id: string, client?: PoolClient): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  findSubmissionById(
-    id: string,
-    client?: PoolClient,
-  ): Promise<Submission | null> {
+  findSubmissionById(id: string, client?: PoolClient): Promise<Submission> {
     throw new Error('Method not implemented.');
   }
   findAllSubmissions(client?: PoolClient): Promise<Submission[]> {

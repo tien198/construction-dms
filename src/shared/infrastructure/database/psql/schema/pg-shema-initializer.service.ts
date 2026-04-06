@@ -81,9 +81,17 @@ export class PgSchemaInitializerService {
   async initData() {
     await this._client!.query(
       'INSERT INTO administrative_documents (id, no, level, date, pursuant_to_dec_tct_id, pursuant_to_dec_ttmn_id) VALUES ($1, $2, $3, $4, $5, $6)',
-      [v7(), '01/QĐ-TCT', 'TCT', new Date(), null, null],
+      [
+        '019d61b4-dd23-724d-8d07-954fb34b3eff',
+        '01/QĐ-TCT',
+        'TCT',
+        new Date(),
+        null,
+        null,
+      ],
     );
   }
+
   /*
   async withClient(
     config: ClientConfig,

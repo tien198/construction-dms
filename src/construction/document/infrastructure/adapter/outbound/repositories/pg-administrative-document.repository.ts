@@ -51,7 +51,7 @@ export class PgAdministrativeDocumentRepository implements IAdministrativeDocume
   findAdministrativeDocumentById(
     id: string,
     client?: PoolClient,
-  ): Promise<AdministrativeDocument | null> {
+  ): Promise<AdministrativeDocument> {
     throw new Error('Method not implemented.');
   }
   findAllAdministrativeDocuments(

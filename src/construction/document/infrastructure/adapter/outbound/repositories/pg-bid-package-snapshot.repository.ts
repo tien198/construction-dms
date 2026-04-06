@@ -55,7 +55,7 @@ export class PgBidPackageSnapshotRepository implements IBidPackageSnapshotReposi
   findBidPackageSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<BidPackageSnapshot | null> {
+  ): Promise<BidPackageSnapshot> {
     throw new Error('Method not implemented.');
   }
   findAllBidPackageSnapshots(

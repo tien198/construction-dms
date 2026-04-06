@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DocumentController } from './infrastructure/adapter/inbound/document.controller';
-import { DocumentService } from './application/service/document.service';
+import { DocumentCreateService } from './application/service/document-create.service';
 import { PgDocumentRepository } from './infrastructure/adapter/outbound/pg-document.repository';
 
 import { UnitOfWork } from './infrastructure/adapter/outbound/unit-of-work';
@@ -9,8 +9,8 @@ import { UnitOfWork } from './infrastructure/adapter/outbound/unit-of-work';
   controllers: [DocumentController],
   providers: [
     {
-      provide: 'IDocumentUseCase',
-      useClass: DocumentService,
+      provide: 'IDocumentCreateUseCase',
+      useClass: DocumentCreateService,
     },
     {
       provide: 'IDocumentRepository',

@@ -51,10 +51,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   deleteConstruction(id: string, client?: PoolClient): Promise<void> {
     return this._consRepo.deleteConstruction(id, client);
   }
-  findConstructionById(
-    id: string,
-    client?: PoolClient,
-  ): Promise<Construction | null> {
+  findConstructionById(id: string, client?: PoolClient): Promise<Construction> {
     return this._consRepo.findConstructionById(id, client);
   }
   findAllConstructions(client?: PoolClient): Promise<Construction[]> {
@@ -75,7 +72,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   deleteDecision(id: string, client?: PoolClient): Promise<void> {
     return this._decRepo.deleteDecision(id, client);
   }
-  findDecisionById(id: string, client?: PoolClient): Promise<Decision | null> {
+  findDecisionById(id: string, client?: PoolClient): Promise<Decision> {
     return this._decRepo.findDecisionById(id, client);
   }
   findAllDecisions(client?: PoolClient): Promise<Decision[]> {
@@ -99,10 +96,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   deleteSubmission(id: string, client?: PoolClient): Promise<void> {
     return this._subRepo.deleteSubmission(id, client);
   }
-  findSubmissionById(
-    id: string,
-    client?: PoolClient,
-  ): Promise<Submission | null> {
+  findSubmissionById(id: string, client?: PoolClient): Promise<Submission> {
     return this._subRepo.findSubmissionById(id, client);
   }
   findAllSubmissions(client?: PoolClient): Promise<Submission[]> {
@@ -136,7 +130,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   findAdministrativeDocumentById(
     id: string,
     client?: PoolClient,
-  ): Promise<AdministrativeDocument | null> {
+  ): Promise<AdministrativeDocument> {
     return this._adminDocRepo.findAdministrativeDocumentById(id, client);
   }
   findAllAdministrativeDocuments(
@@ -172,7 +166,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   findBidPackageSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<BidPackageSnapshot | null> {
+  ): Promise<BidPackageSnapshot> {
     return this._bidPkgSnapRepo.findBidPackageSnapshotById(id, client);
   }
   findAllBidPackageSnapshots(
@@ -211,7 +205,7 @@ export class PgDocumentRepository implements IDocumentRepository {
   findConstructionInfoSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot | null> {
+  ): Promise<ConstructionInfoSnapshot> {
     return this._conInforSnapRepo.findConstructionInfoSnapshotById(id, client);
   }
   findAllConstructionInfoSnapshots(

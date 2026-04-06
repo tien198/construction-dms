@@ -9,10 +9,10 @@ export class Decision {
   period: ConstructionPeriod;
 
   // reference to administrative-document
-  document: AdministrativeDocument;
+  document: AdministrativeDocument | DecisionId;
 
   constructor(
-    document: AdministrativeDocument,
+    document: AdministrativeDocument | DecisionId,
     construction_id: ConstructionId,
     period: ConstructionPeriod,
     is_change_construction_infor: boolean = false,
@@ -25,7 +25,10 @@ export class Decision {
   }
 
   get id(): DecisionId {
-    return this.document.id;
+    if (this.document instanceof AdministrativeDocument) {
+      return this.document.id;
+    }
+    return this.document;
   }
 
   static create(

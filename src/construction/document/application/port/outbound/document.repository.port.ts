@@ -19,7 +19,7 @@ export interface IConstructionRepository {
     client?: any,
   ): Promise<Construction>;
   deleteConstruction(id: string, client?: any): Promise<void>;
-  findConstructionById(id: string, client?: any): Promise<Construction | null>;
+  findConstructionById(id: string, client?: any): Promise<Construction>;
   findAllConstructions(client?: any): Promise<Construction[]>;
 }
 
@@ -32,7 +32,7 @@ export interface IDecisionRepository {
     client?: any,
   ): Promise<Decision>;
   deleteDecision(id: string, client?: any): Promise<void>;
-  findDecisionById(id: string, client?: any): Promise<Decision | null>;
+  findDecisionById(id: string, client?: any): Promise<Decision>;
   findAllDecisions(client?: any): Promise<Decision[]>;
 }
 
@@ -45,7 +45,7 @@ export interface ISubmissionRepository {
     client?: any,
   ): Promise<Submission>;
   deleteSubmission(id: string, client?: any): Promise<void>;
-  findSubmissionById(id: string, client?: any): Promise<Submission | null>;
+  findSubmissionById(id: string, client?: any): Promise<Submission>;
   findAllSubmissions(client?: any): Promise<Submission[]>;
 }
 
@@ -64,7 +64,7 @@ export interface IAdministrativeDocumentRepository {
   findAdministrativeDocumentById(
     id: string,
     client?: any,
-  ): Promise<AdministrativeDocument | null>;
+  ): Promise<AdministrativeDocument>;
   findAllAdministrativeDocuments(
     client?: any,
   ): Promise<AdministrativeDocument[]>;
@@ -85,7 +85,7 @@ export interface IBidPackageSnapshotRepository {
   findBidPackageSnapshotById(
     id: string,
     client?: any,
-  ): Promise<BidPackageSnapshot | null>;
+  ): Promise<BidPackageSnapshot>;
   findAllBidPackageSnapshots(client?: any): Promise<BidPackageSnapshot[]>;
 }
 
@@ -104,7 +104,7 @@ export interface IConstructionInfoSnapshotRepository {
   findConstructionInfoSnapshotById(
     id: string,
     client?: any,
-  ): Promise<ConstructionInfoSnapshot | null>;
+  ): Promise<ConstructionInfoSnapshot>;
   findAllConstructionInfoSnapshots(
     client?: any,
   ): Promise<ConstructionInfoSnapshot[]>;

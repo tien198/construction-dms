@@ -55,7 +55,7 @@ export class PgConstructionInfoSnapshotRepository implements IConstructionInfoSn
   findConstructionInfoSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot | null> {
+  ): Promise<ConstructionInfoSnapshot> {
     throw new Error('Method not implemented.');
   }
   findAllConstructionInfoSnapshots(

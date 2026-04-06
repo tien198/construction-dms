@@ -4,6 +4,12 @@ import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { IConstructionRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Construction } from '../../../../domain/entity/construction.entity';
+import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
+import {
+  DecisionId,
+  PursuantToDecTCT,
+} from 'src/construction/document/domain/value-objects/document.vo';
+import { ConstructionInforId } from 'src/construction/document/domain/value-objects/construction-infor.vo';
 
 @Injectable()
 export class PgConstructionRepository implements IConstructionRepository {
@@ -23,7 +29,7 @@ export class PgConstructionRepository implements IConstructionRepository {
     construction: Construction,
     client?: PoolClient,
   ): Promise<Construction> {
-    const result = await this._poolService.pool.query(
+    const result = await (client || this._poolService.pool).query(
       `INSERT INTO constructions (id, pursuant_to_dec_tct_id, current_snapshot_id) VALUES ($1, $2, $3) RETURNING *`,
       [
         construction.id.value,
@@ -33,23 +39,59 @@ export class PgConstructionRepository implements IConstructionRepository {
     );
     return result.rows[0] as Construction;
   }
-  updateConstruction(
+  async updateConstruction(
     id: string,
     construction: Partial<Construction>,
     client?: PoolClient,
   ): Promise<Construction> {
-    throw new Error('Method not implemented.');
+    const setClauses: string[] = [];
+    const values: unknown[] = [id]; // $1 is always the id
+
+    if (setClauses.length === 0) {
+      throw new Error('No fields to update');
+    }
+
+    for (const [k, val] of Object.entries(construction)) {
+      values.push(val);
+      setClauses.push(`${k} = $${values.length}`);
+    }
+
+    const result = await (client || this._poolService.pool).query(
+      `UPDATE constructions SET ${setClauses.join(', ')} WHERE id = $1 RETURNING *`,
+      values,
+    );
+    return result.rows[0] as Construction;
   }
+
   deleteConstruction(id: string, client?: PoolClient): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  findConstructionById(
+
+  async findConstructionById(
     id: string,
     client?: PoolClient,
-  ): Promise<Construction | null> {
-    throw new Error('Method not implemented.');
+  ): Promise<Construction> {
+    const result = await (client || this._poolService.pool).query(
+      `SELECT * FROM constructions WHERE id = $1`,
+      [id],
+    );
+    if (result.rows.length === 0) {
+      throw new Error(`Not found construction with id: "${id}"`);
+    }
+    return this.toDomain(result.rows[0]);
   }
+
   findAllConstructions(client?: PoolClient): Promise<Construction[]> {
     throw new Error('Method not implemented.');
+  }
+
+  private toDomain(row: Record<string, any>): Construction {
+    return new Construction(
+      new ConstructionId(row.id),
+      new PursuantToDecTCT(row.pursuant_to_dec_tct_id),
+      row.current_snapshot_id
+        ? new ConstructionInforId(row.current_snapshot_id)
+        : null,
+    );
   }
 }

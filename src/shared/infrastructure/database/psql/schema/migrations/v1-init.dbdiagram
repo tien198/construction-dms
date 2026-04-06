@@ -7,8 +7,8 @@
     {
       "name": "administrative_documents",
       "schemaName": "public",
-      "x": 872.0088386522791,
-      "y": -435.3592566719516
+      "x": 858.085391688847,
+      "y": -283.7258997683479
     },
     {
       "name": "constructions",
@@ -31,8 +31,8 @@
     {
       "name": "submissions",
       "schemaName": "public",
-      "x": 338.1736461504193,
-      "y": -84.25850192725443
+      "x": 343.5288180594313,
+      "y": -91.75574259987161
     },
     {
       "name": "decisions",
@@ -59,12 +59,12 @@
       "secondRelation": "1",
       "checkPoints": [
         {
-          "x": 1190.102505185411,
-          "y": -259.3592566719516
+          "x": 1186.815310636118,
+          "y": -107.72589976834792
         },
         {
-          "x": 1190.102505185411,
-          "y": -387.3592566719516
+          "x": 1186.815310636118,
+          "y": -235.72589976834792
         }
       ]
     },
@@ -111,16 +111,7 @@
       "secondTableName": "decisions",
       "secondSchemaName": "public",
       "secondRelation": "1",
-      "checkPoints": [
-        {
-          "x": 778.7169278731111,
-          "y": -387.3592566719516
-        },
-        {
-          "x": 778.7169278731111,
-          "y": -235.72589976834792
-        }
-      ]
+      "checkPoints": []
     },
     {
       "firstFieldNames": [
@@ -180,7 +171,16 @@
       "secondTableName": "decisions",
       "secondSchemaName": "public",
       "secondRelation": "1",
-      "checkPoints": []
+      "checkPoints": [
+        {
+          "x": 715.6786571627463,
+          "y": 27.74149807274557
+        },
+        {
+          "x": 715.6786571627463,
+          "y": -235.72589976834792
+        }
+      ]
     }
   ]
 }

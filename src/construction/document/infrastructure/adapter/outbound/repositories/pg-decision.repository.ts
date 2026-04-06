@@ -4,6 +4,8 @@ import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { IDecisionRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Decision } from '../../../../domain/entity/decision.entity';
+import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';
+import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
 
 @Injectable()
 export class PgDecisionRepository implements IDecisionRepository {
@@ -39,13 +41,32 @@ export class PgDecisionRepository implements IDecisionRepository {
   ): Promise<Decision> {
     throw new Error('Method not implemented.');
   }
+
   deleteDecision(id: string, client?: PoolClient): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  findDecisionById(id: string, client?: PoolClient): Promise<Decision | null> {
-    throw new Error('Method not implemented.');
+
+  async findDecisionById(id: string, client?: PoolClient): Promise<Decision> {
+    const result = await (client || this._poolService.pool).query(
+      `SELECT * FROM decisions WHERE id = $1`,
+      [id],
+    );
+    if (result.rows.length === 0) {
+      throw new Error(`Not found decision with id: "${id}"`);
+    }
+    return this.toDomain(result.rows[0]);
   }
+
   findAllDecisions(client?: PoolClient): Promise<Decision[]> {
     throw new Error('Method not implemented.');
+  }
+
+  private toDomain(row: Record<string, any>): Decision {
+    return new Decision(
+      new DecisionId(row.id),
+      new ConstructionId(row.construction_id),
+      row.period,
+      row.is_change_construction_infor,
+    );
   }
 }
