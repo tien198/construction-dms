@@ -1,10 +1,10 @@
 import {
   IsString,
-  IsDateString,
   IsBoolean,
   IsOptional,
   ValidateNested,
   IsNotEmpty,
+  IsDate,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -27,8 +27,9 @@ export class CreateSubmissionCommand {
   level: string;
 
   @ApiProperty()
-  @IsDateString()
-  date: string;
+  @IsDate()
+  @Type(() => Date)
+  date: Date;
 
   @ApiPropertyOptional({ nullable: true })
   @IsString()

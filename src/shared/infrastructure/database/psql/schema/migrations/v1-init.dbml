@@ -24,7 +24,7 @@ Table administrative_documents {
   id varchar [pk]
   no varchar [not null]
   level varchar [not null]
-  date datetime [not null]
+  date timestamptz [not null]
   pursuant_to_dec_tct_id varchar
   pursuant_to_dec_ttmn_id varchar
 }
@@ -45,8 +45,8 @@ Table construction_info_snapshots {
   est_cost decimal [not null]
   est_cost_str varchar [not null]
 
-  impl_start_date datetime [not null]
-  impl_end_date datetime [not null]
+  impl_start_date timestamptz [not null]
+  impl_end_date timestamptz [not null]
 
   existing_condition_of_the_structure text [not null]
   repair_scope text [not null]  
@@ -59,12 +59,12 @@ Table bid_package_snapshots {
   type bid_package_type [not null]
   project_owner varchar [not null]
   name varchar [not null]
-  short_description text [not null]
+  short_desc text [not null]
 
   est_cost decimal [not null]
   est_cost_str varchar [not null]
 
-  bidder_selection_time datetime [not null]
+  bidder_selection_time timestamptz [not null]
   bidder_selection_method varchar [not null]
 
   successful_bidder_id varchar [note: 'refers to [bidders.id] and can be null if there are no snapshots available for the construction.']

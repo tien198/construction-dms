@@ -7,38 +7,38 @@
     {
       "name": "administrative_documents",
       "schemaName": "public",
-      "x": 816.1388065056603,
-      "y": 48.86145263361077
+      "x": 872.0088386522791,
+      "y": -435.3592566719516
     },
     {
       "name": "constructions",
       "schemaName": "public",
-      "x": -80.69095473024112,
-      "y": 80.86145263361078
+      "x": -94.1796751825039,
+      "y": -294.96059807599255
     },
     {
       "name": "construction_info_snapshots",
       "schemaName": "public",
-      "x": 340.2877901869316,
-      "y": 515.9244097519562
+      "x": -224.00136214897074,
+      "y": 102.28691461256017
     },
     {
       "name": "bid_package_snapshots",
       "schemaName": "public",
-      "x": -106.97030758395528,
-      "y": 532.1753670323205
+      "x": 267.0755353689131,
+      "y": 163.73949628282514
     },
     {
       "name": "submissions",
       "schemaName": "public",
-      "x": 347.8735266872268,
-      "y": 251.64269893006218
+      "x": 338.1736461504193,
+      "y": -84.25850192725443
     },
     {
       "name": "decisions",
       "schemaName": "public",
-      "x": 376.0262382350721,
-      "y": 48.86145263361077
+      "x": 369.83449308886037,
+      "y": -283.7258997683479
     }
   ],
   "tableGroupCollapseStates": [],
@@ -59,12 +59,12 @@
       "secondRelation": "1",
       "checkPoints": [
         {
-          "x": 1147.1746543127033,
-          "y": 224.86145263361078
+          "x": 1190.102505185411,
+          "y": -259.3592566719516
         },
         {
-          "x": 1147.1746543127033,
-          "y": 96.86145263361077
+          "x": 1190.102505185411,
+          "y": -387.3592566719516
         }
       ]
     },
@@ -111,7 +111,16 @@
       "secondTableName": "decisions",
       "secondSchemaName": "public",
       "secondRelation": "1",
-      "checkPoints": []
+      "checkPoints": [
+        {
+          "x": 778.7169278731111,
+          "y": -387.3592566719516
+        },
+        {
+          "x": 778.7169278731111,
+          "y": -235.72589976834792
+        }
+      ]
     },
     {
       "firstFieldNames": [
@@ -126,18 +135,7 @@
       "secondTableName": "submissions",
       "secondSchemaName": "public",
       "secondRelation": "1",
-      "firstEndpointSide": "left",
-      "secondEndpointSide": "left",
-      "checkPoints": [
-        {
-          "x": 264.9095084666392,
-          "y": 563.9244097519562
-        },
-        {
-          "x": 264.9095084666392,
-          "y": 395.6426989300622
-        }
-      ]
+      "checkPoints": []
     },
     {
       "firstFieldNames": [
@@ -182,18 +180,7 @@
       "secondTableName": "decisions",
       "secondSchemaName": "public",
       "secondRelation": "1",
-      "firstEndpointSide": "left",
-      "secondEndpointSide": "left",
-      "checkPoints": [
-        {
-          "x": 299.7211697373937,
-          "y": 363.6426989300622
-        },
-        {
-          "x": 299.7211697373937,
-          "y": 96.86145263361077
-        }
-      ]
+      "checkPoints": []
     }
   ]
 }

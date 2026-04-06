@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsArray,
+  IsDate,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -25,13 +26,15 @@ export class ConstructionInfoSnapshotCommand {
   source_of_funds: string;
 
   @ApiProperty()
-  @IsDateString()
+  @IsDate()
+  @Type(() => Date)
   // impl - implementation
-  impl_start_date: string;
+  impl_start_date: Date;
 
   @ApiProperty()
-  @IsDateString()
-  impl_end_date: string;
+  @IsDate()
+  @Type(() => Date)
+  impl_end_date: Date;
 
   @ApiProperty()
   @IsString()

@@ -27,6 +27,10 @@ export class Submission {
     this.document = document;
   }
 
+  get id() {
+    return this.document.id;
+  }
+
   static create(
     document: AdministrativeDocument,
     construction_id: ConstructionId,

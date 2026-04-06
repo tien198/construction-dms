@@ -2,34 +2,45 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
-import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
+import { IBidPackageSnapshotRepository } from '../../../../application/port/outbound/document.repository.port';
 import { BidPackageSnapshot } from '../../../../domain/entity/bid-package.entity';
 
 @Injectable()
-export class PgBidPackageSnapshotRepository implements Pick<
-  IDocumentRepository,
-  | 'saveBidPackageSnapshot'
-  | 'updateBidPackageSnapshot'
-  | 'deleteBidPackageSnapshot'
-  | 'findBidPackageSnapshotById'
-  | 'findAllBidPackageSnapshots'
-> {
-  private static instance: PgBidPackageSnapshotRepository;
-  private constructor(private readonly poolService: PgConnectionService) {}
+export class PgBidPackageSnapshotRepository implements IBidPackageSnapshotRepository {
+  private static _instance: PgBidPackageSnapshotRepository;
+  private constructor(private readonly _poolService: PgConnectionService) {}
 
   static getInstance(poolService: PgConnectionService) {
-    if (!PgBidPackageSnapshotRepository.instance) {
-      PgBidPackageSnapshotRepository.instance =
+    if (!PgBidPackageSnapshotRepository._instance) {
+      PgBidPackageSnapshotRepository._instance =
         new PgBidPackageSnapshotRepository(poolService);
     }
-    return PgBidPackageSnapshotRepository.instance;
+    return PgBidPackageSnapshotRepository._instance;
   }
 
-  saveBidPackageSnapshot(
+  async saveBidPackageSnapshot(
     bidPackageSnapshot: BidPackageSnapshot,
     client?: PoolClient,
   ): Promise<BidPackageSnapshot> {
-    throw new Error('Method not implemented.');
+    const result = await this._poolService.pool.query(
+      `INSERT INTO bid_package_snapshots (id, construction_infor_snapshot_id, type, project_owner, name, short_desc, est_cost, est_cost_str, bidder_selection_time, bidder_selection_method, duration, is_completed, successful_bidder_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
+      [
+        bidPackageSnapshot.id.value,
+        bidPackageSnapshot.construction_infor_snapshot_id.value,
+        bidPackageSnapshot.type,
+        bidPackageSnapshot.project_owner.value,
+        bidPackageSnapshot.name.value,
+        bidPackageSnapshot.short_desc.value,
+        bidPackageSnapshot.est_cost,
+        bidPackageSnapshot.est_cost_str.value,
+        bidPackageSnapshot.bidder_selection_time,
+        bidPackageSnapshot.bidder_selection_method.value,
+        bidPackageSnapshot.duration.value,
+        bidPackageSnapshot.is_completed,
+        bidPackageSnapshot.successful_bidder_id?.value ?? null,
+      ],
+    );
+    return result.rows[0] as BidPackageSnapshot;
   }
   updateBidPackageSnapshot(
     id: string,

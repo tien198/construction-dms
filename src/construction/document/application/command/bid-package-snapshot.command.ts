@@ -4,8 +4,9 @@ import {
   IsOptional,
   IsNumber,
   IsEnum,
-  IsDateString,
+  IsDate,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.type';
 
@@ -33,8 +34,9 @@ export class BidPackageSnapshotCommand {
   short_desc: string;
 
   @ApiProperty()
-  @IsDateString()
-  bidder_selection_time: string;
+  @IsDate()
+  @Type(() => Date)
+  bidder_selection_time: Date;
 
   @ApiProperty()
   @IsString()

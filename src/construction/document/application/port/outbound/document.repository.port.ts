@@ -8,7 +8,7 @@ import { Construction } from '../../../domain/entity/construction.entity';
 // client is a dedicated db client (maybe pool client), used for transaction
 
 // construction
-interface IDocumentRepository {
+export interface IConstructionRepository {
   saveConstruction(
     construction: Construction,
     client?: any,
@@ -24,7 +24,7 @@ interface IDocumentRepository {
 }
 
 // Decitsion
-interface IDocumentRepository {
+export interface IDecisionRepository {
   saveDecision(decision: Decision, client?: any): Promise<Decision>;
   updateDecision(
     id: string,
@@ -37,7 +37,7 @@ interface IDocumentRepository {
 }
 
 // submission
-interface IDocumentRepository {
+export interface ISubmissionRepository {
   saveSubmission(submission: Submission, client?: any): Promise<Submission>;
   updateSubmission(
     id: string,
@@ -50,7 +50,7 @@ interface IDocumentRepository {
 }
 
 // administrative document
-interface IDocumentRepository {
+export interface IAdministrativeDocumentRepository {
   saveAdministrativeDocument(
     administrativeDocument: AdministrativeDocument,
     client?: any,
@@ -71,7 +71,7 @@ interface IDocumentRepository {
 }
 
 // bid package snapshot
-interface IDocumentRepository {
+export interface IBidPackageSnapshotRepository {
   saveBidPackageSnapshot(
     bidPackageSnapshot: BidPackageSnapshot,
     client?: any,
@@ -90,7 +90,7 @@ interface IDocumentRepository {
 }
 
 // construction info snapshot
-interface IDocumentRepository {
+export interface IConstructionInfoSnapshotRepository {
   saveConstructionInfoSnapshot(
     constructionInfoSnapshot: ConstructionInfoSnapshot,
     client?: any,
@@ -110,4 +110,11 @@ interface IDocumentRepository {
   ): Promise<ConstructionInfoSnapshot[]>;
 }
 
-export type { IDocumentRepository };
+export interface IDocumentRepository
+  extends
+    IConstructionRepository,
+    IDecisionRepository,
+    ISubmissionRepository,
+    IAdministrativeDocumentRepository,
+    IBidPackageSnapshotRepository,
+    IConstructionInfoSnapshotRepository {}

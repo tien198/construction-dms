@@ -21,7 +21,6 @@ export class DocumentService implements IDocumentUseCase {
   ) {}
 
   async initConstruction(cmd: CreateSubmissionCommand): Promise<Decision> {
-    await Promise.resolve();
     const con = ConstructionAssembler.fromCmd(cmd);
     const conInfor = cmd.construction_infor_snapshot
       ? ConstructionInfoSnapshotAssembler.fromCmd(
@@ -46,6 +45,7 @@ export class DocumentService implements IDocumentUseCase {
 
     try {
       // Save all entities
+      con.current_snapshot_id = conInfor?.id ?? null;
       await this.repo.saveConstruction(con, client);
       if (conInfor) {
         await this.repo.saveConstructionInfoSnapshot(conInfor, client);
@@ -54,7 +54,12 @@ export class DocumentService implements IDocumentUseCase {
       for (const bidPackage of bidPackages) {
         await this.repo.saveBidPackageSnapshot(bidPackage, client);
       }
+      // save Decision and its Administrative Document
+      await this.repo.saveAdministrativeDocument(dec.document, client);
       await this.repo.saveDecision(dec, client);
+
+      // save Submission and its Administrative Document
+      await this.repo.saveAdministrativeDocument(sub.document, client);
       await this.repo.saveSubmission(sub, client);
 
       await this.uow.commit(client);

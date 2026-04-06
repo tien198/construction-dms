@@ -2,6 +2,7 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
 import { Client, ClientConfig, type PoolConfig } from 'pg';
+import { v7 } from 'uuid';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class PgSchemaInitializerService {
@@ -59,6 +60,7 @@ export class PgSchemaInitializerService {
       for (const ddl of ddlList) {
         await this._client.query(ddl);
       }
+      await this.initData();
       await this._client.query('COMMIT');
     } catch (error) {
       await this._client.query('ROLLBACK');
@@ -72,6 +74,14 @@ export class PgSchemaInitializerService {
     return this._client!.query(
       'SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema=$1)',
       ['public'],
+    );
+  }
+
+  // Init data in schema init Transaction
+  async initData() {
+    await this._client!.query(
+      'INSERT INTO administrative_documents (id, no, level, date, pursuant_to_dec_tct_id, pursuant_to_dec_ttmn_id) VALUES ($1, $2, $3, $4, $5, $6)',
+      [v7(), '01/QĐ-TCT', 'TCT', new Date(), null, null],
     );
   }
   /*

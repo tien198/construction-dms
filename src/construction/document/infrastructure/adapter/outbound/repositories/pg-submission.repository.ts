@@ -2,33 +2,38 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
-import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
+import { ISubmissionRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Submission } from '../../../../domain/entity/submission.entity';
 
 @Injectable()
-export class PgSubmissionRepository implements Pick<
-  IDocumentRepository,
-  | 'saveSubmission'
-  | 'updateSubmission'
-  | 'deleteSubmission'
-  | 'findSubmissionById'
-  | 'findAllSubmissions'
-> {
-  private static instance: PgSubmissionRepository;
-  private constructor(private readonly poolService: PgConnectionService) {}
+export class PgSubmissionRepository implements ISubmissionRepository {
+  private static _instance: PgSubmissionRepository;
+  private constructor(private readonly _poolService: PgConnectionService) {}
 
   static getInstance(poolService: PgConnectionService) {
-    if (!PgSubmissionRepository.instance) {
-      PgSubmissionRepository.instance = new PgSubmissionRepository(poolService);
+    if (!PgSubmissionRepository._instance) {
+      PgSubmissionRepository._instance = new PgSubmissionRepository(
+        poolService,
+      );
     }
-    return PgSubmissionRepository.instance;
+    return PgSubmissionRepository._instance;
   }
 
-  saveSubmission(
+  async saveSubmission(
     submission: Submission,
     client?: PoolClient,
   ): Promise<Submission> {
-    throw new Error('Method not implemented.');
+    const result = await this._poolService.pool.query(
+      `INSERT INTO submissions (id, construction_id, decision_id, construction_infor_snapshot_id, is_change_construction_infor) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [
+        submission.id.value,
+        submission.construction_id.value,
+        submission.decision_id.value,
+        submission.construction_infor_snapshot_id?.value ?? null,
+        submission.is_change_construction_infor ?? false,
+      ],
+    );
+    return result.rows[0] as Submission;
   }
   updateSubmission(
     id: string,
