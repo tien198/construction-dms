@@ -37,3 +37,15 @@ export class PursuantToDecTTMN {
     return new PursuantToDecTTMN(val);
   }
 }
+
+// used to nest real data
+export class PursuedDec {
+  constructor(
+    readonly no: DocumentNo,
+    readonly date: string,
+  ) {}
+
+  static create(no: DocumentNo, date: string) {
+    return new PursuedDec(no, date);
+  }
+}

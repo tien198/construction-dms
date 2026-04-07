@@ -2,8 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
-import { IDecisionRepository } from '../../../../application/port/outbound/document.repository.port';
-import { Decision } from '../../../../domain/entity/decision.entity';
+import { IDecisionRepository } from '../../../../../application/port/outbound/document.repository.port';
+import { Decision } from '../../../../../domain/entity/decision.entity';
 import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
 

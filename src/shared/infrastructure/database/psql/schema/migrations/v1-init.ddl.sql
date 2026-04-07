@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-06T07:20:10.012Z
+-- Generated at: 2026-04-07T09:17:09.321Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_TV_TT',
@@ -64,7 +64,8 @@ CREATE TABLE "submissions" (
   "construction_id" varchar NOT NULL,
   "decision_id" varchar NOT NULL,
   "construction_infor_snapshot_id" varchar NOT NULL,
-  "is_change_construction_infor" boolean
+  "is_change_construction_infor" boolean,
+  "created_at" timestamptz NOT NULL DEFAULT 'NOW()'
 );
 
 CREATE TABLE "decisions" (
@@ -85,6 +86,8 @@ COMMENT ON TABLE "bid_package_snapshots" IS 'Bidder schema not provided';
 COMMENT ON COLUMN "bid_package_snapshots"."successful_bidder_id" IS 'refers to [bidders.id] and can be null if there are no snapshots available for the construction.';
 
 COMMENT ON COLUMN "submissions"."construction_id" IS 'refers to [constructions.id]';
+
+COMMENT ON COLUMN "submissions"."created_at" IS 'used to define the newest record';
 
 COMMENT ON COLUMN "decisions"."construction_id" IS 'refers to [constructions.id]';
 

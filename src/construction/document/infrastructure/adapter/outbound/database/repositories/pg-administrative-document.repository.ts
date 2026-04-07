@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import {
   IAdministrativeDocumentRepository,
   IDocumentRepository,
-} from '../../../../application/port/outbound/document.repository.port';
-import { AdministrativeDocument } from '../../../../domain/entity/administrative-document.entity';
+} from '../../../../../application/port/outbound/document.repository.port';
+import { AdministrativeDocument } from '../../../../../domain/entity/administrative-document.entity';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 

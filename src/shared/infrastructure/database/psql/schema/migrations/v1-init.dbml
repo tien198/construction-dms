@@ -80,6 +80,7 @@ Table submissions {
   decision_id varchar [not null]
   construction_infor_snapshot_id varchar [not null]
   is_change_construction_infor boolean
+  created_at timestamptz [not null, default: 'NOW()', note:'used to define the newest record']
 }
 
 Table decisions {

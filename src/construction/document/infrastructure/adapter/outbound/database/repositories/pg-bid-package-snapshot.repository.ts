@@ -2,8 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
-import { IBidPackageSnapshotRepository } from '../../../../application/port/outbound/document.repository.port';
-import { BidPackageSnapshot } from '../../../../domain/entity/bid-package.entity';
+import { IBidPackageSnapshotRepository } from '../../../../../application/port/outbound/document.repository.port';
+import { BidPackageSnapshot } from '../../../../../domain/entity/bid-package.entity';
 
 @Injectable()
 export class PgBidPackageSnapshotRepository implements IBidPackageSnapshotRepository {

@@ -2,8 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
-import { IConstructionInfoSnapshotRepository } from '../../../../application/port/outbound/document.repository.port';
-import { ConstructionInfoSnapshot } from '../../../../domain/entity/construction-infor.entity';
+import { IConstructionInfoSnapshotRepository } from '../../../../../application/port/outbound/document.repository.port';
+import { ConstructionInfoSnapshot } from '../../../../../domain/entity/construction-infor.entity';
 
 @Injectable()
 export class PgConstructionInfoSnapshotRepository implements IConstructionInfoSnapshotRepository {
