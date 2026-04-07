@@ -10,7 +10,7 @@ import { PrintDocument } from '../domain/type/print-administrative-document.type
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
 
 @Injectable()
-export class PrintService {
+export class DocxGenerationService {
   async generate(docName: string, construction: PrintDocument) {
     const content = await fs.promises.readFile(
       path.join('public', 'template', docName),
