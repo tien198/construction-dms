@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import type { IDocumentUseCase } from '../../../application/port/inbound/document.use-case';
+import type { IDocumentCreateUseCase } from '../../../application/port/inbound/document.use-case';
 import { Decision } from '../../../domain/entity/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
 
@@ -8,16 +8,40 @@ import { CreateSubmissionCommand } from '../../../application/command/create-sub
 @Controller('document')
 export class DocumentController {
   constructor(
-    @Inject('IDocumentUseCase')
-    private readonly documentUseCase: IDocumentUseCase,
+    @Inject('IDocumentCreateUseCase')
+    private readonly documentCreateUseCase: IDocumentCreateUseCase,
   ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async create(@Body() data: CreateSubmissionCommand): Promise<Decision> {
-    return this.documentUseCase.initConstruction(data);
+  async create(
+    @Body() data: CreateSubmissionCommand,
+  ): Promise<Decision | void> {
+    return this.documentCreateUseCase.initConstruction(data);
   }
+
+  @Post('add-submission')
+  @ApiOperation({ summary: 'Add a new submission for an existing decision' })
+  @ApiResponse({ status: 201, description: 'Created successfully.' })
+  async addSubmission(
+    @Body() data: CreateSubmissionCommand,
+  ): Promise<Decision | void> {
+    if (data.conId) {
+      return this.documentCreateUseCase.addSubmissionForNewDecision(
+        data.conId,
+        data,
+      );
+    }
+    // if exists decision id (directlyDecision.id), add submission for existed decision
+    else if (data.directlyDecision.id) {
+      return this.documentCreateUseCase.addSubmissionForExistedDecision(
+        data.directlyDecision.id,
+        data,
+      );
+    }
+  }
+
   /*
   @Get()
   @ApiOperation({ summary: 'Get all decisions' })

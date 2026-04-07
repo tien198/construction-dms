@@ -21,6 +21,6 @@ import { UnitOfWork } from './infrastructure/adapter/outbound/unit-of-work';
       useClass: UnitOfWork,
     },
   ],
-  exports: ['IDocumentUseCase'],
+  exports: ['IDocumentCreateUseCase'],
 })
 export class DocumentModule {}

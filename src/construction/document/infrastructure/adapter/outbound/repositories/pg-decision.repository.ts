@@ -23,7 +23,7 @@ export class PgDecisionRepository implements IDecisionRepository {
     decision: Decision,
     client?: PoolClient,
   ): Promise<Decision> {
-    const result = await this._poolService.pool.query(
+    const result = await (client || this._poolService.pool).query(
       `INSERT INTO decisions (id, construction_id, is_change_construction_infor, period) VALUES ($1, $2, $3, $4) RETURNING *`,
       [
         decision.id.value,
@@ -32,7 +32,7 @@ export class PgDecisionRepository implements IDecisionRepository {
         decision.period,
       ],
     );
-    return result.rows[0] as Decision;
+    return this.toDomain(result.rows[0]);
   }
   updateDecision(
     id: string,

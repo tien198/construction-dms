@@ -37,7 +37,7 @@ export class PgConstructionRepository implements IConstructionRepository {
         construction.current_snapshot_id?.value,
       ],
     );
-    return result.rows[0] as Construction;
+    return this.toDomain(result.rows[0]);
   }
   async updateConstruction(
     id: string,
@@ -47,20 +47,21 @@ export class PgConstructionRepository implements IConstructionRepository {
     const setClauses: string[] = [];
     const values: unknown[] = [id]; // $1 is always the id
 
-    if (setClauses.length === 0) {
-      throw new Error('No fields to update');
-    }
-
     for (const [k, val] of Object.entries(construction)) {
       values.push(val);
       setClauses.push(`${k} = $${values.length}`);
+    }
+
+    if (setClauses.length === 0) {
+      throw new Error('No fields to update');
     }
 
     const result = await (client || this._poolService.pool).query(
       `UPDATE constructions SET ${setClauses.join(', ')} WHERE id = $1 RETURNING *`,
       values,
     );
-    return result.rows[0] as Construction;
+
+    return this.toDomain(result.rows[0]);
   }
 
   deleteConstruction(id: string, client?: PoolClient): Promise<void> {

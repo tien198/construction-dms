@@ -12,6 +12,13 @@ import { ConstructionInfoSnapshotCommand } from './construction-info-snapshot.co
 import { DirectlyDecisionCommand } from './directly-decision.command';
 
 export class CreateSubmissionCommand {
+  // Optional between "decId" and "conId" to specify that where the submit for new Decision or existed
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  conId?: string;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()

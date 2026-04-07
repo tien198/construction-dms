@@ -4,6 +4,10 @@ import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { ISubmissionRepository } from '../../../../application/port/outbound/document.repository.port';
 import { Submission } from '../../../../domain/entity/submission.entity';
+import { DocumentId } from 'src/shared/domain/value-objects/document-id.vo';
+import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
+import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';
+import { ConstructionInforId } from 'src/construction/document/domain/value-objects/construction-infor.vo';
 
 @Injectable()
 export class PgSubmissionRepository implements ISubmissionRepository {
@@ -23,7 +27,7 @@ export class PgSubmissionRepository implements ISubmissionRepository {
     submission: Submission,
     client?: PoolClient,
   ): Promise<Submission> {
-    const result = await this._poolService.pool.query(
+    const result = await (client || this._poolService.pool).query(
       `INSERT INTO submissions (id, construction_id, decision_id, construction_infor_snapshot_id, is_change_construction_infor) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [
         submission.id.value,
@@ -33,7 +37,7 @@ export class PgSubmissionRepository implements ISubmissionRepository {
         submission.is_change_construction_infor ?? false,
       ],
     );
-    return result.rows[0] as Submission;
+    return this.toDomain(result.rows[0]);
   }
   updateSubmission(
     id: string,
@@ -50,5 +54,17 @@ export class PgSubmissionRepository implements ISubmissionRepository {
   }
   findAllSubmissions(client?: PoolClient): Promise<Submission[]> {
     throw new Error('Method not implemented.');
+  }
+
+  private toDomain(row: any): Submission {
+    return new Submission(
+      new DocumentId(row.id),
+      new ConstructionId(row.construction_id),
+      new DecisionId(row.decision_id),
+      row.construction_infor_snapshot_id
+        ? new ConstructionInforId(row.construction_infor_snapshot_id)
+        : null,
+      row.is_change_construction_infor,
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { ConstructionInforId } from '../value-objects/construction-infor.vo';
 import { ConstructionId } from '../value-objects/construction.vo';
-import { DecisionId } from '../value-objects/document.vo';
+import { DecisionId, DocumentId } from '../value-objects/document.vo';
 import { AdministrativeDocument } from './administrative-document.entity';
 
 export class Submission {
@@ -10,10 +10,10 @@ export class Submission {
   is_change_construction_infor?: boolean;
 
   // reference to administrative-document
-  document: AdministrativeDocument;
+  document: AdministrativeDocument | DocumentId;
 
   constructor(
-    document: AdministrativeDocument,
+    document: AdministrativeDocument | DocumentId,
     construction_id: ConstructionId,
     decision_id: DecisionId,
     construction_infor_snapshot_id: ConstructionInforId | null = null,
@@ -28,7 +28,10 @@ export class Submission {
   }
 
   get id() {
-    return this.document.id;
+    if (this.document instanceof AdministrativeDocument) {
+      return this.document.id;
+    }
+    return this.document;
   }
 
   static create(

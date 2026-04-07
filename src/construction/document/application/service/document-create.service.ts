@@ -13,6 +13,7 @@ import { PoolClient } from 'pg';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
 import { AdministrativeDocument } from '../../domain/entity/administrative-document.entity';
+import { ConstructionInfoSnapshot } from '../../domain/entity/construction-infor.entity';
 
 @Injectable()
 export class DocumentCreateService implements IDocumentCreateUseCase {
@@ -53,7 +54,7 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     try {
       // Save all entities
       con.current_snapshot_id = conInfor?.id ?? null;
-      await this.repo.saveConstruction(con, client);
+      const construction = await this.repo.saveConstruction(con, client);
 
       await this.repo.saveConstructionInfoSnapshot(conInfor, client);
 
@@ -68,7 +69,10 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
       await this.repo.saveDecision(dec, client);
 
       // save Submission and its Administrative Document
-      await this.repo.saveAdministrativeDocument(sub.document, client);
+      await this.repo.saveAdministrativeDocument(
+        sub.document as AdministrativeDocument,
+        client,
+      );
       await this.repo.saveSubmission(sub, client);
 
       await this.uow.commit(client);
@@ -111,25 +115,7 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     try {
       // Save all entities
       if (conInfor) {
-        await this.repo.saveConstructionInfoSnapshot(conInfor, client);
-        await this.repo.updateConstruction(
-          conId,
-          {
-            current_snapshot_id: conInfor.id,
-          },
-          client,
-        );
-        const bidPackages = cmd.construction_infor_snapshot
-          ?.bid_package_snapshots
-          ? BidPackageSnapshotAssembler.fromCmdList(
-              cmd.construction_infor_snapshot.bid_package_snapshots,
-              conInfor.id,
-            )
-          : [];
-
-        for (const bidPackage of bidPackages) {
-          await this.repo.saveBidPackageSnapshot(bidPackage, client);
-        }
+        await this.saveConInforAndRelevants(conId, conInfor, cmd, client);
       }
       // save Decision and its Administrative Document
       await this.repo.saveAdministrativeDocument(
@@ -139,7 +125,10 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
       await this.repo.saveDecision(dec, client);
 
       // save Submission and its Administrative Document
-      await this.repo.saveAdministrativeDocument(sub.document, client);
+      await this.repo.saveAdministrativeDocument(
+        sub.document as AdministrativeDocument,
+        client,
+      );
       await this.repo.saveSubmission(sub, client);
 
       await this.uow.commit(client);
@@ -152,16 +141,16 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
 
   async addSubmissionForExistedDecision(
     decId: string,
-    data: CreateSubmissionCommand,
+    cmd: CreateSubmissionCommand,
   ): Promise<Decision | void> {
     const dec = await this.repo.findDecisionById(decId);
     if (!dec) {
       throw new Error('Decision not found');
     }
     const conIdObj = new ConstructionId(dec.construction_id.value);
-    const conInfor = data.construction_infor_snapshot
+    const conInfor = cmd.construction_infor_snapshot
       ? ConstructionInfoSnapshotAssembler.fromCmd(
-          data.construction_infor_snapshot,
+          cmd.construction_infor_snapshot,
           conIdObj,
         )
       : null;
@@ -173,39 +162,31 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
       );
       current_snapshot_id = con.current_snapshot_id;
     }
+
     const sub = SubmissionAssembler.fromCmd(
-      data,
+      cmd,
       conIdObj,
       dec.id,
       conInfor?.id ?? current_snapshot_id,
     );
+
     // Begin transaction
     const client = (await this.uow.begin()) as PoolClient;
     try {
       // Save all entities
       if (conInfor) {
-        await this.repo.saveConstructionInfoSnapshot(conInfor, client);
-        await this.repo.updateConstruction(
+        await this.saveConInforAndRelevants(
           dec.construction_id.value,
-          {
-            current_snapshot_id: conInfor.id,
-          },
+          conInfor,
+          cmd,
           client,
         );
-        const bidPackages = data.construction_infor_snapshot
-          ?.bid_package_snapshots
-          ? BidPackageSnapshotAssembler.fromCmdList(
-              data.construction_infor_snapshot.bid_package_snapshots,
-              conInfor.id,
-            )
-          : [];
-
-        for (const bidPackage of bidPackages) {
-          await this.repo.saveBidPackageSnapshot(bidPackage, client);
-        }
       }
       // save Submission and its Administrative Document
-      await this.repo.saveAdministrativeDocument(sub.document, client);
+      await this.repo.saveAdministrativeDocument(
+        sub.document as AdministrativeDocument,
+        client,
+      );
       await this.repo.saveSubmission(sub, client);
 
       await this.uow.commit(client);
@@ -213,6 +194,32 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     } catch (error) {
       await this.uow.rollback(client);
       throw error;
+    }
+  }
+
+  private async saveConInforAndRelevants(
+    conId: string,
+    conInfor: ConstructionInfoSnapshot,
+    cmd: CreateSubmissionCommand,
+    client: PoolClient,
+  ) {
+    await this.repo.saveConstructionInfoSnapshot(conInfor, client);
+    await this.repo.updateConstruction(
+      conId,
+      {
+        current_snapshot_id: conInfor.id,
+      },
+      client,
+    );
+    const bidPackages = cmd.construction_infor_snapshot?.bid_package_snapshots
+      ? BidPackageSnapshotAssembler.fromCmdList(
+          cmd.construction_infor_snapshot.bid_package_snapshots,
+          conInfor.id,
+        )
+      : [];
+
+    for (const bidPackage of bidPackages) {
+      await this.repo.saveBidPackageSnapshot(bidPackage, client);
     }
   }
 }
