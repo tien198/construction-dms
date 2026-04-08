@@ -2,8 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
-import { IConstructionInfoSnapshotRepository } from '../../../../../application/port/outbound/document.repository.port';
-import { ConstructionInfoSnapshot } from '../../../../../domain/entity/construction-infor.entity';
+import { IConstructionInfoSnapshotRepository } from '../../../../../application/port/outbound/database/document.repository.port';
+import { ConstructionInforSnapshot } from '../../../../../domain/construction-infor.entity';
 
 @Injectable()
 export class PgConstructionInfoSnapshotRepository implements IConstructionInfoSnapshotRepository {
@@ -19,11 +19,11 @@ export class PgConstructionInfoSnapshotRepository implements IConstructionInfoSn
   }
 
   async saveConstructionInfoSnapshot(
-    constructionInfoSnapshot: ConstructionInfoSnapshot,
+    constructionInfoSnapshot: ConstructionInforSnapshot,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot> {
+  ): Promise<ConstructionInforSnapshot> {
     const result = await this._poolService.pool.query(
-      `INSERT INTO construction_info_snapshots (id, construction_id, name, source_of_funds, est_cost, est_cost_str, impl_start_date, impl_end_date, existing_condition_of_the_structure, repair_scope ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+      `INSERT INTO construction_infor_snapshots (id, construction_id, name, source_of_funds, est_cost, est_cost_str, impl_start_date, impl_end_date, existing_condition_of_the_structure, repair_scope ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
       [
         constructionInfoSnapshot.id.value,
         constructionInfoSnapshot.construction_id.value,
@@ -37,13 +37,13 @@ export class PgConstructionInfoSnapshotRepository implements IConstructionInfoSn
         constructionInfoSnapshot.repair_scope.value,
       ],
     );
-    return result.rows[0] as ConstructionInfoSnapshot;
+    return result.rows[0] as ConstructionInforSnapshot;
   }
   updateConstructionInfoSnapshot(
     id: string,
-    constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
+    constructionInfoSnapshot: Partial<ConstructionInforSnapshot>,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot> {
+  ): Promise<ConstructionInforSnapshot> {
     throw new Error('Method not implemented.');
   }
   deleteConstructionInfoSnapshot(
@@ -55,12 +55,12 @@ export class PgConstructionInfoSnapshotRepository implements IConstructionInfoSn
   findConstructionInfoSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot> {
+  ): Promise<ConstructionInforSnapshot> {
     throw new Error('Method not implemented.');
   }
   findAllConstructionInfoSnapshots(
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot[]> {
+  ): Promise<ConstructionInforSnapshot[]> {
     throw new Error('Method not implemented.');
   }
 }

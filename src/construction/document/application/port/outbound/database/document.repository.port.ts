@@ -1,9 +1,9 @@
-import { Decision } from '../../../domain/entity/decision.entity';
-import { Submission } from '../../../domain/entity/submission.entity';
-import { AdministrativeDocument } from '../../../domain/entity/administrative-document.entity';
-import { BidPackageSnapshot } from '../../../domain/entity/bid-package.entity';
-import { ConstructionInfoSnapshot } from '../../../domain/entity/construction-infor.entity';
-import { Construction } from '../../../domain/entity/construction.entity';
+import { Decision } from '../../../../domain/decision.entity';
+import { Submission } from '../../../../domain/submission.entity';
+import { AdministrativeDocument } from '../../../../domain/administrative-document.entity';
+import { ConstructionInforSnapshot } from '../../../../domain/construction-infor.entity';
+import { Construction } from 'src/construction/document/domain/construction.entity';
+import { BidPackageSnapshot } from 'src/construction/document/domain/bid-package.entity';
 
 // client is a dedicated db client (maybe pool client), used for transaction
 
@@ -92,22 +92,22 @@ export interface IBidPackageSnapshotRepository {
 // construction info snapshot
 export interface IConstructionInfoSnapshotRepository {
   saveConstructionInfoSnapshot(
-    constructionInfoSnapshot: ConstructionInfoSnapshot,
+    constructionInfoSnapshot: ConstructionInforSnapshot,
     client?: any,
-  ): Promise<ConstructionInfoSnapshot>;
+  ): Promise<ConstructionInforSnapshot>;
   updateConstructionInfoSnapshot(
     id: string,
-    constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
+    constructionInfoSnapshot: Partial<ConstructionInforSnapshot>,
     client?: any,
-  ): Promise<ConstructionInfoSnapshot>;
+  ): Promise<ConstructionInforSnapshot>;
   deleteConstructionInfoSnapshot(id: string, client?: any): Promise<void>;
   findConstructionInfoSnapshotById(
     id: string,
     client?: any,
-  ): Promise<ConstructionInfoSnapshot>;
+  ): Promise<ConstructionInforSnapshot>;
   findAllConstructionInfoSnapshots(
     client?: any,
-  ): Promise<ConstructionInfoSnapshot[]>;
+  ): Promise<ConstructionInforSnapshot[]>;
 }
 
 export interface IDocumentRepository

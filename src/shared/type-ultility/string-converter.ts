@@ -1,4 +1,4 @@
-import { ConstructionInfoSnapshot } from 'src/construction/document/domain/entity/construction-infor.entity';
+import { ConstructionInforSnapshot } from 'src/construction/document/domain/construction-infor.entity';
 
 // type Primitive = string | number | boolean | Date | null | undefined;
 
@@ -6,7 +6,7 @@ export type StrConvert<T> = {
   [K in keyof T]: T[K] extends Array<infer U> ? StrConvert<U>[] : string;
 };
 
-const converted: StrConvert<ConstructionInfoSnapshot> = {
+const converted: StrConvert<ConstructionInforSnapshot> = {
   id: '',
   construction_id: '1',
   name: '1',

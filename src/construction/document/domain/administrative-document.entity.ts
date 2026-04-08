@@ -4,9 +4,10 @@ import {
   DocumentNo,
   PursuantToDecTCT,
   PursuantToDecTTMN,
-} from '../value-objects/document.vo';
+} from './value-objects/document.vo';
+import type { IAdministrativeDocument } from './domain-primitive/i-administrative-document';
 
-export class AdministrativeDocument {
+export class AdministrativeDocument implements IAdministrativeDocument {
   id: DocumentId;
   no: DocumentNo;
   level: string;

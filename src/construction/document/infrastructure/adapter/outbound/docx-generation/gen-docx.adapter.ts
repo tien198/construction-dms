@@ -1,17 +1,18 @@
+// Builtin file system utilities
+import fs from 'fs';
+import path from 'path';
+
 import { Injectable } from '@nestjs/common';
 import Docxtemplater from 'docxtemplater';
 import PizZip from 'pizzip';
 import expressionParser from 'docxtemplater/expressions';
 
-// Builtin file system utilities
-import fs from 'fs';
-import path from 'path';
-import { PrintDocument } from '../domain/type/print-administrative-document.type';
-import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
+import { GeneratedDocx } from 'src/construction/document/domain/docx-generation/generation-doc.entity';
+import { IDocxGenerationPort } from 'src/construction/document/application/port/outbound/docx-generation/gen-docx.port';
 
 @Injectable()
-export class DocxGenerationService {
-  async generate(docName: string, construction: PrintDocument) {
+export class DocxGenerationAdapter implements IDocxGenerationPort {
+  async generate(docName: string, construction: GeneratedDocx) {
     const content = await fs.promises.readFile(
       path.join('public', 'template', docName),
       'binary',
@@ -66,38 +67,4 @@ export class DocxGenerationService {
      */
     return buf;
   }
-  async getDocumentList() {
-    const files = await fs.promises.readdir(path.resolve('public', 'template'));
-    return files;
-  }
-
-  getDocName(per: ConstructionPeriod): DocNameObj {
-    switch (per) {
-      case ConstructionPeriod.KH_TV_TT:
-        return {
-          submission: '2. Tờ trình phê duyệt KHLCNT.docx',
-          decision: '3. QD Phê duyệt KHLCNT.docx',
-        };
-      case ConstructionPeriod.TV:
-        return {
-          submission: '4. Tờ trình phê duyệt KQLCNT TV.docx',
-          decision: '5. QD Phê duyệt KQLCNT TV.docx',
-        };
-      case ConstructionPeriod.TT:
-        return {
-          submission: 'tt-submission.docx',
-          decision: 'tt-decision.docx',
-        };
-      case ConstructionPeriod.BCKTKT:
-        return {
-          submission: 'bcktkt-submission.docx',
-          decision: 'bcktkt-decision.docx',
-        };
-    }
-  }
 }
-
-type DocNameObj = {
-  submission: string;
-  decision: string;
-};

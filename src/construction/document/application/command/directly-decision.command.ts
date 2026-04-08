@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Decision } from 'src/construction/document/domain/entity/decision.entity';
+import { Decision } from 'src/construction/document/domain/decision.entity';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
 
 export class DirectlyDecisionCommand {

@@ -1,4 +1,4 @@
-import { ConstructionInfoSnapshot } from '../../domain/entity/construction-infor.entity';
+import { ConstructionInforSnapshot } from '../../domain/construction-infor.entity';
 import {
   ConstructionName,
   EstCostStr,
@@ -13,8 +13,8 @@ export class ConstructionInfoSnapshotAssembler {
   static fromCmd(
     cmd: ConstructionInfoSnapshotCommand,
     constructionId: ConstructionId,
-  ): ConstructionInfoSnapshot {
-    return ConstructionInfoSnapshot.create(
+  ): ConstructionInforSnapshot {
+    return ConstructionInforSnapshot.create(
       constructionId,
       ConstructionName.create(cmd.name),
       SourceOfFunds.create(cmd.source_of_funds),

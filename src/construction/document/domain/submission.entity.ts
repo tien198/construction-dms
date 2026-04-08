@@ -1,9 +1,10 @@
-import { ConstructionInforId } from '../value-objects/construction-infor.vo';
-import { ConstructionId } from '../value-objects/construction.vo';
-import { DecisionId, DocumentId } from '../value-objects/document.vo';
+import { ISubmission } from './domain-primitive/i-submission';
+import { ConstructionInforId } from './value-objects/construction-infor.vo';
+import { ConstructionId } from './value-objects/construction.vo';
+import { DecisionId, DocumentId } from './value-objects/document.vo';
 import { AdministrativeDocument } from './administrative-document.entity';
 
-export class Submission {
+export class Submission implements ISubmission {
   construction_id: ConstructionId;
   decision_id: DecisionId;
   construction_infor_snapshot_id: ConstructionInforId | null;

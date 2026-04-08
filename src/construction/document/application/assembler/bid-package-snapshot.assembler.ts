@@ -1,4 +1,4 @@
-import { BidPackageSnapshot } from '../../domain/entity/bid-package.entity';
+import { BidPackageSnapshot } from '../../domain/bid-package.entity';
 import {
   BidderSelectionMethod,
   BidPackageName,

@@ -35,7 +35,7 @@ Table constructions {
   current_snapshot_id varchar [note: 'refers to [construction_info_snapshots.id] and can be null if there are no snapshots available for the construction.']
 }
 
-Table construction_info_snapshots {
+Table construction_infor_snapshots {
   id varchar [pk, not null]
   construction_id varchar [not null, note: 'refers to [constructions.id]']
 
@@ -95,9 +95,9 @@ Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents
 Ref: administrative_documents.id - submissions.id
 Ref: administrative_documents.id - decisions.id
 
-Ref: construction_info_snapshots.id - submissions.construction_infor_snapshot_id 
+Ref: construction_infor_snapshots.id - submissions.construction_infor_snapshot_id 
 
-Ref: bid_package_snapshots.construction_infor_snapshot_id > construction_info_snapshots.id
+Ref: bid_package_snapshots.construction_infor_snapshot_id > construction_infor_snapshots.id
 
 Ref: decisions.construction_id > constructions.id
 Ref: submissions.decision_id > decisions.id

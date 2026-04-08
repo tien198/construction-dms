@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IDocumentRepository } from '../../../../application/port/outbound/document.repository.port';
-import { Construction } from 'src/construction/document/domain/entity/construction.entity';
-import { Decision } from '../../../../domain/entity/decision.entity';
-import { Submission } from '../../../../domain/entity/submission.entity';
-import { AdministrativeDocument } from '../../../../domain/entity/administrative-document.entity';
-import { BidPackageSnapshot } from '../../../../domain/entity/bid-package.entity';
-import { ConstructionInfoSnapshot } from '../../../../domain/entity/construction-infor.entity';
+import { IDocumentRepository } from '../../../../application/port/outbound/database/document.repository.port';
+import { Construction } from 'src/construction/document/domain/construction.entity';
+import { Decision } from 'src/construction/document/domain/decision.entity';
+import { Submission } from 'src/construction/document/domain/submission.entity';
+import { AdministrativeDocument } from 'src/construction/document/domain/administrative-document.entity';
+import { BidPackageSnapshot } from 'src/construction/document/domain/bid-package.entity';
+import { ConstructionInforSnapshot } from 'src/construction/document/domain/construction-infor.entity';
 
 import { PgDecisionRepository as DecRepo } from './repositories/pg-decision.repository';
 import { PgSubmissionRepository as SubRepo } from './repositories/pg-submission.repository';
@@ -177,9 +177,9 @@ export class PgDocumentRepository implements IDocumentRepository {
 
   // Construction Info Snapshot
   saveConstructionInfoSnapshot(
-    constructionInfoSnapshot: ConstructionInfoSnapshot,
+    constructionInfoSnapshot: ConstructionInforSnapshot,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot> {
+  ): Promise<ConstructionInforSnapshot> {
     return this._conInforSnapRepo.saveConstructionInfoSnapshot(
       constructionInfoSnapshot,
       client,
@@ -187,9 +187,9 @@ export class PgDocumentRepository implements IDocumentRepository {
   }
   updateConstructionInfoSnapshot(
     id: string,
-    constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
+    constructionInfoSnapshot: Partial<ConstructionInforSnapshot>,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot> {
+  ): Promise<ConstructionInforSnapshot> {
     return this._conInforSnapRepo.updateConstructionInfoSnapshot(
       id,
       constructionInfoSnapshot,
@@ -205,12 +205,12 @@ export class PgDocumentRepository implements IDocumentRepository {
   findConstructionInfoSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot> {
+  ): Promise<ConstructionInforSnapshot> {
     return this._conInforSnapRepo.findConstructionInfoSnapshotById(id, client);
   }
   findAllConstructionInfoSnapshots(
     client?: PoolClient,
-  ): Promise<ConstructionInfoSnapshot[]> {
+  ): Promise<ConstructionInforSnapshot[]> {
     return this._conInforSnapRepo.findAllConstructionInfoSnapshots(client);
   }
 }

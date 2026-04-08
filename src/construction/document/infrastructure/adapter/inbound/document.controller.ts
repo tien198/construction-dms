@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import type { IDocumentCreateUseCase } from '../../../application/port/inbound/document.use-case';
-import { Decision } from '../../../domain/entity/decision.entity';
+import { Decision } from '../../../domain/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
 
 @ApiTags('document')

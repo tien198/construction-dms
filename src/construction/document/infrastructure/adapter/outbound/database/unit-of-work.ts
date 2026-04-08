@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
-import { IUnitOfWork } from '../../../../application/port/outbound/i-unit-of-work.port';
+import { IUnitOfWork } from '../../../../application/port/outbound/database/i-unit-of-work.port';
 import { PgConnectionService } from '../../../../../../shared/infrastructure/database/psql/pg-connection.service';
 
 @Injectable()

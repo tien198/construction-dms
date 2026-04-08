@@ -1,4 +1,4 @@
-import { Decision } from '../../domain/entity/decision.entity';
+import { Decision } from '../../domain/decision.entity';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { CreateSubmissionCommand } from '../command/create-submission.command';
 import { AdministrativeDocumentAssembler } from './administrative-document.assembler';

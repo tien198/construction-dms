@@ -1,4 +1,4 @@
-import { Submission } from '../../domain/entity/submission.entity';
+import { Submission } from '../../domain/submission.entity';
 import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { DecisionId } from '../../domain/value-objects/document.vo';

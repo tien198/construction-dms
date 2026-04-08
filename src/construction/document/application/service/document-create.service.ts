@@ -1,19 +1,20 @@
+import type { IDocumentRepository } from '../port/outbound/database/document.repository.port';
+import type { IUnitOfWork } from '../port/outbound/database/i-unit-of-work.port';
+
 import { Inject, Injectable } from '@nestjs/common';
-import { Decision } from '../../domain/entity/decision.entity';
+import { Decision } from '../../domain/decision.entity';
 import { IDocumentCreateUseCase } from '../port/inbound/document.use-case';
-import type { IDocumentRepository } from '../port/outbound/document.repository.port';
 import { CreateSubmissionCommand } from '../command/create-submission.command';
 import { ConstructionAssembler } from '../assembler/construction.assembler';
 import { SubmissionAssembler } from '../assembler/submission.assembler';
 import { DecisionAssembler } from '../assembler/decision.assembler';
 import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
 import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
-import type { IUnitOfWork } from '../port/outbound/i-unit-of-work.port';
 import { PoolClient } from 'pg';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
-import { AdministrativeDocument } from '../../domain/entity/administrative-document.entity';
-import { ConstructionInfoSnapshot } from '../../domain/entity/construction-infor.entity';
+import { AdministrativeDocument } from '../../domain/administrative-document.entity';
+import { ConstructionInforSnapshot } from '../../domain/construction-infor.entity';
 
 @Injectable()
 export class DocumentCreateService implements IDocumentCreateUseCase {
@@ -199,7 +200,7 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
 
   private async saveConInforAndRelevants(
     conId: string,
-    conInfor: ConstructionInfoSnapshot,
+    conInfor: ConstructionInforSnapshot,
     cmd: CreateSubmissionCommand,
     client: PoolClient,
   ) {

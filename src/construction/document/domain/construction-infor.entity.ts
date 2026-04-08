@@ -1,5 +1,5 @@
 import { v7 } from 'uuid';
-import { ConstructionId } from '../value-objects/construction.vo';
+import { ConstructionId } from './value-objects/construction.vo';
 import {
   ConstructionInforId,
   ConstructionName,
@@ -7,9 +7,10 @@ import {
   ExistingCondition,
   RepairScope,
   SourceOfFunds,
-} from '../value-objects/construction-infor.vo';
+} from './value-objects/construction-infor.vo';
+import type { IConstructionInforSnapshot } from './domain-primitive/i-construction-infor';
 
-export class ConstructionInfoSnapshot {
+export class ConstructionInforSnapshot implements IConstructionInforSnapshot {
   id: ConstructionInforId;
   construction_id: ConstructionId;
 
@@ -60,8 +61,8 @@ export class ConstructionInfoSnapshot {
     impl_end_date: Date,
     existing_condition_of_the_structure: ExistingCondition,
     repair_scope: RepairScope,
-  ): ConstructionInfoSnapshot {
-    return new ConstructionInfoSnapshot(
+  ): ConstructionInforSnapshot {
+    return new ConstructionInforSnapshot(
       ConstructionInforId.create(v7()),
       construction_id,
       name,
@@ -86,8 +87,8 @@ export class ConstructionInfoSnapshot {
     impl_end_date: Date,
     existing_condition_of_the_structure: ExistingCondition,
     repair_scope: RepairScope,
-  ): ConstructionInfoSnapshot {
-    return new ConstructionInfoSnapshot(
+  ): ConstructionInforSnapshot {
+    return new ConstructionInforSnapshot(
       id,
       construction_id,
       name,

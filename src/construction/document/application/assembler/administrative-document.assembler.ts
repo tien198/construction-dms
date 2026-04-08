@@ -1,4 +1,4 @@
-import { AdministrativeDocument } from '../../domain/entity/administrative-document.entity';
+import { AdministrativeDocument } from '../../domain/administrative-document.entity';
 import {
   DocumentNo,
   PursuantToDecTCT,
