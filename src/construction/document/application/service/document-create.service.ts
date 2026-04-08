@@ -10,7 +10,6 @@ import { SubmissionAssembler } from '../assembler/submission.assembler';
 import { DecisionAssembler } from '../assembler/decision.assembler';
 import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
 import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
-import { PoolClient } from 'pg';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
 import { AdministrativeDocument } from '../../domain/administrative-document.entity';
@@ -50,12 +49,12 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     const sub = SubmissionAssembler.fromCmd(cmd, con.id, dec.id, conInfor?.id);
 
     // Begin transaction
-    const client = (await this.uow.begin()) as PoolClient;
+    const client = await this.uow.begin();
 
     try {
       // Save all entities
-      con.current_snapshot_id = conInfor?.id ?? null;
-      const construction = await this.repo.saveConstruction(con, client);
+      con.assignSnapshot(conInfor.id);
+      await this.repo.saveConstruction(con, client);
 
       await this.repo.saveConstructionInfoSnapshot(conInfor, client);
 
@@ -111,7 +110,7 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     );
 
     // Begin transaction
-    const client = (await this.uow.begin()) as PoolClient;
+    const client = await this.uow.begin();
 
     try {
       // Save all entities
@@ -172,7 +171,7 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     );
 
     // Begin transaction
-    const client = (await this.uow.begin()) as PoolClient;
+    const client = await this.uow.begin();
     try {
       // Save all entities
       if (conInfor) {
@@ -202,7 +201,7 @@ export class DocumentCreateService implements IDocumentCreateUseCase {
     conId: string,
     conInfor: ConstructionInforSnapshot,
     cmd: CreateSubmissionCommand,
-    client: PoolClient,
+    client: any,
   ) {
     await this.repo.saveConstructionInfoSnapshot(conInfor, client);
     await this.repo.updateConstruction(

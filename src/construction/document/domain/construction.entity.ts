@@ -18,6 +18,10 @@ export class Construction implements IConstruction {
     this.current_snapshot_id = current_snapshot_id;
   }
 
+  assignSnapshot(snapshotId: ConstructionInforId): void {
+    this.current_snapshot_id = snapshotId;
+  }
+
   static create(
     pursuant_to_dec_tct_id: PursuantToDecTCT,
     current_snapshot_id: ConstructionInforId | null,
