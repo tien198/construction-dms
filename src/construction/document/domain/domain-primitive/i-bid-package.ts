@@ -1,4 +1,4 @@
-import { BidPackageType } from 'src/construction/domain/enum/bid-package.type';
+import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 import { ConstructionInforId } from '../value-objects/construction-infor.vo';
 import {
   BidderSelectionMethod,

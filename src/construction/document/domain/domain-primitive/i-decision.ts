@@ -1,4 +1,4 @@
-import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
+import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { IAdministrativeDocument } from './i-administrative-document';
 import { ConstructionId } from '../value-objects/construction.vo';
 import { DecisionId } from '../value-objects/document.vo';

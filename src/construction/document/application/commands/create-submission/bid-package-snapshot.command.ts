@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { BidPackageType } from 'src/construction/domain/enum/bid-package.type';
+import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 
 export class BidPackageSnapshotCommand {
   @ApiProperty()
