@@ -1,6 +1,6 @@
 import { Decision } from '../../domain/decision.entity';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
-import { CreateSubmissionCommand } from '../command/create-submission.command';
+import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 import { AdministrativeDocumentAssembler } from './administrative-document.assembler';
 
 export class DecisionAssembler {

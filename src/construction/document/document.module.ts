@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DocumentController } from './infrastructure/adapter/inbound/document.controller';
-import { DocumentCreateService } from './application/service/document-create.service';
+import { DocumentSubmissionService } from './application/service/document-submission.service';
 import { PgDocumentRepository } from './infrastructure/adapter/outbound/database/pg-document.repository';
 
 import { UnitOfWork } from './infrastructure/adapter/outbound/database/unit-of-work';
@@ -9,8 +9,8 @@ import { UnitOfWork } from './infrastructure/adapter/outbound/database/unit-of-w
   controllers: [DocumentController],
   providers: [
     {
-      provide: 'IDocumentCreateUseCase',
-      useClass: DocumentCreateService,
+      provide: 'IDocumentSubmissionUseCase',
+      useClass: DocumentSubmissionService,
     },
     {
       provide: 'IDocumentRepository',
@@ -21,6 +21,6 @@ import { UnitOfWork } from './infrastructure/adapter/outbound/database/unit-of-w
       useClass: UnitOfWork,
     },
   ],
-  exports: ['IDocumentCreateUseCase'],
+  exports: ['IDocumentSubmissionUseCase'],
 })
 export class DocumentModule {}

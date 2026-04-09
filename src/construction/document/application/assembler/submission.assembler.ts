@@ -2,7 +2,7 @@ import { Submission } from '../../domain/submission.entity';
 import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { DecisionId } from '../../domain/value-objects/document.vo';
-import { CreateSubmissionCommand } from '../command/create-submission.command';
+import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 import { AdministrativeDocumentAssembler } from './administrative-document.assembler';
 
 export class SubmissionAssembler {

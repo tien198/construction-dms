@@ -22,6 +22,7 @@ export class BidPackageName {
   }
 }
 
+// short_description
 export class ShortDesc {
   constructor(readonly value: string) {}
 

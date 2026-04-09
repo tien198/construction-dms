@@ -7,7 +7,7 @@ import {
   SourceOfFunds,
 } from '../../domain/value-objects/construction-infor.vo';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
-import { ConstructionInfoSnapshotCommand } from '../command/construction-info-snapshot.command';
+import { ConstructionInfoSnapshotCommand } from '../commands/create-submission/construction-info-snapshot.command';
 
 export class ConstructionInfoSnapshotAssembler {
   static fromCmd(

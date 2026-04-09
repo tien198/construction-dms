@@ -3,8 +3,8 @@ import type { IUnitOfWork } from '../port/outbound/database/i-unit-of-work.port'
 
 import { Inject, Injectable } from '@nestjs/common';
 import { Decision } from '../../domain/decision.entity';
-import { IDocumentCreateUseCase } from '../port/inbound/document.use-case';
-import { CreateSubmissionCommand } from '../command/create-submission.command';
+import { IDocumentSubmissionUseCase } from '../port/inbound/document-submission.use-case';
+import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 import { ConstructionAssembler } from '../assembler/construction.assembler';
 import { SubmissionAssembler } from '../assembler/submission.assembler';
 import { DecisionAssembler } from '../assembler/decision.assembler';
@@ -16,7 +16,7 @@ import { AdministrativeDocument } from '../../domain/administrative-document.ent
 import { ConstructionInforSnapshot } from '../../domain/construction-infor.entity';
 
 @Injectable()
-export class DocumentCreateService implements IDocumentCreateUseCase {
+export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
   constructor(
     @Inject('IDocumentRepository')
     private readonly repo: IDocumentRepository,

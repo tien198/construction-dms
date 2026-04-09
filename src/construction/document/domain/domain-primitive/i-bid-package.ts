@@ -18,6 +18,7 @@ export interface IBidPackageSnapshot {
   type: BidPackageType;
   project_owner: ProjectOwner;
   name: BidPackageName;
+  // short_description
   short_desc: ShortDesc;
 
   est_cost: number;

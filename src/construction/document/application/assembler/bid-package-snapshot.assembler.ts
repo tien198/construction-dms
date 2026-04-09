@@ -11,7 +11,7 @@ import {
   ConstructionInforId,
   EstCostStr,
 } from '../../domain/value-objects/construction-infor.vo';
-import { BidPackageSnapshotCommand } from '../command/bid-package-snapshot.command';
+import { BidPackageSnapshotCommand } from '../commands/create-submission/bid-package-snapshot.command';
 
 export class BidPackageSnapshotAssembler {
   static fromCmd(

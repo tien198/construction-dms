@@ -1,15 +1,15 @@
 import { Controller, Post, Body, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import type { IDocumentCreateUseCase } from '../../../application/port/inbound/document.use-case';
+import type { IDocumentSubmissionUseCase } from '../../../application/port/inbound/document-submission.use-case';
 import { Decision } from '../../../domain/decision.entity';
-import { CreateSubmissionCommand } from '../../../application/command/create-submission.command';
+import { CreateSubmissionCommand } from '../../../application/commands/create-submission/create-submission.command';
 
 @ApiTags('document')
 @Controller('document')
 export class DocumentController {
   constructor(
-    @Inject('IDocumentCreateUseCase')
-    private readonly documentCreateUseCase: IDocumentCreateUseCase,
+    @Inject('IDocumentSubmissionUseCase')
+    private readonly documentSubmissionUseCase: IDocumentSubmissionUseCase,
   ) {}
 
   @Post()
@@ -18,7 +18,7 @@ export class DocumentController {
   async create(
     @Body() data: CreateSubmissionCommand,
   ): Promise<Decision | void> {
-    return this.documentCreateUseCase.initConstruction(data);
+    return this.documentSubmissionUseCase.initConstruction(data);
   }
 
   @Post('add-submission')
@@ -28,14 +28,14 @@ export class DocumentController {
     @Body() data: CreateSubmissionCommand,
   ): Promise<Decision | void> {
     if (data.conId) {
-      return this.documentCreateUseCase.addSubmissionForNewDecision(
+      return this.documentSubmissionUseCase.addSubmissionForNewDecision(
         data.conId,
         data,
       );
     }
     // if exists decision id (directlyDecision.id), add submission for existed decision
     else if (data.directlyDecision.id) {
-      return this.documentCreateUseCase.addSubmissionForExistedDecision(
+      return this.documentSubmissionUseCase.addSubmissionForExistedDecision(
         data.directlyDecision.id,
         data,
       );

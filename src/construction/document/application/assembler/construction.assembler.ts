@@ -1,7 +1,7 @@
 import { Construction } from '../../domain/construction.entity';
 import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
 import { PursuantToDecTCT } from '../../domain/value-objects/document.vo';
-import { CreateSubmissionCommand } from '../command/create-submission.command';
+import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 
 export class ConstructionAssembler {
   static fromCmd(
