@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import fs from 'fs';
+import path from 'path';
+
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
@@ -53,10 +56,14 @@ export class PgDecisionRepository implements IDecisionRepository {
     period: ConstructionPeriod,
     client?: PoolClient,
   ): Promise<DecisionResDto> {
-    const result = await (client || this._poolService.pool).query(
-      `SELECT * FROM decisions WHERE construction_id = $1 AND period = $2`,
-      [constructionId, period],
+    const queryString = fs.readFileSync(
+      path.join(__dirname, 'decision.sql-query/find-decision.sql'),
+      'utf-8',
     );
+    const result = await (client || this._poolService.pool).query(queryString, [
+      constructionId,
+      period,
+    ]);
     if (result.rows.length === 0) {
       throw new Error(`Not found decision with period: "${period}"`);
     }
