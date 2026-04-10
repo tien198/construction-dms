@@ -15,6 +15,8 @@ import { PgConstructionInfoSnapshotRepository as ConInforSnapRepo } from './repo
 import { PgConstructionRepository as ConRepo } from './repositories/pg-construction.respositoty';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { PoolClient } from 'pg';
+import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
+import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
 
 @Injectable()
 export class PgDocumentRepository implements IDocumentRepository {
@@ -62,23 +64,18 @@ export class PgDocumentRepository implements IDocumentRepository {
   saveDecision(decision: Decision, client?: PoolClient): Promise<Decision> {
     return this._decRepo.saveDecision(decision, client);
   }
-  updateDecision(
-    id: string,
-    decision: Partial<Decision>,
-    client?: PoolClient,
-  ): Promise<Decision> {
-    return this._decRepo.updateDecision(id, decision, client);
-  }
-  deleteDecision(id: string, client?: PoolClient): Promise<void> {
-    return this._decRepo.deleteDecision(id, client);
-  }
+
   findDecisionById(id: string, client?: PoolClient): Promise<Decision> {
     return this._decRepo.findDecisionById(id, client);
   }
-  findAllDecisions(client?: PoolClient): Promise<Decision[]> {
-    return this._decRepo.findAllDecisions(client);
-  }
 
+  findDecisionByPeriod(
+    constructionId: string,
+    period: ConstructionPeriod,
+    client?: any,
+  ): Promise<DecisionResDto> {
+    return this._decRepo.findDecisionByPeriod(constructionId, period, client);
+  }
   // Submission
   saveSubmission(
     submission: Submission,

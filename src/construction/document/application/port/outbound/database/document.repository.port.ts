@@ -4,6 +4,8 @@ import { AdministrativeDocument } from '../../../../domain/administrative-docume
 import { ConstructionInforSnapshot } from '../../../../domain/construction-infor.entity';
 import { Construction } from 'src/construction/document/domain/construction.entity';
 import { BidPackageSnapshot } from 'src/construction/document/domain/bid-package.entity';
+import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
+import { DecisionResDto } from '../../../dto/response/get-decision.res-dto';
 
 // client is a dedicated db client (maybe pool client), used for transaction
 
@@ -26,14 +28,12 @@ export interface IConstructionRepository {
 // Decitsion
 export interface IDecisionRepository {
   saveDecision(decision: Decision, client?: any): Promise<Decision>;
-  updateDecision(
-    id: string,
-    decision: Partial<Decision>,
-    client?: any,
-  ): Promise<Decision>;
-  deleteDecision(id: string, client?: any): Promise<void>;
   findDecisionById(id: string, client?: any): Promise<Decision>;
-  findAllDecisions(client?: any): Promise<Decision[]>;
+  findDecisionByPeriod(
+    constructionId: string,
+    period: ConstructionPeriod,
+    client?: any,
+  ): Promise<DecisionResDto>;
 }
 
 // submission

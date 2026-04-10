@@ -6,6 +6,8 @@ import { IDecisionRepository } from '../../../../../application/port/outbound/da
 import { Decision } from '../../../../../domain/decision.entity';
 import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
+import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
+import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
 
 @Injectable()
 export class PgDecisionRepository implements IDecisionRepository {
@@ -34,17 +36,6 @@ export class PgDecisionRepository implements IDecisionRepository {
     );
     return this.toDomain(result.rows[0]);
   }
-  updateDecision(
-    id: string,
-    decision: Partial<Decision>,
-    client?: PoolClient,
-  ): Promise<Decision> {
-    throw new Error('Method not implemented.');
-  }
-
-  deleteDecision(id: string, client?: PoolClient): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
 
   async findDecisionById(id: string, client?: PoolClient): Promise<Decision> {
     const result = await (client || this._poolService.pool).query(
@@ -57,8 +48,19 @@ export class PgDecisionRepository implements IDecisionRepository {
     return this.toDomain(result.rows[0]);
   }
 
-  findAllDecisions(client?: PoolClient): Promise<Decision[]> {
-    throw new Error('Method not implemented.');
+  async findDecisionByPeriod(
+    constructionId: string,
+    period: ConstructionPeriod,
+    client?: PoolClient,
+  ): Promise<DecisionResDto> {
+    const result = await (client || this._poolService.pool).query(
+      `SELECT * FROM decisions WHERE construction_id = $1 AND period = $2`,
+      [constructionId, period],
+    );
+    if (result.rows.length === 0) {
+      throw new Error(`Not found decision with period: "${period}"`);
+    }
+    return result.rows[0] as DecisionResDto;
   }
 
   private toDomain(row: Record<string, any>): Decision {
