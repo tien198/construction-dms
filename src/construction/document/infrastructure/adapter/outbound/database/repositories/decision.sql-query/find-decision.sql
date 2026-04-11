@@ -108,7 +108,7 @@ LEFT JOIN administrative_documents sub_tct
 LEFT JOIN administrative_documents sub_ttmn
   ON sub_ttmn.id = sub_ad.pursuant_to_dec_ttmn_id
 -- submission -> construction_info_snapshots (optional)
-LEFT JOIN construction_info_snapshots cis
+LEFT JOIN construction_infor_snapshots cis
   ON cis.id = sub.construction_infor_snapshot_id
 WHERE d.construction_id = $1
   AND d.period = $2;

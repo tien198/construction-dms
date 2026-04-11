@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-07T09:17:09.321Z
+-- Generated at: 2026-04-11T13:10:43.940Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_TV_TT',
@@ -30,7 +30,7 @@ CREATE TABLE "constructions" (
   "current_snapshot_id" varchar
 );
 
-CREATE TABLE "construction_info_snapshots" (
+CREATE TABLE "construction_infor_snapshots" (
   "id" varchar PRIMARY KEY NOT NULL,
   "construction_id" varchar NOT NULL,
   "name" varchar NOT NULL,
@@ -79,7 +79,7 @@ COMMENT ON COLUMN "constructions"."pursuant_to_dec_tct_id" IS 'refers to [admini
 
 COMMENT ON COLUMN "constructions"."current_snapshot_id" IS 'refers to [construction_info_snapshots.id] and can be null if there are no snapshots available for the construction.';
 
-COMMENT ON COLUMN "construction_info_snapshots"."construction_id" IS 'refers to [constructions.id]';
+COMMENT ON COLUMN "construction_infor_snapshots"."construction_id" IS 'refers to [constructions.id]';
 
 COMMENT ON TABLE "bid_package_snapshots" IS 'Bidder schema not provided';
 
@@ -99,9 +99,9 @@ ALTER TABLE "submissions" ADD FOREIGN KEY ("id") REFERENCES "administrative_docu
 
 ALTER TABLE "decisions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "submissions" ADD FOREIGN KEY ("construction_infor_snapshot_id") REFERENCES "construction_info_snapshots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "submissions" ADD FOREIGN KEY ("construction_infor_snapshot_id") REFERENCES "construction_infor_snapshots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("construction_infor_snapshot_id") REFERENCES "construction_info_snapshots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("construction_infor_snapshot_id") REFERENCES "construction_infor_snapshots" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "decisions" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 

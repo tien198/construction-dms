@@ -4,6 +4,7 @@ import { DocumentSubmissionService } from './application/service/document-submis
 import { PgDocumentRepository } from './infrastructure/adapter/outbound/database/pg-document.repository';
 
 import { UnitOfWork } from './infrastructure/adapter/outbound/database/unit-of-work';
+import { DocumentQueriesService } from './application/service/document.queries.service';
 
 @Module({
   controllers: [DocumentController],
@@ -11,6 +12,10 @@ import { UnitOfWork } from './infrastructure/adapter/outbound/database/unit-of-w
     {
       provide: 'IDocumentSubmissionUseCase',
       useClass: DocumentSubmissionService,
+    },
+    {
+      provide: 'IDocumentQueriesUseCase',
+      useClass: DocumentQueriesService,
     },
     {
       provide: 'IDocumentRepository',

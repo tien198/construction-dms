@@ -56,7 +56,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
       con.assignSnapshot(conInfor.id);
       await this.repo.saveConstruction(con, client);
 
-      await this.repo.saveConstructionInfoSnapshot(conInfor, client);
+      await this.repo.saveConstructionInforSnapshot(conInfor, client);
 
       for (const bidPackage of bidPackages) {
         await this.repo.saveBidPackageSnapshot(bidPackage, client);
@@ -203,7 +203,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     cmd: CreateSubmissionCommand,
     client: any,
   ) {
-    await this.repo.saveConstructionInfoSnapshot(conInfor, client);
+    await this.repo.saveConstructionInforSnapshot(conInfor, client);
     await this.repo.updateConstruction(
       conId,
       {

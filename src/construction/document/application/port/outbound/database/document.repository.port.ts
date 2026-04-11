@@ -90,22 +90,22 @@ export interface IBidPackageSnapshotRepository {
 }
 
 // construction info snapshot
-export interface IConstructionInfoSnapshotRepository {
-  saveConstructionInfoSnapshot(
+export interface IConstructionInforSnapshotRepository {
+  saveConstructionInforSnapshot(
     constructionInfoSnapshot: ConstructionInforSnapshot,
     client?: any,
   ): Promise<ConstructionInforSnapshot>;
-  updateConstructionInfoSnapshot(
+  updateConstructionInforSnapshot(
     id: string,
     constructionInfoSnapshot: Partial<ConstructionInforSnapshot>,
     client?: any,
   ): Promise<ConstructionInforSnapshot>;
-  deleteConstructionInfoSnapshot(id: string, client?: any): Promise<void>;
-  findConstructionInfoSnapshotById(
+  deleteConstructionInforSnapshot(id: string, client?: any): Promise<void>;
+  findConstructionInforSnapshotById(
     id: string,
     client?: any,
   ): Promise<ConstructionInforSnapshot>;
-  findAllConstructionInfoSnapshots(
+  findAllConstructionInforSnapshots(
     client?: any,
   ): Promise<ConstructionInforSnapshot[]>;
 }
@@ -117,4 +117,4 @@ export interface IDocumentRepository
     ISubmissionRepository,
     IAdministrativeDocumentRepository,
     IBidPackageSnapshotRepository,
-    IConstructionInfoSnapshotRepository {}
+    IConstructionInforSnapshotRepository {}
