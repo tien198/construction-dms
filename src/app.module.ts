@@ -6,6 +6,8 @@ import { DocumentModule } from './construction/document/document.module';
 import config from 'config/config';
 import databaseConfig from 'config/database.config';
 import { DatabaseModule } from './shared/infrastructure/database/database.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import path from 'path';
 
 @Module({
   imports: [
@@ -14,6 +16,10 @@ import { DatabaseModule } from './shared/infrastructure/database/database.module
       load: [config, databaseConfig],
       skipProcessEnv: true,
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve('client', 'dist'),
+      exclude: ['/api'],
     }),
     DatabaseModule.forRoot(),
     DocumentModule,

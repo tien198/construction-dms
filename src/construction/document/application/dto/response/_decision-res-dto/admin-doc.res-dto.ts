@@ -3,11 +3,11 @@ export class AdminDocResDto {
   no: string;
   level: string;
   date: string;
-  pursuant_to_dec_tct: NestedDocResDto | null;
-  pursuant_to_dec_ttmn: NestedDocResDto | null;
+  pursuant_to_dec_tct: DecisionRef | null;
+  pursuant_to_dec_ttmn: DecisionRef | null;
 }
 
-export interface NestedDocResDto {
+export interface DecisionRef {
   id: string;
   no: string;
   date: string;
