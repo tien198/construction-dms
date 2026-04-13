@@ -1,4 +1,4 @@
-curl -X POST http://localhost:3000/document/add-submission \
+curl -X POST http://localhost:3000/api/document/add-submission \
 -H "Content-Type: application/json" \
 -d '{
     "conId":"019d65f8-93cb-7177-b038-61151f3265a0",

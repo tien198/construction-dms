@@ -5,6 +5,7 @@ import { PgDocumentRepository } from './infrastructure/adapter/outbound/database
 
 import { UnitOfWork } from './infrastructure/adapter/outbound/database/unit-of-work';
 import { DocumentQueriesService } from './application/service/document.queries.service';
+import { PgConstructionRepository } from './infrastructure/adapter/outbound/database/pg-construction.repository';
 
 @Module({
   controllers: [DocumentController],
@@ -20,6 +21,10 @@ import { DocumentQueriesService } from './application/service/document.queries.s
     {
       provide: 'IDocumentRepository',
       useClass: PgDocumentRepository,
+    },
+    {
+      provide: 'IConstructionRepository',
+      useClass: PgConstructionRepository,
     },
     {
       provide: 'IUnitOfWork',

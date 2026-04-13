@@ -6,6 +6,7 @@ import type { IDocumentQueriesUseCase } from 'src/construction/document/applicat
 import { Decision } from '../../../domain/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/commands/create-submission/create-submission.command';
 import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
+import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions-list.res-dto';
 
 @ApiTags('document')
 @Controller('document')
@@ -45,6 +46,16 @@ export class DocumentController {
         data,
       );
     }
+  }
+
+  @Get('constructions-list')
+  @ApiOperation({ summary: 'Get constructions list' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the list of constructions.',
+  })
+  async getConstructionsList(): Promise<ConstructionResDto[]> {
+    return this._documentQueriesUseCase.getConstructionsList();
   }
 
   @Get('decision/:constructionId/:period')

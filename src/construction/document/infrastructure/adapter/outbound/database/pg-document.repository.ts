@@ -7,12 +7,12 @@ import { AdministrativeDocument } from 'src/construction/document/domain/adminis
 import { BidPackageSnapshot } from 'src/construction/document/domain/bid-package.entity';
 import { ConstructionInforSnapshot } from 'src/construction/document/domain/construction-infor.entity';
 
-import { PgDecisionRepository as DecRepo } from './repositories/pg-decision.repository';
-import { PgSubmissionRepository as SubRepo } from './repositories/pg-submission.repository';
-import { PgAdministrativeDocumentRepository as AdminDocRepo } from './repositories/pg-administrative-document.repository';
-import { PgBidPackageSnapshotRepository as BidPkgSnapRepo } from './repositories/pg-bid-package-snapshot.repository';
-import { PgConstructionInforSnapshotRepository as ConInforSnapRepo } from './repositories/pg-construction-info-snapshot.repository';
-import { PgConstructionRepository as ConRepo } from './repositories/pg-construction.respositoty';
+import { PgDecisionRepository as DecRepo } from './_document.repositorie/pg-decision.repository';
+import { PgSubmissionRepository as SubRepo } from './_document.repositorie/pg-submission.repository';
+import { PgAdministrativeDocumentRepository as AdminDocRepo } from './_document.repositorie/pg-administrative-document.repository';
+import { PgBidPackageSnapshotRepository as BidPkgSnapRepo } from './_document.repositorie/pg-bid-package-snapshot.repository';
+import { PgConstructionInforSnapshotRepository as ConInforSnapRepo } from './_document.repositorie/pg-construction-info-snapshot.repository';
+import { PgConstructionRepository as ConRepo } from './_document.repositorie/pg-construction.respositoty';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { PoolClient } from 'pg';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
@@ -27,14 +27,14 @@ export class PgDocumentRepository implements IDocumentRepository {
   private readonly _bidPkgSnapRepo: BidPkgSnapRepo;
   private readonly _conInforSnapRepo: ConInforSnapRepo;
 
-  constructor(poolService: PgConnectionService) {
+  constructor(connectionService: PgConnectionService) {
     // getInstance the first time to lazy instantiate singleton instances
-    this._consRepo = ConRepo.getInstance(poolService);
-    this._decRepo = DecRepo.getInstance(poolService);
-    this._subRepo = SubRepo.getInstance(poolService);
-    this._adminDocRepo = AdminDocRepo.getInstance(poolService);
-    this._bidPkgSnapRepo = BidPkgSnapRepo.getInstance(poolService);
-    this._conInforSnapRepo = ConInforSnapRepo.getInstance(poolService);
+    this._consRepo = ConRepo.getInstance(connectionService);
+    this._decRepo = DecRepo.getInstance(connectionService);
+    this._subRepo = SubRepo.getInstance(connectionService);
+    this._adminDocRepo = AdminDocRepo.getInstance(connectionService);
+    this._bidPkgSnapRepo = BidPkgSnapRepo.getInstance(connectionService);
+    this._conInforSnapRepo = ConInforSnapRepo.getInstance(connectionService);
   }
   // Construction
   saveConstruction(

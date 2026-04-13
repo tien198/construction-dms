@@ -57,7 +57,7 @@ export class PgDecisionRepository implements IDecisionRepository {
     client?: PoolClient,
   ): Promise<DecisionResDto> {
     const queryString = fs.readFileSync(
-      path.join(__dirname, 'decision.sql-query/find-decision.sql'),
+      path.join(__dirname, 'decision.sql-query/find-decision-by-period.sql'),
       'utf-8',
     );
     const result = await (client || this._poolService.pool).query(queryString, [
