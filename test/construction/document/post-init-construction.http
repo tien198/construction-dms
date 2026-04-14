@@ -1,4 +1,4 @@
-curl -X POST http://localhost:3000/api/document \
+curl -X POST http://localhost:3000/api/document/init-construction \
 -H "Content-Type: application/json" \
 -d '{
     "no": "12/QĐ-UBND",

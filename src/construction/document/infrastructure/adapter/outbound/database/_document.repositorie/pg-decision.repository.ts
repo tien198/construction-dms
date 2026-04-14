@@ -10,7 +10,7 @@ import { Decision } from '../../../../../domain/decision.entity';
 import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
-import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
+import { DecisionDetailResDto } from 'src/construction/document/application/dto/response/get-decision-detail.res-dto';
 
 @Injectable()
 export class PgDecisionRepository implements IDecisionRepository {
@@ -55,11 +55,8 @@ export class PgDecisionRepository implements IDecisionRepository {
     constructionId: string,
     period: ConstructionPeriod,
     client?: PoolClient,
-  ): Promise<DecisionResDto> {
-    const queryString = fs.readFileSync(
-      path.join(__dirname, 'decision.sql-query/find-decision-by-period.sql'),
-      'utf-8',
-    );
+  ): Promise<DecisionDetailResDto> {
+    const queryString = this._getQueryFromFile('find-decision-by-period.sql');
     const result = await (client || this._poolService.pool).query(queryString, [
       constructionId,
       period,
@@ -67,7 +64,27 @@ export class PgDecisionRepository implements IDecisionRepository {
     if (result.rows.length === 0) {
       throw new Error(`Not found decision with period: "${period}"`);
     }
-    return result.rows[0] as DecisionResDto;
+    return result.rows[0] as DecisionDetailResDto;
+  }
+
+  async findDecisionListOfConstruction(
+    constructionId: string,
+    client?: PoolClient,
+  ): Promise<DecisionDetailResDto[]> {
+    const queryString = this._getQueryFromFile(
+      'find-decision-list-of-construction.sql',
+    );
+    const result = await (client || this._poolService.pool).query(queryString, [
+      constructionId,
+    ]);
+    return result.rows as DecisionDetailResDto[];
+  }
+
+  private _getQueryFromFile(fileName: string): string {
+    return fs.readFileSync(
+      path.join(__dirname, 'decision.sql-query', fileName),
+      'utf-8',
+    );
   }
 
   private toDomain(row: Record<string, any>): Decision {

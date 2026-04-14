@@ -1,0 +1,2 @@
+# Laptop
+curl -X GET http://localhost:3000/api/document/decisions/list-of-construction/019d809f-122e-77a8-ae52-2dd6998ff23a

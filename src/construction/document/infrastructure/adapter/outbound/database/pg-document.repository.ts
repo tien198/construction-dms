@@ -16,7 +16,7 @@ import { PgConstructionRepository as ConRepo } from './_document.repositorie/pg-
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { PoolClient } from 'pg';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
-import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
+import { DecisionDetailResDto } from 'src/construction/document/application/dto/response/get-decision-detail.res-dto';
 
 @Injectable()
 export class PgDocumentRepository implements IDocumentRepository {
@@ -73,9 +73,17 @@ export class PgDocumentRepository implements IDocumentRepository {
     constructionId: string,
     period: ConstructionPeriod,
     client?: any,
-  ): Promise<DecisionResDto> {
+  ): Promise<DecisionDetailResDto> {
     return this._decRepo.findDecisionByPeriod(constructionId, period, client);
   }
+
+  findDecisionListOfConstruction(
+    constructionId: string,
+    client?: any,
+  ): Promise<DecisionDetailResDto[]> {
+    return this._decRepo.findDecisionListOfConstruction(constructionId, client);
+  }
+
   // Submission
   saveSubmission(
     submission: Submission,

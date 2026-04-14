@@ -5,8 +5,9 @@ import type { IDocumentSubmissionUseCase } from '../../../application/port/inbou
 import type { IDocumentQueriesUseCase } from 'src/construction/document/application/port/inbound/document.queries.use-case';
 import { Decision } from '../../../domain/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/commands/create-submission/create-submission.command';
-import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
+import { DecisionDetailResDto } from 'src/construction/document/application/dto/response/get-decision-detail.res-dto';
 import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions-list.res-dto';
+import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
 
 @ApiTags('document')
 @Controller('document')
@@ -18,7 +19,7 @@ export class DocumentController {
     private readonly _documentQueriesUseCase: IDocumentQueriesUseCase,
   ) {}
 
-  @Post()
+  @Post('init-construction')
   @ApiOperation({ summary: 'Create a new decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
   async create(
@@ -63,12 +64,21 @@ export class DocumentController {
   async findDecisionByPeriod(
     @Param('constructionId') constructionId: string,
     @Param('period') period: string,
-  ): Promise<DecisionResDto> {
+  ): Promise<DecisionDetailResDto> {
     return this._documentQueriesUseCase.getDecision({
       constructionId,
       period,
     });
   }
+
+  @Get('decisions/list-of-construction/:conId')
+  @ApiOperation({ summary: 'Get decision list of a defined construction' })
+  async getDecisionList(
+    @Param('conId') conId: string,
+  ): Promise<DecisionResDto[]> {
+    return this._documentQueriesUseCase.getDecisionListOfConstruction(conId);
+  }
+
   /*
   @Get(':id')
   @ApiOperation({ summary: 'Get a decision by ID' })
