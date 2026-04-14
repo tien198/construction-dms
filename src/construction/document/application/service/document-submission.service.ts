@@ -26,7 +26,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
 
   async initConstruction(
     cmd: CreateSubmissionCommand,
-  ): Promise<Decision | void> {
+  ): Promise<ConstructionId | void> {
     const con = ConstructionAssembler.fromCmd(cmd);
     if (!cmd.construction_infor_snapshot) {
       throw new Error(
@@ -77,7 +77,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
 
       await this.uow.commit(client);
 
-      return dec;
+      return con.id;
     } catch (error) {
       await this.uow.rollback(client);
       throw error;

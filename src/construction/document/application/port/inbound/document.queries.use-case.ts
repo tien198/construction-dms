@@ -1,6 +1,6 @@
 import type { DecisionDetailResDto } from '../../dto/response/get-decision-detail.res-dto';
 import { GetDecisionQuery } from '../../queries/get-decision/get-decision.query';
-import type { ConstructionResDto } from '../../dto/response/get-constructions-list.res-dto';
+import type { ConstructionResDto } from '../../dto/response/get-constructions.res-dto';
 import type { DecisionResDto } from '../../dto/response/get-decision.res-dto';
 
 export interface IDocumentQueriesUseCase {

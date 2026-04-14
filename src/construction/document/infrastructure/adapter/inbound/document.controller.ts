@@ -6,8 +6,9 @@ import type { IDocumentQueriesUseCase } from 'src/construction/document/applicat
 import { Decision } from '../../../domain/decision.entity';
 import { CreateSubmissionCommand } from '../../../application/commands/create-submission/create-submission.command';
 import { DecisionDetailResDto } from 'src/construction/document/application/dto/response/get-decision-detail.res-dto';
-import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions-list.res-dto';
+import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
+import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
 
 @ApiTags('document')
 @Controller('document')
@@ -24,7 +25,7 @@ export class DocumentController {
   @ApiResponse({ status: 201, description: 'Created successfully.' })
   async create(
     @Body() data: CreateSubmissionCommand,
-  ): Promise<Decision | void> {
+  ): Promise<ConstructionId | void> {
     return this._documentSubmissionUseCase.initConstruction(data);
   }
 
@@ -34,9 +35,9 @@ export class DocumentController {
   async addSubmission(
     @Body() data: CreateSubmissionCommand,
   ): Promise<Decision | void> {
-    if (data.conId) {
+    if (data.con_id) {
       return this._documentSubmissionUseCase.addSubmissionForNewDecision(
-        data.conId,
+        data.con_id,
         data,
       );
     }

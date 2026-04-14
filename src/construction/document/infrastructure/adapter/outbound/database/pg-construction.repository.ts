@@ -4,7 +4,7 @@ import type { Pool } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
-import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions-list.res-dto';
+import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions.res-dto';
 import { IConstructionRepository } from 'src/construction/document/application/port/outbound/database/construction.repository.port';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 

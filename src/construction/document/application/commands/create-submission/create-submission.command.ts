@@ -17,7 +17,7 @@ export class CreateSubmissionCommand {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
-  conId?: string;
+  con_id?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

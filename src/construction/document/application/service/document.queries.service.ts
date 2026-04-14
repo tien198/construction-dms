@@ -5,7 +5,7 @@ import type { GetDecisionQuery } from '../queries/get-decision/get-decision.quer
 import type { IDocumentRepository } from '../port/outbound/database/document.repository.port';
 import type { IConstructionRepository } from '../port/outbound/database/construction.repository.port';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
-import { ConstructionResDto } from '../dto/response/get-constructions-list.res-dto';
+import { ConstructionResDto } from '../dto/response/get-constructions.res-dto';
 import { DecisionResDto } from '../dto/response/get-decision.res-dto';
 
 @Injectable()
