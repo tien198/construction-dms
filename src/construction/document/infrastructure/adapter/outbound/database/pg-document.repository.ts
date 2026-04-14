@@ -74,7 +74,7 @@ export class PgDocumentRepository implements IDocumentRepository {
     constructionId: string,
     period: ConstructionPeriod,
     client?: any,
-  ): Promise<DecisionDetailResDto> {
+  ): Promise<DecisionDetailResDto | undefined> {
     return this._decRepo.findDecisionByPeriod(constructionId, period, client);
   }
 

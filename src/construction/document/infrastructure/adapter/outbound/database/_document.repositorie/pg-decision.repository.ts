@@ -56,16 +56,14 @@ export class PgDecisionRepository implements IDecisionRepository {
     constructionId: string,
     period: ConstructionPeriod,
     client?: PoolClient,
-  ): Promise<DecisionDetailResDto> {
+  ): Promise<DecisionDetailResDto | undefined> {
     const queryString = this._getQueryFromFile('find-decision-by-period.sql');
     const result = await (client || this._poolService.pool).query(queryString, [
       constructionId,
       period,
     ]);
-    if (result.rows.length === 0) {
-      throw new Error(`Not found decision with period: "${period}"`);
-    }
-    return result.rows[0] as DecisionDetailResDto;
+
+    return result.rows[0]?.result as DecisionDetailResDto | undefined;
   }
 
   async findDecisionListOfConstruction(

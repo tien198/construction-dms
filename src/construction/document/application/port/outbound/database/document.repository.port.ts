@@ -34,7 +34,7 @@ export interface IDecisionRepository {
     constructionId: string,
     period: ConstructionPeriod,
     client?: any,
-  ): Promise<DecisionDetailResDto>;
+  ): Promise<DecisionDetailResDto | undefined>;
   findDecisionListOfConstruction(
     constructionId: string,
     client?: any,

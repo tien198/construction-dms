@@ -9,6 +9,7 @@ import { DecisionDetailResDto } from 'src/construction/document/application/dto/
 import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
+import { ResResult } from 'src/shared/response-result';
 
 @ApiTags('document')
 @Controller('document')
@@ -65,11 +66,12 @@ export class DocumentController {
   async findDecisionByPeriod(
     @Param('constructionId') constructionId: string,
     @Param('period') period: string,
-  ): Promise<DecisionDetailResDto> {
-    return this._documentQueriesUseCase.getDecision({
+  ): Promise<ResResult<DecisionDetailResDto | undefined>> {
+    const result = await this._documentQueriesUseCase.getDecision({
       constructionId,
       period,
     });
+    return new ResResult(result);
   }
 
   @Get('decisions/list-of-construction/:conId')
