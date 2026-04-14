@@ -26,6 +26,11 @@ export class DocumentQueriesService implements IDocumentQueriesUseCase {
     return decision;
   }
 
+  async getConstructionsList(): Promise<ConstructionResDto[]> {
+    const consList = await this.constructionRepo.findConstructionsList();
+    return consList;
+  }
+
   async getDecisionListOfConstruction(
     conId: string,
   ): Promise<DecisionResDto[]> {
@@ -34,8 +39,8 @@ export class DocumentQueriesService implements IDocumentQueriesUseCase {
     return decisionList;
   }
 
-  async getConstructionsList(): Promise<ConstructionResDto[]> {
-    const consList = await this.constructionRepo.findConstructionsList();
-    return consList;
+  async getTCT_DecisionsList(): Promise<DecisionResDto[]> {
+    const decision = await this.documentRepo.findTCTDecisionsList();
+    return decision;
   }
 }

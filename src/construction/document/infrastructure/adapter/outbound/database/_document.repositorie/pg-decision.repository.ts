@@ -11,6 +11,7 @@ import { DecisionId } from 'src/construction/document/domain/value-objects/docum
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { DecisionDetailResDto } from 'src/construction/document/application/dto/response/get-decision-detail.res-dto';
+import { DecisionResDto } from 'src/construction/document/application/dto/response/get-decision.res-dto';
 
 @Injectable()
 export class PgDecisionRepository implements IDecisionRepository {
@@ -78,6 +79,12 @@ export class PgDecisionRepository implements IDecisionRepository {
       constructionId,
     ]);
     return result.rows as DecisionDetailResDto[];
+  }
+
+  async findTCTDecisionsList(client?: PoolClient): Promise<DecisionResDto[]> {
+    const queryString = this._getQueryFromFile('find-tct-decisions-list.sql');
+    const result = await (client || this._poolService.pool).query(queryString);
+    return result.rows as DecisionResDto[];
   }
 
   private _getQueryFromFile(fileName: string): string {

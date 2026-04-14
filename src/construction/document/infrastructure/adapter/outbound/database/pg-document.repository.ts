@@ -85,6 +85,10 @@ export class PgDocumentRepository implements IDocumentRepository {
     return this._decRepo.findDecisionListOfConstruction(constructionId, client);
   }
 
+  findTCTDecisionsList(client?: any): Promise<DecisionResDto[]> {
+    return this._decRepo.findTCTDecisionsList(client);
+  }
+
   // Submission
   saveSubmission(
     submission: Submission,

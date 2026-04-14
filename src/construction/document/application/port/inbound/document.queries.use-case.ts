@@ -7,4 +7,5 @@ export interface IDocumentQueriesUseCase {
   getDecision(query: GetDecisionQuery): Promise<DecisionDetailResDto>;
   getConstructionsList(): Promise<ConstructionResDto[]>;
   getDecisionListOfConstruction(conId: string): Promise<DecisionResDto[]>;
+  getTCT_DecisionsList(): Promise<DecisionResDto[]>;
 }

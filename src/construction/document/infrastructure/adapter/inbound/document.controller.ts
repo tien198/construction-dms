@@ -80,6 +80,12 @@ export class DocumentController {
     return this._documentQueriesUseCase.getDecisionListOfConstruction(conId);
   }
 
+  @Get('decisions/tct-list')
+  @ApiOperation({ summary: 'Get TCT decisions list' })
+  async getTCT_DecisionsList(): Promise<DecisionResDto[]> {
+    return this._documentQueriesUseCase.getTCT_DecisionsList();
+  }
+
   /*
   @Get(':id')
   @ApiOperation({ summary: 'Get a decision by ID' })

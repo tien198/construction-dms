@@ -39,6 +39,7 @@ export interface IDecisionRepository {
     constructionId: string,
     client?: any,
   ): Promise<DecisionResDto[]>;
+  findTCTDecisionsList(client?: any): Promise<DecisionResDto[]>;
 }
 
 // submission
