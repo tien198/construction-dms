@@ -45,5 +45,5 @@ curl -X POST http://localhost:3000/api/document/init-construction \
         }
       ]
     },
-    "directlyDecision": { "no": "08/QĐ-TTMN", "period": "KH_TV_TT" }
+    "directlyDecision": { "no": "08/QĐ-TTMN", "period": "KH_LCNT" }
   }'

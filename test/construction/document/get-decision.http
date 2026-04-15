@@ -1,5 +1,5 @@
 # desktop
-curl -X GET http://localhost:3000/api/document/decision/019d7cbb-99a4-77d0-932d-138272fbb6c0/KH_TV_TT
+curl -X GET http://localhost:3000/api/document/decision/019d916e-1df7-708a-aca2-cb40988705da/KH_LCNT
 
 # laptop
-curl -X GET http://localhost:3000/api/document/decision/019d809f-122e-77a8-ae52-2dd6998ff23a/KH_TV_TT
+curl -X GET http://localhost:3000/api/document/decision/019d809f-122e-77a8-ae52-2dd6998ff23a/KH_LCNT
