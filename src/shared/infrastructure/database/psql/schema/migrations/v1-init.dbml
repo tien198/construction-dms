@@ -8,10 +8,10 @@ Project my_project {
 
 
 enum construction_period {
-  KH_TV_TT
-  TV
-  TT
+  KH_LCNT
+  KQ_KH_LCNT
   BCKTKT
+  TC
 }
 
 Enum bid_package_type {

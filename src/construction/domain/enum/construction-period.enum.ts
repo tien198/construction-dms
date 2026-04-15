@@ -1,6 +1,6 @@
 export enum ConstructionPeriod {
-  KH_TV_TT = 'KH_TV_TT',
-  TV = 'TV',
-  TT = 'TT',
+  KH_LCNT = 'KH_LCNT',
+  KQ_KH_LCNT = 'KQ_KH_LCNT',
   BCKTKT = 'BCKTKT',
+  TC = 'TC',
 }

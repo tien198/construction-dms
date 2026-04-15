@@ -1,12 +1,12 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-11T13:10:43.940Z
+-- Generated at: 2026-04-15T09:57:01.270Z
 
 CREATE TYPE "construction_period" AS ENUM (
-  'KH_TV_TT',
-  'TV',
-  'TT',
-  'BCKTKT'
+  'KH_LCNT',
+  'KQ_KH_LCNT',
+  'BCKTKT',
+  'TC'
 );
 
 CREATE TYPE "bid_package_type" AS ENUM (
