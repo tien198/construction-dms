@@ -1,6 +1,6 @@
 export class GetDecisionQuery {
   constructor(
-    public readonly constructionId: string,
-    public readonly period: string,
+    readonly constructionId: string,
+    readonly period: string,
   ) {}
 }

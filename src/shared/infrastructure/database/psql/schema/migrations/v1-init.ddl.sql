@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-17T14:59:26.372Z
+-- Generated at: 2026-04-17T16:09:31.090Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
