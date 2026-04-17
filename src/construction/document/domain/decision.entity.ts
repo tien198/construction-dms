@@ -6,7 +6,7 @@ import type { IDecision } from './domain-primitive/i-decision';
 
 export class Decision implements IDecision {
   construction_id: ConstructionId;
-  is_change_construction_infor?: boolean;
+  is_change_construction_info?: boolean;
   period: ConstructionPeriod;
 
   // reference to administrative-document
@@ -16,11 +16,11 @@ export class Decision implements IDecision {
     document: AdministrativeDocument | DecisionId,
     construction_id: ConstructionId,
     period: ConstructionPeriod,
-    is_change_construction_infor: boolean = false,
+    is_change_construction_info: boolean = false,
   ) {
     this.construction_id = construction_id;
     this.period = period;
-    this.is_change_construction_infor = is_change_construction_infor;
+    this.is_change_construction_info = is_change_construction_info;
 
     this.document = document;
   }
@@ -36,13 +36,13 @@ export class Decision implements IDecision {
     document: AdministrativeDocument,
     construction_id: ConstructionId,
     period: ConstructionPeriod,
-    is_change_construction_infor: boolean = false,
+    is_change_construction_info: boolean = false,
   ): Decision {
     return new Decision(
       document,
       construction_id,
       period,
-      is_change_construction_infor,
+      is_change_construction_info,
     );
   }
 
@@ -50,13 +50,13 @@ export class Decision implements IDecision {
     document: AdministrativeDocument,
     construction_id: ConstructionId,
     period: ConstructionPeriod,
-    is_change_construction_infor: boolean = false,
+    is_change_construction_info: boolean = false,
   ): Decision {
     return new Decision(
       document,
       construction_id,
       period,
-      is_change_construction_infor,
+      is_change_construction_info,
     );
   }
 }

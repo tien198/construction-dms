@@ -23,10 +23,10 @@ export class PgBidPackageSnapshotRepository implements IBidPackageSnapshotReposi
     client?: PoolClient,
   ): Promise<BidPackageSnapshot> {
     const result = await (client || this._poolService.pool).query(
-      `INSERT INTO bid_package_snapshots (id, construction_infor_snapshot_id, type, project_owner, name, short_desc, est_cost, est_cost_str, bidder_selection_time, bidder_selection_method, duration, is_completed, successful_bidder_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
+      `INSERT INTO bid_package_snapshots (id, construction_info_snapshot_id, type, project_owner, name, short_desc, est_cost, est_cost_str, bidder_selection_time, bidder_selection_method, duration, is_completed, successful_bidder_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
       [
         bidPackageSnapshot.id.value,
-        bidPackageSnapshot.construction_infor_snapshot_id.value,
+        bidPackageSnapshot.construction_info_snapshot_id.value,
         bidPackageSnapshot.type,
         bidPackageSnapshot.project_owner.value,
         bidPackageSnapshot.name.value,

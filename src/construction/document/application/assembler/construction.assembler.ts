@@ -1,12 +1,12 @@
 import { Construction } from '../../domain/construction.entity';
-import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
+import { ConstructionInfoId } from '../../domain/value-objects/construction-info.vo';
 import { PursuantToDecTCT } from '../../domain/value-objects/document.vo';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 
 export class ConstructionAssembler {
   static fromCmd(
     cmd: CreateSubmissionCommand,
-    currentSnapshotId: ConstructionInforId | null = null,
+    currentSnapshotId: ConstructionInfoId | null = null,
   ): Construction {
     return Construction.create(
       new PursuantToDecTCT(cmd.pursuant_to_dec_tct_id),

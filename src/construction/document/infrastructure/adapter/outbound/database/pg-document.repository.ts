@@ -5,13 +5,13 @@ import { Decision } from 'src/construction/document/domain/decision.entity';
 import { Submission } from 'src/construction/document/domain/submission.entity';
 import { AdministrativeDocument } from 'src/construction/document/domain/administrative-document.entity';
 import { BidPackageSnapshot } from 'src/construction/document/domain/bid-package.entity';
-import { ConstructionInforSnapshot } from 'src/construction/document/domain/construction-infor.entity';
+import { ConstructionInfoSnapshot } from 'src/construction/document/domain/construction-info.entity';
 
 import { PgDecisionRepository as DecRepo } from './_document.repositorie/pg-decision.repository';
 import { PgSubmissionRepository as SubRepo } from './_document.repositorie/pg-submission.repository';
 import { PgAdministrativeDocumentRepository as AdminDocRepo } from './_document.repositorie/pg-administrative-document.repository';
 import { PgBidPackageSnapshotRepository as BidPkgSnapRepo } from './_document.repositorie/pg-bid-package-snapshot.repository';
-import { PgConstructionInforSnapshotRepository as ConInforSnapRepo } from './_document.repositorie/pg-construction-info-snapshot.repository';
+import { PgConstructionInfoSnapshotRepository as ConInforSnapRepo } from './_document.repositorie/pg-construction-info-snapshot.repository';
 import { PgConstructionRepository as ConRepo } from './_document.repositorie/pg-construction.respositoty';
 import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
 import { PoolClient } from 'pg';
@@ -186,41 +186,41 @@ export class PgDocumentRepository implements IDocumentRepository {
   }
 
   // Construction Info Snapshot
-  saveConstructionInforSnapshot(
-    constructionInfoSnapshot: ConstructionInforSnapshot,
+  saveConstructionInfoSnapshot(
+    constructionInfoSnapshot: ConstructionInfoSnapshot,
     client?: PoolClient,
-  ): Promise<ConstructionInforSnapshot> {
-    return this._conInforSnapRepo.saveConstructionInforSnapshot(
+  ): Promise<ConstructionInfoSnapshot> {
+    return this._conInforSnapRepo.saveConstructionInfoSnapshot(
       constructionInfoSnapshot,
       client,
     );
   }
-  updateConstructionInforSnapshot(
+  updateConstructionInfoSnapshot(
     id: string,
-    constructionInfoSnapshot: Partial<ConstructionInforSnapshot>,
+    constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
     client?: PoolClient,
-  ): Promise<ConstructionInforSnapshot> {
-    return this._conInforSnapRepo.updateConstructionInforSnapshot(
+  ): Promise<ConstructionInfoSnapshot> {
+    return this._conInforSnapRepo.updateConstructionInfoSnapshot(
       id,
       constructionInfoSnapshot,
       client,
     );
   }
-  deleteConstructionInforSnapshot(
+  deleteConstructionInfoSnapshot(
     id: string,
     client?: PoolClient,
   ): Promise<void> {
-    return this._conInforSnapRepo.deleteConstructionInforSnapshot(id, client);
+    return this._conInforSnapRepo.deleteConstructionInfoSnapshot(id, client);
   }
-  findConstructionInforSnapshotById(
+  findConstructionInfoSnapshotById(
     id: string,
     client?: PoolClient,
-  ): Promise<ConstructionInforSnapshot> {
-    return this._conInforSnapRepo.findConstructionInforSnapshotById(id, client);
+  ): Promise<ConstructionInfoSnapshot> {
+    return this._conInforSnapRepo.findConstructionInfoSnapshotById(id, client);
   }
-  findAllConstructionInforSnapshots(
+  findAllConstructionInfoSnapshots(
     client?: PoolClient,
-  ): Promise<ConstructionInforSnapshot[]> {
-    return this._conInforSnapRepo.findAllConstructionInforSnapshots(client);
+  ): Promise<ConstructionInfoSnapshot[]> {
+    return this._conInforSnapRepo.findAllConstructionInfoSnapshots(client);
   }
 }

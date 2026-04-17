@@ -8,15 +8,15 @@ import {
   SuccessfulBidderId,
 } from '../../domain/value-objects/bid-package-snapshot.vo';
 import {
-  ConstructionInforId,
+  ConstructionInfoId,
   EstCostStr,
-} from '../../domain/value-objects/construction-infor.vo';
+} from '../../domain/value-objects/construction-info.vo';
 import { BidPackageSnapshotCommand } from '../commands/create-submission/bid-package-snapshot.command';
 
 export class BidPackageSnapshotAssembler {
   static fromCmd(
     cmd: BidPackageSnapshotCommand,
-    constructionInforId: ConstructionInforId,
+    constructionInforId: ConstructionInfoId,
   ): BidPackageSnapshot {
     return BidPackageSnapshot.create(
       constructionInforId,
@@ -38,7 +38,7 @@ export class BidPackageSnapshotAssembler {
 
   static fromCmdList(
     cmds: BidPackageSnapshotCommand[],
-    constructionInforId: ConstructionInforId,
+    constructionInforId: ConstructionInfoId,
   ): BidPackageSnapshot[] {
     return cmds.map((cmd) =>
       BidPackageSnapshotAssembler.fromCmd(cmd, constructionInforId),

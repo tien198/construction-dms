@@ -1,7 +1,7 @@
 import { Decision } from '../../../../domain/decision.entity';
 import { Submission } from '../../../../domain/submission.entity';
 import { AdministrativeDocument } from '../../../../domain/administrative-document.entity';
-import { ConstructionInforSnapshot } from '../../../../domain/construction-infor.entity';
+import { ConstructionInfoSnapshot } from '../../../../domain/construction-info.entity';
 import { Construction } from 'src/construction/document/domain/construction.entity';
 import { BidPackageSnapshot } from 'src/construction/document/domain/bid-package.entity';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
@@ -96,24 +96,24 @@ export interface IBidPackageSnapshotRepository {
 }
 
 // construction info snapshot
-export interface IConstructionInforSnapshotRepository {
-  saveConstructionInforSnapshot(
-    constructionInfoSnapshot: ConstructionInforSnapshot,
+export interface IConstructionInfoSnapshotRepository {
+  saveConstructionInfoSnapshot(
+    constructionInfoSnapshot: ConstructionInfoSnapshot,
     client?: any,
-  ): Promise<ConstructionInforSnapshot>;
-  updateConstructionInforSnapshot(
+  ): Promise<ConstructionInfoSnapshot>;
+  updateConstructionInfoSnapshot(
     id: string,
-    constructionInfoSnapshot: Partial<ConstructionInforSnapshot>,
+    constructionInfoSnapshot: Partial<ConstructionInfoSnapshot>,
     client?: any,
-  ): Promise<ConstructionInforSnapshot>;
-  deleteConstructionInforSnapshot(id: string, client?: any): Promise<void>;
-  findConstructionInforSnapshotById(
+  ): Promise<ConstructionInfoSnapshot>;
+  deleteConstructionInfoSnapshot(id: string, client?: any): Promise<void>;
+  findConstructionInfoSnapshotById(
     id: string,
     client?: any,
-  ): Promise<ConstructionInforSnapshot>;
-  findAllConstructionInforSnapshots(
+  ): Promise<ConstructionInfoSnapshot>;
+  findAllConstructionInfoSnapshots(
     client?: any,
-  ): Promise<ConstructionInforSnapshot[]>;
+  ): Promise<ConstructionInfoSnapshot[]>;
 }
 
 export interface IDocumentRepository
@@ -123,4 +123,4 @@ export interface IDocumentRepository
     ISubmissionRepository,
     IAdministrativeDocumentRepository,
     IBidPackageSnapshotRepository,
-    IConstructionInforSnapshotRepository {}
+    IConstructionInfoSnapshotRepository {}

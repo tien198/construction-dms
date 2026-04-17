@@ -1,8 +1,8 @@
-export class ConstructionInforId {
+export class ConstructionInfoId {
   constructor(readonly value: string) {}
 
   static create(val: string) {
-    return new ConstructionInforId(val);
+    return new ConstructionInfoId(val);
   }
 }
 

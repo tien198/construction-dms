@@ -11,9 +11,9 @@ import { DecisionAssembler } from '../assembler/decision.assembler';
 import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
 import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
-import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
+import { ConstructionInfoId } from '../../domain/value-objects/construction-info.vo';
 import { AdministrativeDocument } from '../../domain/administrative-document.entity';
-import { ConstructionInforSnapshot } from '../../domain/construction-infor.entity';
+import { ConstructionInfoSnapshot } from '../../domain/construction-info.entity';
 
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
@@ -56,7 +56,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
       con.assignSnapshot(conInfor.id);
       await this.repo.saveConstruction(con, client);
 
-      await this.repo.saveConstructionInforSnapshot(conInfor, client);
+      await this.repo.saveConstructionInfoSnapshot(conInfor, client);
 
       for (const bidPackage of bidPackages) {
         await this.repo.saveBidPackageSnapshot(bidPackage, client);
@@ -155,7 +155,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
         )
       : null;
 
-    let current_snapshot_id: ConstructionInforId | null = conInfor?.id ?? null;
+    let current_snapshot_id: ConstructionInfoId | null = conInfor?.id ?? null;
     if (!conInfor) {
       const con = await this.repo.findConstructionById(
         dec.construction_id.value,
@@ -199,11 +199,11 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
 
   private async saveConInforAndRelevants(
     conId: string,
-    conInfor: ConstructionInforSnapshot,
+    conInfor: ConstructionInfoSnapshot,
     cmd: CreateSubmissionCommand,
     client: any,
   ) {
-    await this.repo.saveConstructionInforSnapshot(conInfor, client);
+    await this.repo.saveConstructionInfoSnapshot(conInfor, client);
     await this.repo.updateConstruction(
       conId,
       {

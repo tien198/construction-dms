@@ -74,7 +74,7 @@ SELECT
                                                                                                                  )
                                                                                                                )
                                                                                                                FROM bid_package_snapshots bp
-                                                                                                               WHERE bp.construction_infor_snapshot_id = cis.id
+                                                                                                               WHERE bp.construction_info_snapshot_id = cis.id
                                                                                                              ),
                                                                                                              '[]'::json
                                                                                                            )
@@ -108,7 +108,7 @@ LEFT JOIN administrative_documents sub_tct
 LEFT JOIN administrative_documents sub_ttmn
   ON sub_ttmn.id = sub_ad.pursuant_to_dec_ttmn_id
 -- submission -> construction_info_snapshots (optional)
-LEFT JOIN construction_infor_snapshots cis
-  ON cis.id = sub.construction_infor_snapshot_id
+LEFT JOIN construction_info_snapshots cis
+  ON cis.id = sub.construction_info_snapshot_id
 WHERE d.construction_id = $1
   AND d.period = $2;

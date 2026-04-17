@@ -7,7 +7,7 @@ import { Submission } from '../../../../../domain/submission.entity';
 import { DocumentId } from 'src/shared/domain/value-objects/document-id.vo';
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';
 import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';
-import { ConstructionInforId } from 'src/construction/document/domain/value-objects/construction-infor.vo';
+import { ConstructionInfoId } from 'src/construction/document/domain/value-objects/construction-info.vo';
 
 @Injectable()
 export class PgSubmissionRepository implements ISubmissionRepository {
@@ -28,13 +28,13 @@ export class PgSubmissionRepository implements ISubmissionRepository {
     client?: PoolClient,
   ): Promise<Submission> {
     const result = await (client || this._poolService.pool).query(
-      `INSERT INTO submissions (id, construction_id, decision_id, construction_infor_snapshot_id, is_change_construction_infor) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      `INSERT INTO submissions (id, construction_id, decision_id, construction_info_snapshot_id, is_change_construction_info) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [
         submission.id.value,
         submission.construction_id.value,
         submission.decision_id.value,
-        submission.construction_infor_snapshot_id?.value ?? null,
-        submission.is_change_construction_infor ?? false,
+        submission.construction_info_snapshot_id?.value ?? null,
+        submission.is_change_construction_info ?? false,
       ],
     );
     return this.toDomain(result.rows[0]);
@@ -61,10 +61,10 @@ export class PgSubmissionRepository implements ISubmissionRepository {
       new DocumentId(row.id),
       new ConstructionId(row.construction_id),
       new DecisionId(row.decision_id),
-      row.construction_infor_snapshot_id
-        ? new ConstructionInforId(row.construction_infor_snapshot_id)
+      row.construction_info_snapshot_id
+        ? new ConstructionInfoId(row.construction_info_snapshot_id)
         : null,
-      row.is_change_construction_infor,
+      row.is_change_construction_info,
     );
   }
 }

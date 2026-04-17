@@ -1,6 +1,6 @@
 import { v7 } from 'uuid';
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
-import { ConstructionInforId } from './value-objects/construction-infor.vo';
+import { ConstructionInfoId } from './value-objects/construction-info.vo';
 import {
   BidderSelectionMethod,
   BidPackageId,
@@ -15,7 +15,7 @@ import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
 
 export class BidPackageSnapshot implements IBidPackageSnapshot {
   id: BidPackageId;
-  construction_infor_snapshot_id: ConstructionInforId;
+  construction_info_snapshot_id: ConstructionInfoId;
 
   type: BidPackageType;
   project_owner: ProjectOwner;
@@ -36,7 +36,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
 
   constructor(
     id: BidPackageId,
-    construction_infor_snapshot_id: ConstructionInforId,
+    construction_info_snapshot_id: ConstructionInfoId,
     type: BidPackageType,
     project_owner: ProjectOwner,
     name: BidPackageName,
@@ -50,7 +50,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
     successful_bidder_id: SuccessfulBidderId | null = null,
   ) {
     this.id = id;
-    this.construction_infor_snapshot_id = construction_infor_snapshot_id;
+    this.construction_info_snapshot_id = construction_info_snapshot_id;
     this.type = type;
     this.project_owner = project_owner;
     this.name = name;
@@ -65,7 +65,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
   }
 
   static create(
-    construction_infor_snapshot_id: ConstructionInforId,
+    construction_info_snapshot_id: ConstructionInfoId,
     type: BidPackageType,
     project_owner: ProjectOwner,
     name: BidPackageName,
@@ -80,7 +80,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
   ): BidPackageSnapshot {
     return new BidPackageSnapshot(
       BidPackageId.create(v7()),
-      construction_infor_snapshot_id,
+      construction_info_snapshot_id,
       type,
       project_owner,
       name,
@@ -97,7 +97,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
 
   static reconstitute(
     id: BidPackageId,
-    construction_infor_snapshot_id: ConstructionInforId,
+    construction_info_snapshot_id: ConstructionInfoId,
     type: BidPackageType,
     project_owner: ProjectOwner,
     name: BidPackageName,
@@ -112,7 +112,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
   ): BidPackageSnapshot {
     return new BidPackageSnapshot(
       id,
-      construction_infor_snapshot_id,
+      construction_info_snapshot_id,
       type,
       project_owner,
       name,

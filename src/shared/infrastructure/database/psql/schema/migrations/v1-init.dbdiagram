@@ -7,38 +7,38 @@
     {
       "name": "administrative_documents",
       "schemaName": "public",
-      "x": 858.085391688847,
-      "y": -283.7258997683479
+      "x": 1154.4356915676456,
+      "y": -144.81772024171775
     },
     {
       "name": "constructions",
       "schemaName": "public",
-      "x": -94.1796751825039,
-      "y": -294.96059807599255
+      "x": 638.4080462734892,
+      "y": -264.480848603705
     },
     {
       "name": "construction_info_snapshots",
       "schemaName": "public",
-      "x": -224.00136214897074,
-      "y": 102.28691461256017
+      "x": 74.28497449301403,
+      "y": 321.8765427700962
     },
     {
       "name": "bid_package_snapshots",
       "schemaName": "public",
-      "x": 267.0755353689131,
-      "y": 163.73949628282514
+      "x": 523.0896605767872,
+      "y": 439.58450001373876
     },
     {
       "name": "submissions",
       "schemaName": "public",
-      "x": 343.5288180594313,
-      "y": -91.75574259987161
+      "x": 602.5203619739459,
+      "y": 137.9555683703258
     },
     {
       "name": "decisions",
       "schemaName": "public",
-      "x": 369.83449308886037,
-      "y": -283.7258997683479
+      "x": 642.7193255703642,
+      "y": -77.6392283741728
     }
   ],
   "tableGroupCollapseStates": [],
@@ -59,12 +59,12 @@
       "secondRelation": "1",
       "checkPoints": [
         {
-          "x": 1186.815310636118,
-          "y": -107.72589976834792
+          "x": 1492.5977340704358,
+          "y": 31.18227975828225
         },
         {
-          "x": 1186.815310636118,
-          "y": -235.72589976834792
+          "x": 1492.5977340704358,
+          "y": -96.81772024171775
         }
       ]
     },
@@ -121,7 +121,7 @@
       "firstSchemaName": "public",
       "firstRelation": "1",
       "secondFieldNames": [
-        "construction_infor_snapshot_id"
+        "construction_info_snapshot_id"
       ],
       "secondTableName": "submissions",
       "secondSchemaName": "public",
@@ -130,7 +130,7 @@
     },
     {
       "firstFieldNames": [
-        "construction_infor_snapshot_id"
+        "construction_info_snapshot_id"
       ],
       "firstTableName": "bid_package_snapshots",
       "firstSchemaName": "public",
@@ -160,6 +160,32 @@
     },
     {
       "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "decisions",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "approved_decision_id"
+      ],
+      "secondTableName": "bid_package_snapshots",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "firstEndpointSide": "left",
+      "secondEndpointSide": "left",
+      "checkPoints": [
+        {
+          "x": -52.09201759000234,
+          "y": -29.639228374172802
+        },
+        {
+          "x": -52.09201759000234,
+          "y": 903.5845000137388
+        }
+      ]
+    },
+    {
+      "firstFieldNames": [
         "decision_id"
       ],
       "firstTableName": "submissions",
@@ -173,12 +199,12 @@
       "secondRelation": "1",
       "checkPoints": [
         {
-          "x": 715.6786571627463,
-          "y": 27.74149807274557
+          "x": 1016.065972048088,
+          "y": 249.95556837032578
         },
         {
-          "x": 715.6786571627463,
-          "y": -235.72589976834792
+          "x": 1016.065972048088,
+          "y": -29.639228374172802
         }
       ]
     }

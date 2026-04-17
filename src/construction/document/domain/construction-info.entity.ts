@@ -1,17 +1,17 @@
 import { v7 } from 'uuid';
 import { ConstructionId } from './value-objects/construction.vo';
 import {
-  ConstructionInforId,
+  ConstructionInfoId,
   ConstructionName,
   EstCostStr,
   ExistingCondition,
   RepairScope,
   SourceOfFunds,
-} from './value-objects/construction-infor.vo';
-import type { IConstructionInforSnapshot } from './domain-primitive/i-construction-infor';
+} from './value-objects/construction-info.vo';
+import type { IConstructionInfoSnapshot } from './domain-primitive/i-construction-info';
 
-export class ConstructionInforSnapshot implements IConstructionInforSnapshot {
-  id: ConstructionInforId;
+export class ConstructionInfoSnapshot implements IConstructionInfoSnapshot {
+  id: ConstructionInfoId;
   construction_id: ConstructionId;
 
   name: ConstructionName;
@@ -27,7 +27,7 @@ export class ConstructionInforSnapshot implements IConstructionInforSnapshot {
   repair_scope: RepairScope;
 
   constructor(
-    id: ConstructionInforId,
+    id: ConstructionInfoId,
     construction_id: ConstructionId,
     name: ConstructionName,
     source_of_funds: SourceOfFunds,
@@ -61,9 +61,9 @@ export class ConstructionInforSnapshot implements IConstructionInforSnapshot {
     impl_end_date: Date,
     existing_condition_of_the_structure: ExistingCondition,
     repair_scope: RepairScope,
-  ): ConstructionInforSnapshot {
-    return new ConstructionInforSnapshot(
-      ConstructionInforId.create(v7()),
+  ): ConstructionInfoSnapshot {
+    return new ConstructionInfoSnapshot(
+      ConstructionInfoId.create(v7()),
       construction_id,
       name,
       source_of_funds,
@@ -77,7 +77,7 @@ export class ConstructionInforSnapshot implements IConstructionInforSnapshot {
   }
 
   static reconstitute(
-    id: ConstructionInforId,
+    id: ConstructionInfoId,
     construction_id: ConstructionId,
     name: ConstructionName,
     source_of_funds: SourceOfFunds,
@@ -87,8 +87,8 @@ export class ConstructionInforSnapshot implements IConstructionInforSnapshot {
     impl_end_date: Date,
     existing_condition_of_the_structure: ExistingCondition,
     repair_scope: RepairScope,
-  ): ConstructionInforSnapshot {
-    return new ConstructionInforSnapshot(
+  ): ConstructionInfoSnapshot {
+    return new ConstructionInfoSnapshot(
       id,
       construction_id,
       name,

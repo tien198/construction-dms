@@ -30,11 +30,11 @@ export class PgDecisionRepository implements IDecisionRepository {
     client?: PoolClient,
   ): Promise<Decision> {
     const result = await (client || this._poolService.pool).query(
-      `INSERT INTO decisions (id, construction_id, is_change_construction_infor, period) VALUES ($1, $2, $3, $4) RETURNING *`,
+      `INSERT INTO decisions (id, construction_id, is_change_construction_info, period) VALUES ($1, $2, $3, $4) RETURNING *`,
       [
         decision.id.value,
         decision.construction_id.value,
-        decision.is_change_construction_infor ?? false,
+        decision.is_change_construction_info ?? false,
         decision.period,
       ],
     );
@@ -97,7 +97,7 @@ export class PgDecisionRepository implements IDecisionRepository {
       new DecisionId(row.id),
       new ConstructionId(row.construction_id),
       row.period,
-      row.is_change_construction_infor,
+      row.is_change_construction_info,
     );
   }
 }

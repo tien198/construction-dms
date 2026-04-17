@@ -1,15 +1,15 @@
 import { ConstructionId } from '../value-objects/construction.vo';
 import {
-  ConstructionInforId,
+  ConstructionInfoId,
   ConstructionName,
   EstCostStr,
   ExistingCondition,
   RepairScope,
   SourceOfFunds,
-} from '../value-objects/construction-infor.vo';
+} from '../value-objects/construction-info.vo';
 
-export interface IConstructionInforSnapshot {
-  id: ConstructionInforId;
+export interface IConstructionInfoSnapshot {
+  id: ConstructionInfoId;
   construction_id: ConstructionId;
 
   name: ConstructionName;

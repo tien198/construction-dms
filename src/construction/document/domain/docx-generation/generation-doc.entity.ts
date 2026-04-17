@@ -1,8 +1,8 @@
-import { ConstructionInforSnapshot } from '../construction-infor.entity';
+import { ConstructionInfoSnapshot } from '../construction-info.entity';
 import { StrConvert } from 'src/shared/type-ultility/string-converter';
 import { AdminDoc_Docx } from './administrative-document.docx.entity';
 
-type IConInfor_Docx = StrConvert<ConstructionInforSnapshot>;
+type IConInfor_Docx = StrConvert<ConstructionInfoSnapshot>;
 
 export class GeneratedDocx extends AdminDoc_Docx implements IConInfor_Docx {
   // ConstructionInfoSnapshot fields (as string)

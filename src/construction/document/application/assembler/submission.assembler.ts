@@ -1,5 +1,5 @@
 import { Submission } from '../../domain/submission.entity';
-import { ConstructionInforId } from '../../domain/value-objects/construction-infor.vo';
+import { ConstructionInfoId } from '../../domain/value-objects/construction-info.vo';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
 import { DecisionId } from '../../domain/value-objects/document.vo';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
@@ -10,7 +10,7 @@ export class SubmissionAssembler {
     cmd: CreateSubmissionCommand,
     constructionId: ConstructionId,
     decisionId: DecisionId,
-    constructionInforId: ConstructionInforId | null = null,
+    constructionInforId: ConstructionInfoId | null = null,
   ): Submission {
     const document = AdministrativeDocumentAssembler.fromCmd(cmd);
 

@@ -9,7 +9,7 @@ import {
   DecisionId,
   PursuantToDecTCT,
 } from 'src/construction/document/domain/value-objects/document.vo';
-import { ConstructionInforId } from 'src/construction/document/domain/value-objects/construction-infor.vo';
+import { ConstructionInfoId } from 'src/construction/document/domain/value-objects/construction-info.vo';
 
 @Injectable()
 export class PgConstructionRepository implements IConstructionRepository {
@@ -91,7 +91,7 @@ export class PgConstructionRepository implements IConstructionRepository {
       new ConstructionId(row.id),
       new PursuantToDecTCT(row.pursuant_to_dec_tct_id),
       row.current_snapshot_id
-        ? new ConstructionInforId(row.current_snapshot_id)
+        ? new ConstructionInfoId(row.current_snapshot_id)
         : null,
     );
   }
