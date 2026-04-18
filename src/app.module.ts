@@ -5,9 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { DocumentModule } from './construction/document/document.module';
 import config from 'config/config';
 import databaseConfig from 'config/database.config';
-import { DatabaseModule } from './shared/infrastructure/database/database.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import path from 'path';
+import { InfrastructureModule } from './shared/infrastructure/infrastructure.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import path from 'path';
       rootPath: path.resolve('client', 'dist'),
       exclude: ['/api'],
     }),
-    DatabaseModule.forRoot(),
+    InfrastructureModule,
     DocumentModule,
   ],
   controllers: [AppController],

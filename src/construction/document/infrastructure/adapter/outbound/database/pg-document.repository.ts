@@ -13,7 +13,7 @@ import { PgAdministrativeDocumentRepository as AdminDocRepo } from './_document.
 import { PgBidPackageSnapshotRepository as BidPkgSnapRepo } from './_document.repositorie/pg-bid-package-snapshot.repository';
 import { PgConstructionInfoSnapshotRepository as ConInforSnapRepo } from './_document.repositorie/pg-construction-info-snapshot.repository';
 import { PgConstructionRepository as ConRepo } from './_document.repositorie/pg-construction.respositoty';
-import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
+import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 import { PoolClient } from 'pg';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { DecisionDetailResDto } from 'src/construction/document/application/dto/response/get-decision-detail.res-dto';

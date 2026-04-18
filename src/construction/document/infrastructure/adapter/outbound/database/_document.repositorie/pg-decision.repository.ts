@@ -4,7 +4,7 @@ import path from 'path';
 
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
-import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
+import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 import { IDecisionRepository } from '../../../../../application/port/outbound/database/document.repository.port';
 import { Decision } from '../../../../../domain/decision.entity';
 import { DecisionId } from 'src/construction/document/domain/value-objects/document.vo';

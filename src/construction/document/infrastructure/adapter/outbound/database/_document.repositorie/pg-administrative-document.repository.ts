@@ -6,7 +6,7 @@ import {
 } from '../../../../../application/port/outbound/database/document.repository.port';
 import { AdministrativeDocument } from '../../../../../domain/administrative-document.entity';
 import { PoolClient } from 'pg';
-import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
+import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 
 @Injectable()
 export class PgAdministrativeDocumentRepository implements IAdministrativeDocumentRepository {

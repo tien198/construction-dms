@@ -9,8 +9,9 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
+import { IBidPackageSnapshotCommand } from '../type/create-submission/bid-package-snapshot.type';
 
-export class BidPackageSnapshotCommand {
+export class BidPackageSnapshotCommand implements IBidPackageSnapshotCommand {
   @ApiProperty()
   @IsString()
   @IsOptional()

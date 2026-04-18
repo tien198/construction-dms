@@ -1,5 +1,4 @@
 import { v7 } from 'uuid';
-import { ConstructionId } from './value-objects/construction.vo';
 import {
   ConstructionInfoId,
   ConstructionName,
@@ -14,7 +13,6 @@ import { BidPackageSnapshot } from './bid-package.entity';
 export class ConstructionInfoSnapshot implements IConstructionInfoSnapshot {
   constructor(
     public id: ConstructionInfoId,
-    public construction_id: ConstructionId,
 
     public name: ConstructionName,
     public source_of_funds: SourceOfFunds,

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { IUnitOfWork } from '../../../../application/port/outbound/database/i-unit-of-work.port';
-import { PgConnectionService } from '../../../../../../shared/infrastructure/database/psql/pg-connection.service';
+import { PgConnectionService } from '../../../../../../shared/infrastructure/persistence/psql/pg-connection.service';
 
 @Injectable()
 export class UnitOfWork implements IUnitOfWork {

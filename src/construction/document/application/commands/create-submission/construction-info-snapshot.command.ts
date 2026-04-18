@@ -1,6 +1,5 @@
 import {
   IsString,
-  IsDateString,
   ValidateNested,
   IsNotEmpty,
   IsNumber,
@@ -10,8 +9,9 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { BidPackageSnapshotCommand } from './bid-package-snapshot.command';
+import { IConstructionInfoSnapshotCommand } from '../type/create-submission/construction-info-snapshot.type';
 
-export class ConstructionInfoSnapshotCommand {
+export class ConstructionInfoSnapshotCommand implements IConstructionInfoSnapshotCommand {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()

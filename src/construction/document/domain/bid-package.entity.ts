@@ -1,6 +1,5 @@
 import { v7 } from 'uuid';
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
-import { ConstructionInfoId } from './value-objects/construction-info.vo';
 import {
   BidderSelectionMethod,
   BidPackageId,
@@ -16,7 +15,6 @@ import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
 export class BidPackageSnapshot implements IBidPackageSnapshot {
   constructor(
     public id: BidPackageId,
-    public construction_info_snapshot_id: ConstructionInfoId,
 
     public type: BidPackageType,
     public project_owner: ProjectOwner,

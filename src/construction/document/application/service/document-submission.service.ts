@@ -28,19 +28,19 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     cmd: CreateSubmissionCommand,
   ): Promise<ConstructionId | void> {
     const con = ConstructionAssembler.fromCmd(cmd);
-    if (!cmd.construction_infor_snapshot) {
+    if (!cmd.construction_info_snapshot) {
       throw new Error(
         'Construction information snapshot is required to init brand new construction',
       );
     }
     const conInfor = ConstructionInfoSnapshotAssembler.fromCmd(
-      cmd.construction_infor_snapshot,
+      cmd.construction_info_snapshot,
       con.id,
     );
 
-    const bidPackages = cmd.construction_infor_snapshot?.bid_package_snapshots
+    const bidPackages = cmd.construction_info_snapshot?.bid_package_snapshots
       ? BidPackageSnapshotAssembler.fromCmdList(
-          cmd.construction_infor_snapshot.bid_package_snapshots,
+          cmd.construction_info_snapshot.bid_package_snapshots,
           conInfor.id,
         )
       : [];
@@ -94,9 +94,9 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     }
 
     const conIdObj = new ConstructionId(conId);
-    const conInfor = cmd.construction_infor_snapshot
+    const conInfor = cmd.construction_info_snapshot
       ? ConstructionInfoSnapshotAssembler.fromCmd(
-          cmd.construction_infor_snapshot,
+          cmd.construction_info_snapshot,
           conIdObj,
         )
       : null;
@@ -148,9 +148,9 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
       throw new Error('Decision not found');
     }
     const conIdObj = new ConstructionId(dec.construction_id.value);
-    const conInfor = cmd.construction_infor_snapshot
+    const conInfor = cmd.construction_info_snapshot
       ? ConstructionInfoSnapshotAssembler.fromCmd(
-          cmd.construction_infor_snapshot,
+          cmd.construction_info_snapshot,
           conIdObj,
         )
       : null;
@@ -211,9 +211,9 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
       },
       client,
     );
-    const bidPackages = cmd.construction_infor_snapshot?.bid_package_snapshots
+    const bidPackages = cmd.construction_info_snapshot?.bid_package_snapshots
       ? BidPackageSnapshotAssembler.fromCmdList(
-          cmd.construction_infor_snapshot.bid_package_snapshots,
+          cmd.construction_info_snapshot.bid_package_snapshots,
           conInfor.id,
         )
       : [];

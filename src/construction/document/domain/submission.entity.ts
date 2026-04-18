@@ -1,7 +1,6 @@
 import { ISubmission } from './domain-primitive/i-submission';
 import { ConstructionInfoId } from './value-objects/construction-info.vo';
-import { ConstructionId } from './value-objects/construction.vo';
-import { DecisionId, DocumentId } from './value-objects/document.vo';
+import { DocumentId } from './value-objects/document.vo';
 import { AdministrativeDocument } from './administrative-document.entity';
 import { ConstructionInfoSnapshot } from './construction-info.entity';
 import { v7 } from 'uuid';
@@ -11,19 +10,18 @@ export class Submission implements ISubmission {
     // reference to administrative-document
     public document: AdministrativeDocument | DocumentId,
 
-    public construction_id: ConstructionId,
-    public decision_id: DecisionId,
     public construction_info_snapshot_id: ConstructionInfoId | null = null,
     public is_change_construction_info: boolean = false,
 
     public construction_info: ConstructionInfoSnapshot,
   ) {
-    if (this.document instanceof DocumentId && this.id === null) {
+    if (this.id.value != null) {
+      return;
+    }
+
+    if (this.document instanceof DocumentId) {
       this.document = DocumentId.create(v7());
-    } else if (
-      this.document instanceof AdministrativeDocument &&
-      this.id.value === null
-    ) {
+    } else if (this.document instanceof AdministrativeDocument) {
       this.document.id = DocumentId.create(v7());
     }
   }

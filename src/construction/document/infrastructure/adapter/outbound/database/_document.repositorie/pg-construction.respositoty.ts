@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
-import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
+import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 import { IConstructionRepository } from '../../../../../application/port/outbound/database/document.repository.port';
 import { Construction } from '../../../../../domain/construction.entity';
 import { ConstructionId } from 'src/construction/document/domain/value-objects/construction.vo';

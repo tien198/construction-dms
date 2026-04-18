@@ -5,10 +5,10 @@ import { DbConfig } from 'config/database.config.type';
 import { PoolConfig } from 'pg';
 
 @Module({})
-export class DatabaseModule {
+export class PersistenceModule {
   static forRoot(): DynamicModule {
     return {
-      module: DatabaseModule,
+      module: PersistenceModule,
       global: true,
       providers: [
         {

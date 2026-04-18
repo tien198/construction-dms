@@ -10,8 +10,9 @@ import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ConstructionInfoSnapshotCommand } from './construction-info-snapshot.command';
 import { DirectlyDecisionCommand } from './directly-decision.command';
+import { ICreateSubmissionCommand } from '../type/create-submission/create-submission.command.type';
 
-export class CreateSubmissionCommand {
+export class CreateSubmissionCommand implements ICreateSubmissionCommand {
   // Optional between "decId" and "conId" to specify that where the submit for new Decision or existed
 
   @ApiPropertyOptional()
@@ -50,7 +51,7 @@ export class CreateSubmissionCommand {
   @ApiPropertyOptional({ nullable: true })
   @IsOptional()
   @IsBoolean()
-  is_change_construction_infor: boolean | null;
+  is_changed_construction_info: boolean | null;
 
   @ApiPropertyOptional({
     type: () => ConstructionInfoSnapshotCommand,
@@ -59,10 +60,10 @@ export class CreateSubmissionCommand {
   @IsOptional()
   @ValidateNested()
   @Type(() => ConstructionInfoSnapshotCommand)
-  construction_infor_snapshot?: ConstructionInfoSnapshotCommand;
+  construction_info_snapshot?: ConstructionInfoSnapshotCommand;
 
   @ApiProperty({ type: () => DirectlyDecisionCommand })
   @ValidateNested()
   @Type(() => DirectlyDecisionCommand)
-  directlyDecision: DirectlyDecisionCommand;
+  directly_decision: DirectlyDecisionCommand;
 }

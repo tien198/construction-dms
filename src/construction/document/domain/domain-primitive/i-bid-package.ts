@@ -13,7 +13,6 @@ import {
 
 export interface IBidPackageSnapshot {
   id: BidPackageId;
-  construction_info_snapshot_id: ConstructionInfoId;
 
   type: BidPackageType;
   project_owner: ProjectOwner;

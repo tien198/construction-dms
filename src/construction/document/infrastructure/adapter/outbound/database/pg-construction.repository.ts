@@ -6,7 +6,7 @@ import path from 'path';
 
 import { ConstructionResDto } from 'src/construction/document/application/dto/response/get-constructions.res-dto';
 import { IConstructionRepository } from 'src/construction/document/application/port/outbound/database/construction.repository.port';
-import { PgConnectionService } from 'src/shared/infrastructure/database/psql/pg-connection.service';
+import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 
 @Injectable()
 export class PgConstructionRepository implements IConstructionRepository {
