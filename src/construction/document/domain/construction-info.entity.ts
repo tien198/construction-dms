@@ -9,96 +9,31 @@ import {
   SourceOfFunds,
 } from './value-objects/construction-info.vo';
 import type { IConstructionInfoSnapshot } from './domain-primitive/i-construction-info';
+import { BidPackageSnapshot } from './bid-package.entity';
 
 export class ConstructionInfoSnapshot implements IConstructionInfoSnapshot {
-  id: ConstructionInfoId;
-  construction_id: ConstructionId;
-
-  name: ConstructionName;
-  source_of_funds: SourceOfFunds;
-
-  est_cost: number;
-  est_cost_str: EstCostStr;
-
-  impl_start_date: Date;
-  impl_end_date: Date;
-
-  existing_condition_of_the_structure: ExistingCondition;
-  repair_scope: RepairScope;
-
   constructor(
-    id: ConstructionInfoId,
-    construction_id: ConstructionId,
-    name: ConstructionName,
-    source_of_funds: SourceOfFunds,
-    est_cost: number,
-    est_cost_str: EstCostStr,
-    impl_start_date: Date,
-    impl_end_date: Date,
-    existing_condition_of_the_structure: ExistingCondition,
-    repair_scope: RepairScope,
+    public id: ConstructionInfoId,
+    public construction_id: ConstructionId,
+
+    public name: ConstructionName,
+    public source_of_funds: SourceOfFunds,
+
+    public est_cost: number,
+    public est_cost_str: EstCostStr,
+
+    public impl_start_date: Date,
+    public impl_end_date: Date,
+
+    public existing_condition_of_the_structure: ExistingCondition,
+    public repair_scope: RepairScope,
+
+    public bid_packages: BidPackageSnapshot[],
   ) {
-    this.id = id;
-    this.construction_id = construction_id;
-    this.name = name;
-    this.source_of_funds = source_of_funds;
-    this.est_cost = est_cost;
-    this.est_cost_str = est_cost_str;
-    this.impl_start_date = impl_start_date;
-    this.impl_end_date = impl_end_date;
-    this.existing_condition_of_the_structure =
-      existing_condition_of_the_structure;
-    this.repair_scope = repair_scope;
+    if (id.value === null) {
+      this.id = ConstructionInfoId.create(v7());
+    }
   }
 
-  static create(
-    construction_id: ConstructionId,
-    name: ConstructionName,
-    source_of_funds: SourceOfFunds,
-    est_cost: number,
-    est_cost_str: EstCostStr,
-    impl_start_date: Date,
-    impl_end_date: Date,
-    existing_condition_of_the_structure: ExistingCondition,
-    repair_scope: RepairScope,
-  ): ConstructionInfoSnapshot {
-    return new ConstructionInfoSnapshot(
-      ConstructionInfoId.create(v7()),
-      construction_id,
-      name,
-      source_of_funds,
-      est_cost,
-      est_cost_str,
-      impl_start_date,
-      impl_end_date,
-      existing_condition_of_the_structure,
-      repair_scope,
-    );
-  }
-
-  static reconstitute(
-    id: ConstructionInfoId,
-    construction_id: ConstructionId,
-    name: ConstructionName,
-    source_of_funds: SourceOfFunds,
-    est_cost: number,
-    est_cost_str: EstCostStr,
-    impl_start_date: Date,
-    impl_end_date: Date,
-    existing_condition_of_the_structure: ExistingCondition,
-    repair_scope: RepairScope,
-  ): ConstructionInfoSnapshot {
-    return new ConstructionInfoSnapshot(
-      id,
-      construction_id,
-      name,
-      source_of_funds,
-      est_cost,
-      est_cost_str,
-      impl_start_date,
-      impl_end_date,
-      existing_condition_of_the_structure,
-      repair_scope,
-    );
-  }
+  // Reconstitute từ DB — dùng trong repository khi load lên
 }

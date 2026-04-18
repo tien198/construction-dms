@@ -1,6 +1,7 @@
 import { BidPackageSnapshot } from '../../domain/bid-package.entity';
 import {
   BidderSelectionMethod,
+  BidPackageId,
   BidPackageName,
   Duration,
   ProjectOwner,
@@ -18,7 +19,8 @@ export class BidPackageSnapshotAssembler {
     cmd: BidPackageSnapshotCommand,
     constructionInforId: ConstructionInfoId,
   ): BidPackageSnapshot {
-    return BidPackageSnapshot.create(
+    return new BidPackageSnapshot(
+      new BidPackageId(null),
       constructionInforId,
       cmd.type,
       ProjectOwner.create(cmd.project_owner),

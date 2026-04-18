@@ -1,5 +1,5 @@
 export class DocumentId {
-  constructor(readonly value: string) {}
+  constructor(readonly value: string | null) {}
 
   static create(val: string) {
     return new DocumentId(val);
@@ -15,7 +15,7 @@ export class DocumentNo {
 }
 
 export class DecisionId {
-  constructor(readonly value: string) {}
+  constructor(readonly value: string | null) {}
 
   static create(val: string) {
     return new DecisionId(val);

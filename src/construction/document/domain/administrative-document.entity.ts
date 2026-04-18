@@ -8,61 +8,18 @@ import {
 import type { IAdministrativeDocument } from './domain-primitive/i-administrative-document';
 
 export class AdministrativeDocument implements IAdministrativeDocument {
-  id: DocumentId;
-  no: DocumentNo;
-  level: string;
-  date: Date;
-  pursuant_to_dec_tct_id: PursuantToDecTCT;
-  pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null;
-
   constructor(
-    id: DocumentId,
-    no: DocumentNo,
-    level: string,
-    date: Date,
-    pursuant_to_dec_tct_id: PursuantToDecTCT,
-    pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
+    public id: DocumentId,
+    public no: DocumentNo,
+    public level: string,
+    public date: Date,
+    public pursuant_to_dec_tct_id: PursuantToDecTCT,
+    public pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
   ) {
-    this.id = id;
-    this.no = no;
-    this.level = level;
-    this.date = date;
-    this.pursuant_to_dec_tct_id = pursuant_to_dec_tct_id;
-    this.pursuant_to_dec_ttmn_id = pursuant_to_dec_ttmn_id;
+    if (id.value === null) {
+      this.id = DocumentId.create(v7());
+    }
   }
 
-  static create(
-    no: DocumentNo,
-    level: string,
-    date: Date,
-    pursuant_to_dec_tct_id: PursuantToDecTCT,
-    pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
-  ): AdministrativeDocument {
-    return new AdministrativeDocument(
-      new DocumentId(v7()),
-      no,
-      level,
-      date,
-      pursuant_to_dec_tct_id,
-      pursuant_to_dec_ttmn_id,
-    );
-  }
-
-  static reconstitute(
-    id: DocumentId,
-    no: DocumentNo,
-    level: string,
-    date: Date,
-    pursuant_to_dec_tct_id: PursuantToDecTCT,
-    pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
-  ): AdministrativeDocument {
-    return new AdministrativeDocument(
-      id,
-      no,
-      level,
-      date,
-      pursuant_to_dec_tct_id,
-      pursuant_to_dec_ttmn_id,
-    );
-  }
+  // Reconstitute từ DB — dùng trong repository khi load lên
 }

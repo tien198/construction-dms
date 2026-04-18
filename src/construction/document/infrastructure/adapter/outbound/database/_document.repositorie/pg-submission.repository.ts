@@ -65,6 +65,7 @@ export class PgSubmissionRepository implements ISubmissionRepository {
         ? new ConstructionInfoId(row.construction_info_snapshot_id)
         : null,
       row.is_change_construction_info,
+      null,
     );
   }
 }

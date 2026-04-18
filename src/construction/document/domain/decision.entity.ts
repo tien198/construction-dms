@@ -3,26 +3,27 @@ import { AdministrativeDocument } from './administrative-document.entity';
 import { ConstructionId } from './value-objects/construction.vo';
 import { DecisionId } from './value-objects/document.vo';
 import type { IDecision } from './domain-primitive/i-decision';
+import { Submission } from './submission.entity';
+import { v7 } from 'uuid';
 
 export class Decision implements IDecision {
-  construction_id: ConstructionId;
-  is_change_construction_info?: boolean;
-  period: ConstructionPeriod;
-
-  // reference to administrative-document
-  document: AdministrativeDocument | DecisionId;
-
   constructor(
-    document: AdministrativeDocument | DecisionId,
-    construction_id: ConstructionId,
-    period: ConstructionPeriod,
-    is_change_construction_info: boolean = false,
-  ) {
-    this.construction_id = construction_id;
-    this.period = period;
-    this.is_change_construction_info = is_change_construction_info;
+    public document: AdministrativeDocument | DecisionId,
+    public construction_id: ConstructionId,
+    public period: ConstructionPeriod,
+    public is_change_construction_info: boolean = false,
 
-    this.document = document;
+    // reference to administrative-document
+    public submission: Submission,
+  ) {
+    if (this.document instanceof DecisionId && this.id === null) {
+      this.document = DecisionId.create(v7());
+    } else if (
+      this.document instanceof AdministrativeDocument &&
+      this.id.value === null
+    ) {
+      this.document.id = DecisionId.create(v7());
+    }
   }
 
   get id(): DecisionId {
@@ -32,31 +33,5 @@ export class Decision implements IDecision {
     return this.document;
   }
 
-  static create(
-    document: AdministrativeDocument,
-    construction_id: ConstructionId,
-    period: ConstructionPeriod,
-    is_change_construction_info: boolean = false,
-  ): Decision {
-    return new Decision(
-      document,
-      construction_id,
-      period,
-      is_change_construction_info,
-    );
-  }
-
-  static reconstitute(
-    document: AdministrativeDocument,
-    construction_id: ConstructionId,
-    period: ConstructionPeriod,
-    is_change_construction_info: boolean = false,
-  ): Decision {
-    return new Decision(
-      document,
-      construction_id,
-      period,
-      is_change_construction_info,
-    );
-  }
+  // Reconstitute từ DB — dùng trong repository khi load lên
 }

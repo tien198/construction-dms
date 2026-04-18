@@ -1,3 +1,4 @@
+import { ConstructionInfoSnapshot } from '../../domain/construction-info.entity';
 import { Submission } from '../../domain/submission.entity';
 import { ConstructionInfoId } from '../../domain/value-objects/construction-info.vo';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
@@ -11,14 +12,17 @@ export class SubmissionAssembler {
     constructionId: ConstructionId,
     decisionId: DecisionId,
     constructionInforId: ConstructionInfoId | null = null,
+    constructionInfor: ConstructionInfoSnapshot,
   ): Submission {
     const document = AdministrativeDocumentAssembler.fromCmd(cmd);
 
-    return Submission.create(
+    return new Submission(
       document,
       constructionId,
       decisionId,
       constructionInforId,
+      false,
+      constructionInfor,
     );
   }
 }

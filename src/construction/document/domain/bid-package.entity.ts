@@ -14,116 +14,31 @@ import {
 import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
 
 export class BidPackageSnapshot implements IBidPackageSnapshot {
-  id: BidPackageId;
-  construction_info_snapshot_id: ConstructionInfoId;
-
-  type: BidPackageType;
-  project_owner: ProjectOwner;
-  name: BidPackageName;
-  // short_description
-  short_desc: ShortDesc;
-
-  est_cost: number;
-  est_cost_str: EstCostStr;
-
-  bidder_selection_time: Date;
-  bidder_selection_method: BidderSelectionMethod;
-
-  duration: Duration;
-  is_completed: boolean;
-
-  successful_bidder_id: SuccessfulBidderId | null;
-
   constructor(
-    id: BidPackageId,
-    construction_info_snapshot_id: ConstructionInfoId,
-    type: BidPackageType,
-    project_owner: ProjectOwner,
-    name: BidPackageName,
-    short_desc: ShortDesc,
-    est_cost: number,
-    est_cost_str: EstCostStr,
-    bidder_selection_time: Date,
-    bidder_selection_method: BidderSelectionMethod,
-    duration: Duration,
-    is_completed: boolean,
-    successful_bidder_id: SuccessfulBidderId | null = null,
+    public id: BidPackageId,
+    public construction_info_snapshot_id: ConstructionInfoId,
+
+    public type: BidPackageType,
+    public project_owner: ProjectOwner,
+    public name: BidPackageName,
+    // short_description
+    public short_desc: ShortDesc,
+
+    public est_cost: number,
+    public est_cost_str: EstCostStr,
+
+    public bidder_selection_time: Date,
+    public bidder_selection_method: BidderSelectionMethod,
+
+    public duration: Duration,
+    public is_completed: boolean,
+
+    public successful_bidder_id: SuccessfulBidderId | null = null,
   ) {
-    this.id = id;
-    this.construction_info_snapshot_id = construction_info_snapshot_id;
-    this.type = type;
-    this.project_owner = project_owner;
-    this.name = name;
-    this.short_desc = short_desc;
-    this.est_cost = est_cost;
-    this.est_cost_str = est_cost_str;
-    this.bidder_selection_time = bidder_selection_time;
-    this.bidder_selection_method = bidder_selection_method;
-    this.duration = duration;
-    this.is_completed = is_completed;
-    this.successful_bidder_id = successful_bidder_id;
+    if (id.value === null) {
+      this.id = BidPackageId.create(v7());
+    }
   }
 
-  static create(
-    construction_info_snapshot_id: ConstructionInfoId,
-    type: BidPackageType,
-    project_owner: ProjectOwner,
-    name: BidPackageName,
-    short_desc: ShortDesc,
-    est_cost: number,
-    est_cost_str: EstCostStr,
-    bidder_selection_time: Date,
-    bidder_selection_method: BidderSelectionMethod,
-    duration: Duration,
-    is_completed: boolean,
-    successful_bidder_id: SuccessfulBidderId | null,
-  ): BidPackageSnapshot {
-    return new BidPackageSnapshot(
-      BidPackageId.create(v7()),
-      construction_info_snapshot_id,
-      type,
-      project_owner,
-      name,
-      short_desc,
-      est_cost,
-      est_cost_str,
-      bidder_selection_time,
-      bidder_selection_method,
-      duration,
-      is_completed,
-      successful_bidder_id,
-    );
-  }
-
-  static reconstitute(
-    id: BidPackageId,
-    construction_info_snapshot_id: ConstructionInfoId,
-    type: BidPackageType,
-    project_owner: ProjectOwner,
-    name: BidPackageName,
-    short_desc: ShortDesc,
-    est_cost: number,
-    est_cost_str: EstCostStr,
-    bidder_selection_time: Date,
-    bidder_selection_method: BidderSelectionMethod,
-    duration: Duration,
-    is_completed: boolean,
-    successful_bidder_id?: SuccessfulBidderId,
-  ): BidPackageSnapshot {
-    return new BidPackageSnapshot(
-      id,
-      construction_info_snapshot_id,
-      type,
-      project_owner,
-      name,
-      short_desc,
-      est_cost,
-      est_cost_str,
-      bidder_selection_time,
-      bidder_selection_method,
-      duration,
-      is_completed,
-      successful_bidder_id,
-    );
-  }
+  // Reconstitute từ DB — dùng trong repository khi load lên
 }

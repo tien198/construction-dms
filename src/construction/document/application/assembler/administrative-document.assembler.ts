@@ -1,5 +1,6 @@
 import { AdministrativeDocument } from '../../domain/administrative-document.entity';
 import {
+  DocumentId,
   DocumentNo,
   PursuantToDecTCT,
   PursuantToDecTTMN,
@@ -8,7 +9,8 @@ import { CreateSubmissionCommand } from '../commands/create-submission/create-su
 
 export class AdministrativeDocumentAssembler {
   static fromCmd(cmd: CreateSubmissionCommand): AdministrativeDocument {
-    return AdministrativeDocument.create(
+    return new AdministrativeDocument(
+      new DocumentId(null),
       new DocumentNo(cmd.no),
       cmd.level,
       new Date(cmd.date),
