@@ -3,6 +3,9 @@ Project my_project {
   Note: '''
     Some relationships are not defined as foreign keys due to write operation performance concerns.
     it is all mentioned in the Note section, Notice to "refers to" keyword.
+
+    created_at fields are used to define the newest record, instead of is_approved. 
+    This can be changed if application logic require approve operation.
   '''
 }
 
@@ -32,12 +35,12 @@ Table administrative_documents {
 Table constructions {
   id varchar [pk]
   pursuant_to_dec_tct_id varchar [not null, note: 'refers to [administrative_documents.id]']
-  current_snapshot_id varchar [note: 'refers to [construction_info_snapshots.id] and can be null if there are no snapshots available for the construction.']
 }
 
 Table construction_info_snapshots {
   id varchar [pk, not null]
   construction_id varchar [not null, note: 'refers to [constructions.id]']
+  submission_id varchar [not null, note: 'refers to [submissions.id]']
 
   name varchar [not null]
   source_of_funds varchar [not null]
@@ -50,11 +53,15 @@ Table construction_info_snapshots {
 
   existing_condition_of_the_structure text [not null]
   repair_scope text [not null]
+
+  created_at timestamptz [not null, default: 'NOW()', note:'used to define the newest record']
 }
 
 Table bid_package_snapshots {
   id varchar [pk]
-  construction_info_snapshot_id varchar [not null]
+
+  construction_id varchar [not null, note: 'refers to [constructions.id]']
+  submission_id varchar [not null, note: 'refers to [submissions.id]']
 
   type bid_package_type [not null]
   project_owner varchar [not null]
@@ -71,7 +78,7 @@ Table bid_package_snapshots {
   duration varchar [not null]
   is_completed boolean [not null]
 
-  approved_decision_id varchar [not null, note: 'refers to [decisions.id]']
+  created_at timestamptz [not null, default: 'NOW()', note:'used to define the newest record']
 
   Note: 'Bidder schema not provided'
 }
@@ -80,9 +87,6 @@ Table submissions {
   id varchar [pk]
   construction_id varchar [not null, note: 'refers to [constructions.id]']
   decision_id varchar [not null]
-  construction_info_snapshot_id varchar [not null]
-  is_change_construction_info boolean
-  for_bid_package_type bid_package_type [note: 'used to define that submission is for a bid package. This can be null if the submission is not for a bid package.']
   created_at timestamptz [not null, default: 'NOW()', note:'used to define the newest record']
 }
 
@@ -90,7 +94,6 @@ Table decisions {
   id varchar [pk]
   construction_id varchar [not null, note: 'refers to [constructions.id]']
   period construction_period [not null]
-  is_change_construction_info boolean
 }
 
 Ref: administrative_documents.pursuant_to_dec_tct_id > administrative_documents.id
@@ -98,12 +101,14 @@ Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents
 Ref: administrative_documents.id - submissions.id
 Ref: administrative_documents.id - decisions.id
 
-Ref: construction_info_snapshots.id - submissions.construction_info_snapshot_id 
+Ref: construction_info_snapshots.submission_id - submissions.id 
 
-Ref: bid_package_snapshots.construction_info_snapshot_id > construction_info_snapshots.id
+Ref: bid_package_snapshots.submission_id > submissions.id
 
-Ref: decisions.construction_id > constructions.id
-Ref: decisions.id - bid_package_snapshots.approved_decision_id
+Ref: constructions.id - construction_info_snapshots.construction_id
+Ref: constructions.id < bid_package_snapshots.construction_id
+
+Ref: constructions.id < decisions.construction_id
 
 Ref: submissions.decision_id > decisions.id
 

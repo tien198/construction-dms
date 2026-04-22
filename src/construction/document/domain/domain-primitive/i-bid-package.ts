@@ -1,5 +1,4 @@
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
-import { ConstructionInfoId } from '../value-objects/construction-info.vo';
 import {
   BidderSelectionMethod,
   BidPackageId,

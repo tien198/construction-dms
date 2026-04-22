@@ -1,37 +1,34 @@
+import { v7 } from 'uuid';
 import { ISubmission } from './domain-primitive/i-submission';
-import { ConstructionInfoId } from './value-objects/construction-info.vo';
 import { DocumentId } from './value-objects/document.vo';
 import { AdministrativeDocument } from './administrative-document.entity';
 import { ConstructionInfoSnapshot } from './construction-info.entity';
-import { v7 } from 'uuid';
+import { BidPackageSnapshot } from './bid-package.entity';
 
+/**
+ * Submission — Child entity of Decision aggregate.
+ */
 export class Submission implements ISubmission {
   constructor(
-    // reference to administrative-document
-    public document: AdministrativeDocument | DocumentId,
+    // embedded administrative-document (Value Object)
+    public document: AdministrativeDocument,
 
-    public construction_info_snapshot_id: ConstructionInfoId | null = null,
-    public is_change_construction_info: boolean = false,
-
-    public construction_info: ConstructionInfoSnapshot,
+    // child entity
+    public construction_info: ConstructionInfoSnapshot | null = null,
+    public bid_packages: BidPackageSnapshot[],
   ) {
-    if (this.id.value != null) {
-      return;
-    }
-
-    if (this.document instanceof DocumentId) {
-      this.document = DocumentId.create(v7());
-    } else if (this.document instanceof AdministrativeDocument) {
+    if (this.document.id.value === null) {
       this.document.id = DocumentId.create(v7());
     }
-  }
-
-  get id() {
-    if (this.document instanceof AdministrativeDocument) {
-      return this.document.id;
+    if (this.construction_info) {
+      this.is_change_construction_info = true;
     }
-    return this.document;
   }
 
+  get id(): DocumentId {
+    return this.document.id;
+  }
+
+  is_change_construction_info: boolean = false;
   // Reconstitute từ DB — dùng trong repository khi load lên
 }

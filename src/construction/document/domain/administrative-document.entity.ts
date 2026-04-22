@@ -1,4 +1,3 @@
-import { v7 } from 'uuid';
 import {
   DocumentId,
   DocumentNo,
@@ -7,6 +6,11 @@ import {
 } from './value-objects/document.vo';
 import type { IAdministrativeDocument } from './domain-primitive/i-administrative-document';
 
+/**
+ * AdministrativeDocument — Embedded Value Object.
+ * Used within Decision and Submission as an embedded VO.
+ * ID generation is handled by the parent entity (Decision or Submission).
+ */
 export class AdministrativeDocument implements IAdministrativeDocument {
   constructor(
     public id: DocumentId,
@@ -15,11 +19,5 @@ export class AdministrativeDocument implements IAdministrativeDocument {
     public date: Date,
     public pursuant_to_dec_tct_id: PursuantToDecTCT,
     public pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
-  ) {
-    if (id.value === null) {
-      this.id = DocumentId.create(v7());
-    }
-  }
-
-  // Reconstitute từ DB — dùng trong repository khi load lên
+  ) {}
 }

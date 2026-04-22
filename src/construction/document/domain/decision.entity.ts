@@ -1,35 +1,40 @@
+import { v7 } from 'uuid';
+import type { IDecision } from './domain-primitive/i-decision';
+import { DecisionId } from './value-objects/document.vo';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { AdministrativeDocument } from './administrative-document.entity';
-import { DecisionId } from './value-objects/document.vo';
-import type { IDecision } from './domain-primitive/i-decision';
 import { Submission } from './submission.entity';
-import { v7 } from 'uuid';
+import { ConstructionId } from './value-objects/construction.vo';
 
+/**
+ * Decision — Aggregate Root.
+ *
+ * Owns:
+ *  - AdministrativeDocument (embedded VO for the decision document)
+ *  - Construction (child entity)
+ *  - Submission[] (child entities, each with its own AdministrativeDocument & ConstructionInfoSnapshot)
+ */
 export class Decision implements IDecision {
   constructor(
-    public document: AdministrativeDocument | DecisionId,
+    // embedded administrative-document (Value Object)
+    public document: AdministrativeDocument,
+    public construction_id: ConstructionId,
     public period: ConstructionPeriod,
-    public is_change_construction_info: boolean = false,
 
-    // reference to administrative-document
-    public submission: Submission,
+    // child entities
+    public submissions: Submission[],
   ) {
-    if (this.id.value != null) {
-      return;
-    }
-
-    if (this.document instanceof DecisionId) {
-      this.document = DecisionId.create(v7());
-    } else if (this.document instanceof AdministrativeDocument) {
+    if (this.document.id.value === null) {
       this.document.id = DecisionId.create(v7());
     }
   }
 
   get id(): DecisionId {
-    if (this.document instanceof AdministrativeDocument) {
-      return this.document.id;
-    }
-    return this.document;
+    return this.document.id as DecisionId;
+  }
+
+  addSubmission(submission: Submission): void {
+    this.submissions.push(submission);
   }
 
   // Reconstitute từ DB — dùng trong repository khi load lên

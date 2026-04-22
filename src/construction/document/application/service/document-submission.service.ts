@@ -5,15 +5,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Decision } from '../../domain/decision.entity';
 import { IDocumentSubmissionUseCase } from '../port/inbound/document-submission.use-case';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
-import { ConstructionAssembler } from '../assembler/construction.assembler';
-import { SubmissionAssembler } from '../assembler/submission.assembler';
 import { DecisionAssembler } from '../assembler/decision.assembler';
-import { ConstructionInfoSnapshotAssembler } from '../assembler/construction-info-snapshot.assembler';
-import { BidPackageSnapshotAssembler } from '../assembler/bid-package-snapshot.assembler';
 import { ConstructionId } from '../../domain/value-objects/construction.vo';
-import { ConstructionInfoId } from '../../domain/value-objects/construction-info.vo';
-import { AdministrativeDocument } from '../../domain/administrative-document.entity';
-import { ConstructionInfoSnapshot } from '../../domain/construction-info.entity';
 
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
@@ -27,57 +20,15 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
   async initConstruction(
     cmd: CreateSubmissionCommand,
   ): Promise<ConstructionId | void> {
-    const con = ConstructionAssembler.fromCmd(cmd);
-    if (!cmd.construction_info_snapshot) {
-      throw new Error(
-        'Construction information snapshot is required to init brand new construction',
-      );
-    }
-    const conInfor = ConstructionInfoSnapshotAssembler.fromCmd(
-      cmd.construction_info_snapshot,
-      con.id,
-    );
+    // Build the entire Decision aggregate
+    const decision = DecisionAssembler.fromInitConstructionCmd(cmd);
 
-    const bidPackages = cmd.construction_info_snapshot?.bid_package_snapshots
-      ? BidPackageSnapshotAssembler.fromCmdList(
-          cmd.construction_info_snapshot.bid_package_snapshots,
-          conInfor.id,
-        )
-      : [];
-
-    const dec = DecisionAssembler.fromCmd(cmd, con.id);
-    const sub = SubmissionAssembler.fromCmd(cmd, con.id, dec.id, conInfor?.id);
-
-    // Begin transaction
+    // Save the aggregate (repository handles persisting all child entities)
     const client = await this.uow.begin();
-
     try {
-      // Save all entities
-      con.assignSnapshot(conInfor.id);
-      await this.repo.saveConstruction(con, client);
-
-      await this.repo.saveConstructionInfoSnapshot(conInfor, client);
-
-      for (const bidPackage of bidPackages) {
-        await this.repo.saveBidPackageSnapshot(bidPackage, client);
-      }
-      // save Decision and its Administrative Document
-      await this.repo.saveAdministrativeDocument(
-        dec.document as AdministrativeDocument,
-        client,
-      );
-      await this.repo.saveDecision(dec, client);
-
-      // save Submission and its Administrative Document
-      await this.repo.saveAdministrativeDocument(
-        sub.document as AdministrativeDocument,
-        client,
-      );
-      await this.repo.saveSubmission(sub, client);
-
+      await this.repo.saveDecision(decision, client);
       await this.uow.commit(client);
-
-      return con.id;
+      return decision.construction.id;
     } catch (error) {
       await this.uow.rollback(client);
       throw error;
@@ -88,51 +39,23 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     conId: string,
     cmd: CreateSubmissionCommand,
   ): Promise<Decision | void> {
-    const con = await this.repo.findConstructionById(conId);
-    if (!con) {
+    // Find existing Decision for this construction to get the Construction entity
+    const existingDecision = await this.repo.findDecisionByConstructionId(conId);
+    if (!existingDecision) {
       throw new Error('Construction not found');
     }
 
-    const conIdObj = new ConstructionId(conId);
-    const conInfor = cmd.construction_info_snapshot
-      ? ConstructionInfoSnapshotAssembler.fromCmd(
-          cmd.construction_info_snapshot,
-          conIdObj,
-        )
-      : null;
-
-    const dec = DecisionAssembler.fromCmd(cmd, conIdObj);
-    const sub = SubmissionAssembler.fromCmd(
+    // Build a new Decision aggregate for the existing construction
+    const decision = DecisionAssembler.fromNewDecisionCmd(
       cmd,
-      conIdObj,
-      dec.id,
-      conInfor?.id ?? con.current_snapshot_id,
+      existingDecision.construction,
     );
 
-    // Begin transaction
     const client = await this.uow.begin();
-
     try {
-      // Save all entities
-      if (conInfor) {
-        await this.saveConInforAndRelevants(conId, conInfor, cmd, client);
-      }
-      // save Decision and its Administrative Document
-      await this.repo.saveAdministrativeDocument(
-        dec.document as AdministrativeDocument,
-        client,
-      );
-      await this.repo.saveDecision(dec, client);
-
-      // save Submission and its Administrative Document
-      await this.repo.saveAdministrativeDocument(
-        sub.document as AdministrativeDocument,
-        client,
-      );
-      await this.repo.saveSubmission(sub, client);
-
+      await this.repo.saveDecision(decision, client);
       await this.uow.commit(client);
-      return dec;
+      return decision;
     } catch (error) {
       await this.uow.rollback(client);
       throw error;
@@ -143,83 +66,29 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     decId: string,
     cmd: CreateSubmissionCommand,
   ): Promise<Decision | void> {
-    const dec = await this.repo.findDecisionById(decId);
-    if (!dec) {
+    // Load the existing Decision aggregate
+    const decision = await this.repo.findDecisionById(decId);
+    if (!decision) {
       throw new Error('Decision not found');
     }
-    const conIdObj = new ConstructionId(dec.construction_id.value);
-    const conInfor = cmd.construction_info_snapshot
-      ? ConstructionInfoSnapshotAssembler.fromCmd(
-          cmd.construction_info_snapshot,
-          conIdObj,
-        )
-      : null;
 
-    let current_snapshot_id: ConstructionInfoId | null = conInfor?.id ?? null;
-    if (!conInfor) {
-      const con = await this.repo.findConstructionById(
-        dec.construction_id.value,
+    // Build and add a new Submission to the aggregate
+    const { submission, conInfor } =
+      DecisionAssembler.buildSubmissionForExistingDecision(
+        cmd,
+        decision.construction,
       );
-      current_snapshot_id = con.current_snapshot_id;
-    }
 
-    const sub = SubmissionAssembler.fromCmd(
-      cmd,
-      conIdObj,
-      dec.id,
-      conInfor?.id ?? current_snapshot_id,
-    );
+    decision.addSubmission(submission);
 
-    // Begin transaction
     const client = await this.uow.begin();
     try {
-      // Save all entities
-      if (conInfor) {
-        await this.saveConInforAndRelevants(
-          dec.construction_id.value,
-          conInfor,
-          cmd,
-          client,
-        );
-      }
-      // save Submission and its Administrative Document
-      await this.repo.saveAdministrativeDocument(
-        sub.document as AdministrativeDocument,
-        client,
-      );
-      await this.repo.saveSubmission(sub, client);
-
+      await this.repo.saveDecision(decision, client);
       await this.uow.commit(client);
-      return dec;
+      return decision;
     } catch (error) {
       await this.uow.rollback(client);
       throw error;
-    }
-  }
-
-  private async saveConInforAndRelevants(
-    conId: string,
-    conInfor: ConstructionInfoSnapshot,
-    cmd: CreateSubmissionCommand,
-    client: any,
-  ) {
-    await this.repo.saveConstructionInfoSnapshot(conInfor, client);
-    await this.repo.updateConstruction(
-      conId,
-      {
-        current_snapshot_id: conInfor.id,
-      },
-      client,
-    );
-    const bidPackages = cmd.construction_info_snapshot?.bid_package_snapshots
-      ? BidPackageSnapshotAssembler.fromCmdList(
-          cmd.construction_info_snapshot.bid_package_snapshots,
-          conInfor.id,
-        )
-      : [];
-
-    for (const bidPackage of bidPackages) {
-      await this.repo.saveBidPackageSnapshot(bidPackage, client);
     }
   }
 }

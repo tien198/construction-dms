@@ -8,8 +8,10 @@ import {
   SourceOfFunds,
 } from './value-objects/construction-info.vo';
 import type { IConstructionInfoSnapshot } from './domain-primitive/i-construction-info';
-import { BidPackageSnapshot } from './bid-package.entity';
 
+/**
+ * ConstructionInfoSnapshot — Child entity within Submission (part of Decision aggregate).
+ */
 export class ConstructionInfoSnapshot implements IConstructionInfoSnapshot {
   constructor(
     public id: ConstructionInfoId,
@@ -25,8 +27,6 @@ export class ConstructionInfoSnapshot implements IConstructionInfoSnapshot {
 
     public existing_condition_of_the_structure: ExistingCondition,
     public repair_scope: RepairScope,
-
-    public bid_packages: BidPackageSnapshot[],
   ) {
     if (id.value === null) {
       this.id = ConstructionInfoId.create(v7());

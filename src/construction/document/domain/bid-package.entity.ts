@@ -12,6 +12,9 @@ import {
 } from './value-objects/bid-package-snapshot.vo';
 import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
 
+/**
+ * BidPackageSnapshot — Child entity within ConstructionInfoSnapshot (part of Decision aggregate).
+ */
 export class BidPackageSnapshot implements IBidPackageSnapshot {
   constructor(
     public id: BidPackageId,
