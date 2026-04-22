@@ -15,20 +15,17 @@ export class Submission implements ISubmission {
 
     // child entity
     public construction_info: ConstructionInfoSnapshot | null = null,
-    public bid_packages: BidPackageSnapshot[],
+    public bid_packages: BidPackageSnapshot[] | null = null,
   ) {
+    if (!construction_info && !bid_packages) {
+      throw new Error('Submission must have construction_info or bid_packages');
+    }
     if (this.document.id.value === null) {
       this.document.id = DocumentId.create(v7());
-    }
-    if (this.construction_info) {
-      this.is_change_construction_info = true;
     }
   }
 
   get id(): DocumentId {
     return this.document.id;
   }
-
-  is_change_construction_info: boolean = false;
-  // Reconstitute từ DB — dùng trong repository khi load lên
 }

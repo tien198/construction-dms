@@ -1,5 +1,3 @@
-import { IBidPackageSnapshotCommand } from './bid-package-snapshot.type';
-
 export interface IConstructionInfoSnapshotCommand {
   id: string;
 
@@ -20,6 +18,4 @@ export interface IConstructionInfoSnapshotCommand {
   est_cost: number;
 
   est_cost_str: string;
-
-  bid_package_snapshots: IBidPackageSnapshotCommand[];
 }

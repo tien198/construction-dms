@@ -36,6 +36,4 @@ export class Decision implements IDecision {
   addSubmission(submission: Submission): void {
     this.submissions.push(submission);
   }
-
-  // Reconstitute từ DB — dùng trong repository khi load lên
 }

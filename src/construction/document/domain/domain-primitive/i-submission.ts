@@ -6,7 +6,6 @@ export interface ISubmission {
   // embedded administrative-document (Value Object)
   document: IAdministrativeDocument;
 
-  is_change_construction_info?: boolean;
   construction_info: IConstructionInfoSnapshot | null;
-  bid_packages: IBidPackageSnapshot[];
+  bid_packages: IBidPackageSnapshot[] | null;
 }

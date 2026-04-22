@@ -1,3 +1,4 @@
+import { IBidPackageSnapshotCommand } from './bid-package-snapshot.type';
 import { IConstructionInfoSnapshotCommand } from './construction-info-snapshot.type';
 import { IDirectlyDecisionCommand } from './directly-decision';
 
@@ -17,9 +18,9 @@ export interface ICreateSubmissionCommand {
 
   pursuant_to_dec_ttmn_id: string | null;
 
-  is_changed_construction_info: boolean | null;
-
   construction_info_snapshot?: IConstructionInfoSnapshotCommand;
+
+  bid_package_snapshots?: IBidPackageSnapshotCommand[];
 
   directly_decision: IDirectlyDecisionCommand;
 }

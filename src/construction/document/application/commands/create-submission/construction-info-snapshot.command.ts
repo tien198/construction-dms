@@ -1,14 +1,6 @@
-import {
-  IsString,
-  ValidateNested,
-  IsNotEmpty,
-  IsNumber,
-  IsArray,
-  IsDate,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { BidPackageSnapshotCommand } from './bid-package-snapshot.command';
 import { IConstructionInfoSnapshotCommand } from '../type/create-submission/construction-info-snapshot.type';
 
 export class ConstructionInfoSnapshotCommand implements IConstructionInfoSnapshotCommand {
@@ -52,10 +44,4 @@ export class ConstructionInfoSnapshotCommand implements IConstructionInfoSnapsho
   @ApiProperty()
   @IsString()
   est_cost_str: string;
-
-  @ApiProperty({ type: () => [BidPackageSnapshotCommand] })
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => BidPackageSnapshotCommand)
-  bid_package_snapshots: BidPackageSnapshotCommand[];
 }

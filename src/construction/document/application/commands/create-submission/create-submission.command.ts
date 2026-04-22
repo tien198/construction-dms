@@ -5,12 +5,14 @@ import {
   ValidateNested,
   IsNotEmpty,
   IsDate,
+  IsArray,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ConstructionInfoSnapshotCommand } from './construction-info-snapshot.command';
 import { DirectlyDecisionCommand } from './directly-decision.command';
 import { ICreateSubmissionCommand } from '../type/create-submission/create-submission.command.type';
+import { BidPackageSnapshotCommand } from './bid-package-snapshot.command';
 
 export class CreateSubmissionCommand implements ICreateSubmissionCommand {
   // Optional between "decId" and "conId" to specify that where the submit for new Decision or existed
@@ -61,6 +63,15 @@ export class CreateSubmissionCommand implements ICreateSubmissionCommand {
   @ValidateNested()
   @Type(() => ConstructionInfoSnapshotCommand)
   construction_info_snapshot?: ConstructionInfoSnapshotCommand;
+
+  @ApiPropertyOptional({
+    type: () => [BidPackageSnapshotCommand],
+  })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => BidPackageSnapshotCommand)
+  bid_package_snapshots?: BidPackageSnapshotCommand[];
 
   @ApiProperty({ type: () => DirectlyDecisionCommand })
   @ValidateNested()

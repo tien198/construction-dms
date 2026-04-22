@@ -32,7 +32,6 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
     public bidder_selection_method: BidderSelectionMethod,
 
     public duration: Duration,
-    public is_completed: boolean,
 
     public successful_bidder_id: SuccessfulBidderId | null = null,
   ) {
@@ -40,6 +39,4 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
       this.id = BidPackageId.create(v7());
     }
   }
-
-  // Reconstitute từ DB — dùng trong repository khi load lên
 }

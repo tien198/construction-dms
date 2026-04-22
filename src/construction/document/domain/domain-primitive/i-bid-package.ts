@@ -26,7 +26,6 @@ export interface IBidPackageSnapshot {
   bidder_selection_method: BidderSelectionMethod;
 
   duration: Duration;
-  is_completed: boolean;
 
   successful_bidder_id: SuccessfulBidderId | null;
 }
