@@ -12,12 +12,16 @@ import type { IAdministrativeDocument } from './domain-primitive/i-administrativ
  * ID generation is handled by the parent entity (Decision or Submission).
  */
 export class AdministrativeDocument implements IAdministrativeDocument {
+  public level: string;
+
   constructor(
     public id: DocumentId,
     public no: DocumentNo,
-    public level: string,
     public date: Date,
     public pursuant_to_dec_tct_id: PursuantToDecTCT,
     public pursuant_to_dec_ttmn_id: PursuantToDecTTMN | null = null,
-  ) {}
+  ) {
+    //1285A/TTr-LCQ
+    this.level = this.no.value.split('-')[1].trim().toUpperCase();
+  }
 }

@@ -87,6 +87,7 @@ Table submissions {
   id varchar [pk]
   construction_id varchar [not null, note: 'refers to [constructions.id]']
   decision_id varchar [not null]
+
   created_at timestamptz [not null, default: 'NOW()', note:'used to define the newest record']
 }
 

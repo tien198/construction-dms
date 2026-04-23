@@ -13,7 +13,7 @@ export class DecisionAssembler {
    */
   static fromCmd(cmd: CreateSubmissionCommand): Decision {
     const constructionId = new ConstructionId(null);
-    const adminDoc = AdministrativeDocumentAssembler.fromCmd(cmd);
+    const adminDoc = AdministrativeDocumentAssembler.fromCmd(cmd, 'dec');
     const submission = SubmissionAssembler.fromCmd(cmd);
 
     return new Decision(
