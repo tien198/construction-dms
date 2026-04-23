@@ -1,5 +1,5 @@
 export class DocumentId {
-  constructor(readonly value: string | null) {}
+  constructor(readonly value: string | null = null) {}
 
   static create(val: string) {
     return new DocumentId(val);

@@ -14,7 +14,7 @@ export class ConstructionInfoSnapshotAssembler {
     cmd: ConstructionInfoSnapshotCommand,
   ): ConstructionInfoSnapshot {
     return new ConstructionInfoSnapshot(
-      new ConstructionInfoId(null),
+      new ConstructionInfoId(cmd.id),
       new ConstructionName(cmd.name),
       new SourceOfFunds(cmd.source_of_funds),
       cmd.est_cost,

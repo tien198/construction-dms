@@ -1,10 +1,8 @@
 import { Decision } from '../../../../../domain/decision.entity';
-import { ConstructionInfoSnapshotEntity } from '../model/construction-info.entity';
+import { ConstructionInfoSnapshotRow } from '../model/construction-info.row';
 
 export class ConstructionInfoMapper {
-  static toPersistence(
-    decision: Decision,
-  ): ConstructionInfoSnapshotEntity | null {
+  static toPersistence(decision: Decision): ConstructionInfoSnapshotRow | null {
     const submission = decision.submissions[0];
     if (!submission?.construction_info) {
       return null;
@@ -12,7 +10,7 @@ export class ConstructionInfoMapper {
 
     const info = submission.construction_info;
 
-    const entity = new ConstructionInfoSnapshotEntity();
+    const entity = new ConstructionInfoSnapshotRow();
 
     entity.id = info.id.value!;
     entity.construction_id = decision.construction_id.value!;

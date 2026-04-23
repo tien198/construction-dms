@@ -1,10 +1,10 @@
 import { BidPackageContext } from '../dto/bid-package.context';
-import { BidPackageSnapshotEntity } from '../model/bid-package.entity';
+import { BidPackageSnapshotRow } from '../model/bid-package.row';
 
 export class BidPackageMapper {
-  static toPersistence(context: BidPackageContext): BidPackageSnapshotEntity {
+  toPersistence(context: BidPackageContext): BidPackageSnapshotRow {
     const bp = context.bid_package;
-    const entity = new BidPackageSnapshotEntity();
+    const entity = new BidPackageSnapshotRow();
     entity.id = bp.id.value!;
     entity.construction_id = context.construction_id.value!;
     entity.submission_id = context.submission.id.value!;

@@ -1,6 +1,6 @@
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 
-export class BidPackageSnapshotEntity {
+export class BidPackageSnapshotRow {
   id: string;
 
   construction_id: string;

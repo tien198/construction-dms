@@ -1,9 +1,9 @@
 import { Decision } from '../../../../../domain/decision.entity';
-import { DecisionEntity } from '../model/decision.entity';
+import { DecisionRow } from '../model/decision.row';
 
 export class DecisionMapper {
-  static toPersistence(decision: Decision): DecisionEntity {
-    const entity = new DecisionEntity();
+  static toPersistence(decision: Decision): DecisionRow {
+    const entity = new DecisionRow();
     entity.id = decision.id.value!;
     entity.construction_id = decision.construction_id.value!;
     entity.period = decision.period;

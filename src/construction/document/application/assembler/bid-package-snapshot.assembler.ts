@@ -14,7 +14,7 @@ import { BidPackageSnapshotCommand } from '../commands/create-submission/bid-pac
 export class BidPackageSnapshotAssembler {
   static fromCmd(cmd: BidPackageSnapshotCommand): BidPackageSnapshot {
     return new BidPackageSnapshot(
-      new BidPackageId(null),
+      new BidPackageId(cmd.id),
       cmd.type,
       new ProjectOwner(cmd.project_owner),
       new BidPackageName(cmd.name),

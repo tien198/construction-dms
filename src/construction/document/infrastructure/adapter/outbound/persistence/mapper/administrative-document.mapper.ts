@@ -1,11 +1,11 @@
 import { AdministrativeDocument } from 'src/construction/document/domain/administrative-document.entity';
-import { AdministrativeDocumentEntity } from '../model/administrative-document.entity';
+import { AdministrativeDocumentRow } from '../model/administrative-document.row';
 
 export class AdministrativeDocumentMapper {
   static toPersistence(
     document: AdministrativeDocument,
-  ): AdministrativeDocumentEntity {
-    const entity = new AdministrativeDocumentEntity();
+  ): AdministrativeDocumentRow {
+    const entity = new AdministrativeDocumentRow();
     entity.id = document.id.value!;
     entity.no = document.no.value;
     entity.level = document.level;

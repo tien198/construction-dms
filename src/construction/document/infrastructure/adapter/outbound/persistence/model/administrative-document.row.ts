@@ -1,4 +1,4 @@
-export class AdministrativeDocumentEntity {
+export class AdministrativeDocumentRow {
   id: string;
   no: string;
   level: string;

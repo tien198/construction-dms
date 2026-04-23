@@ -16,7 +16,7 @@ export class PgConnectionService
   implements OnApplicationShutdown, OnApplicationBootstrap
 {
   constructor(
-    @Inject('PG_POOL_OPTIONS') private readonly poolConf: PoolConfig,
+    @Inject('PG_POOL_OPTIONS') poolConf: PoolConfig,
     private readonly moduleRef: ModuleRef,
   ) {
     super(poolConf);

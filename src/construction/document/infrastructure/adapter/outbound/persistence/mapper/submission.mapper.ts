@@ -1,9 +1,9 @@
 import { SubmissionContext } from '../dto/submision.context';
-import { SubmissionEntity } from '../model/submission.entity';
+import { SubmissionRow } from '../model/submission.row';
 
 export class SubmissionMapper {
-  static toPersistence(context: SubmissionContext): SubmissionEntity {
-    const entity = new SubmissionEntity();
+  static toPersistence(context: SubmissionContext): SubmissionRow {
+    const entity = new SubmissionRow();
 
     entity.id = context.submission.id.value!;
     entity.construction_id = context.construction_id;

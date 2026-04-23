@@ -1,5 +1,5 @@
 export class BidPackageId {
-  constructor(readonly value: string | null) {}
+  constructor(readonly value: string | null = null) {}
 
   static create(val: string) {
     return new BidPackageId(val);

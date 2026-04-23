@@ -13,10 +13,12 @@ export class AdministrativeDocumentAssembler {
     type: 'sub' | 'dec' = 'sub',
   ): AdministrativeDocument {
     // defined NO for submission or decision (for decision's own submision)
-    const no = type === 'sub' ? cmd.no : cmd.directly_decision.no;
+    const isSub = type === 'sub';
+    const no = isSub ? cmd.no : cmd.directly_decision.no;
+    const id = isSub ? cmd.id : cmd.directly_decision.id;
 
     return new AdministrativeDocument(
-      new DocumentId(null),
+      new DocumentId(id),
       new DocumentNo(no),
       new Date(cmd.date),
       new PursuantToDecTCT(cmd.pursuant_to_dec_tct_id),

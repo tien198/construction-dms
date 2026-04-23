@@ -1,4 +1,4 @@
-export class ConstructionInfoSnapshotEntity {
+export class ConstructionInfoSnapshotRow {
   id: string;
   construction_id: string;
   submission_id: string;

@@ -2,8 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { IDocumentQueriesUseCase } from '../port/inbound/document.queries.use-case';
 import type { DecisionDetailResDto } from '../dto/response/get-decision-detail.res-dto';
 import type { GetDecisionQuery } from '../queries/get-decision/get-decision.query';
-import type { IDocumentRepository } from '../port/outbound/database/document.repository.port';
-import type { IConstructionRepository } from '../port/outbound/database/construction.repository.port';
+import type { IDocumentQueryRepository } from '../port/outbound/database/document-query.repository.port';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { ConstructionResDto } from '../dto/response/get-constructions.res-dto';
 import { DecisionResDto } from '../dto/response/get-decision.res-dto';
@@ -11,17 +10,15 @@ import { DecisionResDto } from '../dto/response/get-decision.res-dto';
 @Injectable()
 export class DocumentQueriesService implements IDocumentQueriesUseCase {
   constructor(
-    @Inject('IDocumentRepository')
-    private readonly documentRepo: IDocumentRepository,
-    @Inject('IConstructionRepository')
-    private readonly constructionRepo: IConstructionRepository,
+    @Inject('IDocumentQueryRepository')
+    private readonly documentQueryRepo: IDocumentQueryRepository,
   ) {}
 
   async getDecision(
     query: GetDecisionQuery,
   ): Promise<DecisionDetailResDto | undefined> {
     const { constructionId, period } = query;
-    const decision = await this.documentRepo.findDecisionByPeriod(
+    const decision = await this.documentQueryRepo.findDecisionByPeriod(
       constructionId,
       period.toUpperCase() as ConstructionPeriod,
     );
@@ -29,7 +26,7 @@ export class DocumentQueriesService implements IDocumentQueriesUseCase {
   }
 
   async getConstructionsList(): Promise<ConstructionResDto[]> {
-    const consList = await this.constructionRepo.findConstructionsList();
+    const consList = await this.documentQueryRepo.findConstructionsList();
     return consList;
   }
 
@@ -37,12 +34,12 @@ export class DocumentQueriesService implements IDocumentQueriesUseCase {
     conId: string,
   ): Promise<DecisionResDto[]> {
     const decisionList =
-      await this.documentRepo.findDecisionListOfConstruction(conId);
+      await this.documentQueryRepo.findDecisionListOfConstruction(conId);
     return decisionList;
   }
 
   async getTCT_DecisionsList(): Promise<DecisionResDto[]> {
-    const decision = await this.documentRepo.findTCTDecisionsList();
+    const decision = await this.documentQueryRepo.findTCTDecisionsList();
     return decision;
   }
 }

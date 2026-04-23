@@ -1,5 +1,5 @@
-import type { IDocumentRepository } from '../port/outbound/database/document.repository.port';
-import type { IUnitOfWork } from '../port/outbound/database/i-unit-of-work.port';
+import type { IDocumentWriteRepository } from '../port/outbound/database/document-write.repository.port';
+import type { IDocumentQueryRepository } from '../port/outbound/database/document-query.repository.port';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { Decision } from '../../domain/decision.entity';
@@ -11,28 +11,20 @@ import { ConstructionId } from '../../domain/value-objects/construction.vo';
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
   constructor(
-    @Inject('IDocumentRepository')
-    private readonly repo: IDocumentRepository,
-    @Inject('IUnitOfWork')
-    private readonly uow: IUnitOfWork,
+    @Inject('IDocumentWriteRepository')
+    private readonly writeRepo: IDocumentWriteRepository,
+    @Inject('IDocumentQueryRepository')
+    private readonly queryRepo: IDocumentQueryRepository,
   ) {}
 
   async initConstruction(
     cmd: CreateSubmissionCommand,
   ): Promise<ConstructionId | void> {
     // Build the entire Decision aggregate
-    const decision = DecisionAssembler.fromInitConstructionCmd(cmd);
+    const decision = DecisionAssembler.fromCmd(cmd);
 
     // Save the aggregate (repository handles persisting all child entities)
-    const client = await this.uow.begin();
-    try {
-      await this.repo.saveDecision(decision, client);
-      await this.uow.commit(client);
-      return decision.construction.id;
-    } catch (error) {
-      await this.uow.rollback(client);
-      throw error;
-    }
+    await this.writeRepo.saveDecision(decision);
   }
 
   async addSubmissionForNewDecision(
@@ -40,26 +32,16 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     cmd: CreateSubmissionCommand,
   ): Promise<Decision | void> {
     // Find existing Decision for this construction to get the Construction entity
-    const existingDecision = await this.repo.findDecisionByConstructionId(conId);
-    if (!existingDecision) {
+    const existingCon = await this.queryRepo.findConstructionById(conId);
+    if (!existingCon) {
       throw new Error('Construction not found');
     }
 
     // Build a new Decision aggregate for the existing construction
-    const decision = DecisionAssembler.fromNewDecisionCmd(
-      cmd,
-      existingDecision.construction,
-    );
+    const decision = DecisionAssembler.fromCmd(cmd);
 
-    const client = await this.uow.begin();
-    try {
-      await this.repo.saveDecision(decision, client);
-      await this.uow.commit(client);
-      return decision;
-    } catch (error) {
-      await this.uow.rollback(client);
-      throw error;
-    }
+    await this.writeRepo.saveDecision(decision);
+    return decision;
   }
 
   async addSubmissionForExistedDecision(
@@ -67,17 +49,13 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     cmd: CreateSubmissionCommand,
   ): Promise<Decision | void> {
     // Load the existing Decision aggregate
-    const decision = await this.repo.findDecisionById(decId);
+    const decision = await this.queryRepo.findDecisionById(decId);
     if (!decision) {
       throw new Error('Decision not found');
     }
 
     // Build and add a new Submission to the aggregate
-    const { submission, conInfor } =
-      DecisionAssembler.buildSubmissionForExistingDecision(
-        cmd,
-        decision.construction,
-      );
+    const { submission, conInfor } = DecisionAssembler.fromCmd(cmd);
 
     decision.addSubmission(submission);
 

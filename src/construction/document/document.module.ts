@@ -4,8 +4,8 @@ import { DocumentSubmissionService } from './application/service/document-submis
 import { DocumentQueriesService } from './application/service/document.queries.service';
 
 import { UnitOfWork } from './infrastructure/adapter/outbound/persistence/unit-of-work';
-import { PgDocumentRepository } from './infrastructure/adapter/outbound/persistence/pg-document.repository';
-import { PgConstructionRepository } from './infrastructure/adapter/outbound/persistence/pg-construction.repository';
+import { DocumentQueryRepository } from './infrastructure/adapter/outbound/persistence/document-query.repository';
+import { DocumentWriteRepository } from './infrastructure/adapter/outbound/persistence/document-write.repository';
 
 @Module({
   controllers: [DocumentController],
@@ -19,12 +19,12 @@ import { PgConstructionRepository } from './infrastructure/adapter/outbound/pers
       useClass: DocumentQueriesService,
     },
     {
-      provide: 'IDocumentRepository',
-      useClass: PgDocumentRepository,
+      provide: 'IDocumentQueryRepository',
+      useClass: DocumentQueryRepository,
     },
     {
-      provide: 'IConstructionRepository',
-      useClass: PgConstructionRepository,
+      provide: 'IDocumentWriteRepository',
+      useClass: DocumentWriteRepository,
     },
     {
       provide: 'IUnitOfWork',

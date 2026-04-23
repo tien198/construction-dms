@@ -1,4 +1,4 @@
-export class SubmissionEntity {
+export class SubmissionRow {
   id: string;
   construction_id: string;
   decision_id: string;

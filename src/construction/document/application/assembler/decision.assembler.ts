@@ -12,7 +12,7 @@ export class DecisionAssembler {
    * Build a full Decision aggregate for initializing a brand new construction.
    */
   static fromCmd(cmd: CreateSubmissionCommand): Decision {
-    const constructionId = new ConstructionId(null);
+    const constructionId = new ConstructionId(cmd.con_id);
     const adminDoc = AdministrativeDocumentAssembler.fromCmd(cmd, 'dec');
     const submission = SubmissionAssembler.fromCmd(cmd);
 

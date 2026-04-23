@@ -17,11 +17,11 @@ export class Submission implements ISubmission {
     public construction_info: ConstructionInfoSnapshot | null = null,
     public bid_packages: BidPackageSnapshot[] | null = null,
   ) {
+    if (this.document.id.value == null) {
+      this.document.id = DocumentId.create(v7());
+    }
     if (!construction_info && !bid_packages) {
       throw new Error('Submission must have construction_info or bid_packages');
-    }
-    if (this.document.id.value === null) {
-      this.document.id = DocumentId.create(v7());
     }
   }
 
