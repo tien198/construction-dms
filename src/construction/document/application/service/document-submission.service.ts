@@ -24,7 +24,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     const decision = DecisionAssembler.fromCmd(cmd);
 
     // Save the aggregate (repository handles persisting all child entities)
-    await this.writeRepo.saveDecision(decision);
+    await this.writeRepo.initConstruction(decision);
   }
 
   async addSubmissionForNewDecision(
@@ -40,7 +40,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     // Build a new Decision aggregate for the existing construction
     const decision = DecisionAssembler.fromCmd(cmd);
 
-    await this.writeRepo.saveDecision(decision);
+    await this.writeRepo.saveNewDecision(decision);
     return decision;
   }
 
