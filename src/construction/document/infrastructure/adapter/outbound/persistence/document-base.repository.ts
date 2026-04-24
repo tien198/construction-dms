@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { Pool } from 'pg';
 import { IUnitOfWork } from 'src/construction/document/application/port/outbound/database/i-unit-of-work.port';
 import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
@@ -11,12 +9,5 @@ export class DocumentBaseRepo {
   constructor(connectionService: PgConnectionService, uow: IUnitOfWork) {
     this._poolClient = connectionService.pool;
     this._uow = uow;
-  }
-
-  protected _getQueryFromFile(fileName: string): string {
-    return fs.readFileSync(
-      path.join(__dirname, 'sql', 'dql', fileName),
-      'utf-8',
-    );
   }
 }

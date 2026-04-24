@@ -1,5 +1,7 @@
 import { Decision } from '../../../../domain/decision.entity';
 
 export interface IDocumentWriteRepository {
-  saveDecision(decision: Decision): Promise<Decision>;
+  initConstruction(decision: Decision): Promise<Decision>;
+  saveNewDecision(decision: Decision): Promise<Decision>;
+  saveExistingDecision(decision: Decision): Promise<Decision>;
 }
