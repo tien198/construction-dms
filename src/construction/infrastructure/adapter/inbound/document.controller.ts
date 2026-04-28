@@ -8,7 +8,7 @@ import { CreateSubmissionCommand } from 'src/construction/application/commands/c
 import { DecisionDetailResDto } from 'src/construction/application/dto/response/get-decision-detail.res-dto';
 import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
-import { ConstructionId } from 'src/construction/domain/document/value-objects/construction.vo';
+import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { ResResult } from 'src/shared/response-result';
 
 @ApiTags('document')

@@ -7,8 +7,8 @@ import {
   ProjectOwner,
   ShortDesc,
   SuccessfulBidderId,
-} from 'src/construction/domain/document/value-objects/bid-package-snapshot.vo';
-import { EstCostStr } from 'src/construction/domain/document/value-objects/construction-info.vo';
+} from 'src/construction/domain/value-objects/bid-package-snapshot.vo';
+import { EstCostStr } from 'src/construction/domain/value-objects/construction-info.vo';
 import { BidPackageSnapshotCommand } from '../commands/create-submission/bid-package-snapshot.command';
 
 export class BidPackageSnapshotAssembler {

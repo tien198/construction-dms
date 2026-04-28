@@ -6,7 +6,7 @@ import {
   ExistingCondition,
   RepairScope,
   SourceOfFunds,
-} from './value-objects/construction-info.vo';
+} from '../value-objects/construction-info.vo';
 import type { IConstructionInfoSnapshot } from './domain-primitive/i-construction-info';
 
 /**

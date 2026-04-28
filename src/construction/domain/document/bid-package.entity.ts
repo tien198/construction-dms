@@ -9,7 +9,7 @@ import {
   ProjectOwner,
   ShortDesc,
   SuccessfulBidderId,
-} from './value-objects/bid-package-snapshot.vo';
+} from '../value-objects/bid-package-snapshot.vo';
 import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
 
 /**

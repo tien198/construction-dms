@@ -1,4 +1,4 @@
-import { ConstructionId } from 'src/construction/domain/document/value-objects/construction.vo';
+import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { CreateSubmissionCommand } from '../../commands/create-submission/create-submission.command';
 import { Decision } from 'src/construction/domain/document/decision.entity';
 

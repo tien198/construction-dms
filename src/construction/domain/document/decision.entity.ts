@@ -1,10 +1,10 @@
 import { v7 } from 'uuid';
 import type { IDecision } from './domain-primitive/i-decision';
-import { DecisionId } from './value-objects/document.vo';
+import { DecisionId } from '../value-objects/document.vo';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { AdministrativeDocument } from './administrative-document.entity';
 import { Submission } from './submission.entity';
-import { ConstructionId } from './value-objects/construction.vo';
+import { ConstructionId } from '../value-objects/construction.vo';
 
 /**
  * Decision — Aggregate Root.

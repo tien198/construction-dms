@@ -1,4 +1,4 @@
-import { ConstructionId } from '../value-objects/construction.vo';
+import { ConstructionId } from '../../value-objects/construction.vo';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { IAdministrativeDocument } from './i-administrative-document';
 import { ISubmission } from './i-submission';

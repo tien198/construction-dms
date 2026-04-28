@@ -7,14 +7,14 @@ import { ConstructionPeriod } from 'src/construction/domain/enum/construction-pe
 import { DecisionDetailResDto } from 'src/construction/application/dto/response/get-decision-detail.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
 import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
-import { DocumentBaseRepo } from './document-base.repository';
+import { BaseRepo } from './base.repository';
 import { IDocumentQueryRepository } from 'src/construction/application/port/outbound/database/document-query.repository.port';
 import { DecisionRow } from './model/decision.row';
 import { ConstructionRow } from './model/construction.row';
 
 @Injectable()
 export class DocumentQueryRepository
-  extends DocumentBaseRepo
+  extends BaseRepo
   implements IDocumentQueryRepository
 {
   constructor(

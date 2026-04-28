@@ -4,7 +4,7 @@ import {
   DocumentNo,
   PursuantToDecTCT,
   PursuantToDecTTMN,
-} from 'src/construction/domain/document/value-objects/document.vo';
+} from 'src/construction/domain/value-objects/document.vo';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 
 export class AdministrativeDocumentAssembler {

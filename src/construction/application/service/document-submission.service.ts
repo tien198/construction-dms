@@ -6,7 +6,7 @@ import { Decision } from 'src/construction/domain/document/decision.entity';
 import { IDocumentSubmissionUseCase } from '../port/inbound/document-submission.use-case';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 import { DecisionAssembler } from '../assembler/decision.assembler';
-import { ConstructionId } from 'src/construction/domain/document/value-objects/construction.vo';
+import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {

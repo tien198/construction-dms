@@ -3,7 +3,7 @@ import {
   DocumentNo,
   PursuantToDecTCT,
   PursuantToDecTTMN,
-} from '../value-objects/document.vo';
+} from '../../value-objects/document.vo';
 
 export interface IAdministrativeDocument {
   id: DocumentId;

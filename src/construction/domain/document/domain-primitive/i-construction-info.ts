@@ -5,7 +5,7 @@ import {
   ExistingCondition,
   RepairScope,
   SourceOfFunds,
-} from '../value-objects/construction-info.vo';
+} from '../../value-objects/construction-info.vo';
 
 export interface IConstructionInfoSnapshot {
   id: ConstructionInfoId;

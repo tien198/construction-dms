@@ -1,6 +1,6 @@
 import { v7 } from 'uuid';
 import { ISubmission } from './domain-primitive/i-submission';
-import { DocumentId } from './value-objects/document.vo';
+import { DocumentId } from '../value-objects/document.vo';
 import { AdministrativeDocument } from './administrative-document.entity';
 import { ConstructionInfoSnapshot } from './construction-info.entity';
 import { BidPackageSnapshot } from './bid-package.entity';
