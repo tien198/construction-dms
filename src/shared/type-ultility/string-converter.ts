@@ -1,4 +1,4 @@
-import { ConstructionInfoSnapshot } from 'src/construction/document/domain/construction-info.entity';
+import { ConstructionInfoSnapshot } from 'src/construction/domain/document/construction-info.entity';
 
 // type Primitive = string | number | boolean | Date | null | undefined;
 
@@ -9,7 +9,6 @@ export type StrConvert<T> = {
 // this is demo for convert type
 const converted: StrConvert<ConstructionInfoSnapshot> = {
   id: '',
-  construction_id: '1',
   name: '1',
   source_of_funds: '1',
   est_cost: '1',
