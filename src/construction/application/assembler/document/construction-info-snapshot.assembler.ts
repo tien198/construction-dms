@@ -7,7 +7,7 @@ import {
   RepairScope,
   SourceOfFunds,
 } from 'src/construction/domain/value-objects/construction-info.vo';
-import { ConstructionInfoSnapshotCommand } from '../commands/create-submission/construction-info-snapshot.command';
+import { ConstructionInfoSnapshotCommand } from '../../commands/create-submission/construction-info-snapshot.command';
 
 export class ConstructionInfoSnapshotAssembler {
   static fromCmd(

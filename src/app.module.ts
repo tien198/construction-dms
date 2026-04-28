@@ -1,13 +1,15 @@
+import path from 'path';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { DocumentModule } from './construction/document/document.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
 import config from 'config/config';
 import databaseConfig from 'config/database.config';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import path from 'path';
+
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
 import { InfrastructureModule } from './shared/infrastructure/infrastructure.module';
+import { ConstructionModule } from './construction/construction.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { InfrastructureModule } from './shared/infrastructure/infrastructure.mod
       exclude: ['/api'],
     }),
     InfrastructureModule,
-    DocumentModule,
+    ConstructionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

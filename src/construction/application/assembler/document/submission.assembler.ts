@@ -1,5 +1,5 @@
 import { Submission } from 'src/construction/domain/document/submission.entity';
-import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
+import { CreateSubmissionCommand } from '../../commands/create-submission/create-submission.command';
 import { AdministrativeDocumentAssembler } from './administrative-document.assembler';
 import { BidPackageSnapshotAssembler } from './bid-package-snapshot.assembler';
 import { ConstructionInfoSnapshotAssembler } from './construction-info-snapshot.assembler';

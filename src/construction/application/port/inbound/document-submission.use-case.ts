@@ -1,11 +1,9 @@
-import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { CreateSubmissionCommand } from '../../commands/create-submission/create-submission.command';
 import { Decision } from 'src/construction/domain/document/decision.entity';
+import { Construction } from 'src/construction/domain/construction/construction.entity';
 
 export interface IDocumentSubmissionUseCase {
-  initConstruction(
-    data: CreateSubmissionCommand,
-  ): Promise<ConstructionId | void>;
+  initConstruction(data: CreateSubmissionCommand): Promise<Construction | void>;
 
   addSubmissionForNewDecision(
     conId: string,

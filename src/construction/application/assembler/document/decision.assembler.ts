@@ -1,6 +1,6 @@
 import { Decision } from 'src/construction/domain/document/decision.entity';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
-import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
+import { CreateSubmissionCommand } from '../../commands/create-submission/create-submission.command';
 import { AdministrativeDocumentAssembler } from './administrative-document.assembler';
 import { SubmissionAssembler } from './submission.assembler';
 

@@ -8,8 +8,8 @@ import { CreateSubmissionCommand } from 'src/construction/application/commands/c
 import { DecisionDetailResDto } from 'src/construction/application/dto/response/get-decision-detail.res-dto';
 import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
-import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { ResResult } from 'src/shared/response-result';
+import { Construction } from 'src/construction/domain/construction/construction.entity';
 
 @ApiTags('document')
 @Controller('document')
@@ -26,7 +26,7 @@ export class DocumentController {
   @ApiResponse({ status: 201, description: 'Created successfully.' })
   async create(
     @Body() data: CreateSubmissionCommand,
-  ): Promise<ConstructionId | void> {
+  ): Promise<Construction | void> {
     return this._documentSubmissionUseCase.initConstruction(data);
   }
 
@@ -43,9 +43,9 @@ export class DocumentController {
       );
     }
     // if exists decision id (directlyDecision.id), add submission for existed decision
-    else if (data.directlyDecision.id) {
+    else if (data.directly_decision.id) {
       return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
-        data.directlyDecision.id,
+        data.directly_decision.id,
         data,
       );
     }
@@ -87,27 +87,4 @@ export class DocumentController {
   async getTCT_DecisionsList(): Promise<DecisionResDto[]> {
     return this._documentQueriesUseCase.getTCT_DecisionsList();
   }
-
-  /*
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a decision by ID' })
-  async findOne(@Param('id') id: string): Promise<Decision> {
-    return this.documentUseCase.getDecisionById(id);
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: 'Update a decision' })
-  async update(
-    @Param('id') id: string,
-    @Body() data: CreateSubmissionCommand,
-  ): Promise<Decision> {
-    return this.documentUseCase.updateDecision(id, data);
-  }
-
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete a decision' })
-  async remove(@Param('id') id: string): Promise<void> {
-    return this.documentUseCase.deleteDecision(id);
-  }
-    */
 }

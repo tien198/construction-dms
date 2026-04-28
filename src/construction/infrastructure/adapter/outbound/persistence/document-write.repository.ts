@@ -44,25 +44,8 @@ export class DocumentWriteRepository
     decDomain: Decision,
     poolClient?: PoolClient,
   ): Promise<Decision> {
-    /*
-    if (!subDomain) {
-      throw new Error('Submission is required');
-    }
-    if (!subDomain.construction_info) {
-      throw new Error('Construction info is required');
-    }
-    if (!subDomain.bid_packages || !Array.isArray(subDomain.bid_packages)) {
-      throw new Error('Bid packages is required');
-    }
-      */
-
     const client = poolClient || ((await this._uow.begin()) as PoolClient);
     try {
-      // construction
-      /*
-      const construction = ConstructionMapper.toPersistence(decDomain);
-      await this._conPersist.save(client, construction);
-*/
       // decision
       const decRow = DecisionMapper.toPersistence(decDomain);
       await this._decPersist.save(client, decRow);

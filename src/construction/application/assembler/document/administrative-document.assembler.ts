@@ -5,7 +5,7 @@ import {
   PursuantToDecTCT,
   PursuantToDecTTMN,
 } from 'src/construction/domain/value-objects/document.vo';
-import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
+import { CreateSubmissionCommand } from '../../commands/create-submission/create-submission.command';
 
 export class AdministrativeDocumentAssembler {
   static fromCmd(

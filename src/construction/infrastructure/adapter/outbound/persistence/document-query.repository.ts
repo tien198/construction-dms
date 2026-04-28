@@ -6,11 +6,9 @@ import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 import { DecisionDetailResDto } from 'src/construction/application/dto/response/get-decision-detail.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
-import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
 import { BaseRepo } from './base.repository';
 import { IDocumentQueryRepository } from 'src/construction/application/port/outbound/database/document-query.repository.port';
 import { DecisionRow } from './model/decision.row';
-import { ConstructionRow } from './model/construction.row';
 
 @Injectable()
 export class DocumentQueryRepository
@@ -22,19 +20,6 @@ export class DocumentQueryRepository
     @Inject('IUnitOfWork') uow: IUnitOfWork,
   ) {
     super(connectionService, uow);
-  }
-  // Construction
-
-  async findConstructionById(id: string): Promise<ConstructionRow | undefined> {
-    const query = this._getQueryFromFile('find-construction-by-id.sql');
-    const result = await this._poolClient.query(query, [id]);
-    return result.rows[0] as ConstructionRow | undefined;
-  }
-
-  async findConstructionsList(): Promise<ConstructionResDto[]> {
-    const query = this._getQueryFromFile('find-constructions-list.sql');
-    const result = await this._poolClient.query(query);
-    return result.rows as ConstructionResDto[];
   }
 
   // Decision

@@ -9,7 +9,7 @@ import {
   SuccessfulBidderId,
 } from 'src/construction/domain/value-objects/bid-package-snapshot.vo';
 import { EstCostStr } from 'src/construction/domain/value-objects/construction-info.vo';
-import { BidPackageSnapshotCommand } from '../commands/create-submission/bid-package-snapshot.command';
+import { BidPackageSnapshotCommand } from '../../commands/create-submission/bid-package-snapshot.command';
 
 export class BidPackageSnapshotAssembler {
   static fromCmd(cmd: BidPackageSnapshotCommand): BidPackageSnapshot {
