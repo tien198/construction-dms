@@ -64,21 +64,18 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     }
   }
 
-  // async addTvTt(
-  //   conId: string,
-  //   cmd: CreateSubmissionCommand,
-  // ): Promise<Construction | void> {
-  //   const existCon = await this._conQueryRepo.findConstructionById(conId);
-  //   if (!existCon) {
-  //     throw new Error(`Construction: "${conId}" not found`);
-  //   }
-
-  //   const decision = DecisionAssembler.fromCmd(cmd);
-
-  //   await this._docWriteRepo.saveNewDecision(existCon.id, decision);
-
-  //   return decision;
-  // }
+  async addKqLcnt(
+    conId: string,
+    cmd: CreateSubmissionCommand,
+  ): Promise<Construction | void> {
+    throw new Error('The method not implemented yet!');
+    // const existCon = await this._conQueryRepo.findConstructionById(conId);
+    // if (!existCon) {
+    //   throw new Error(`Construction: "${conId}" not found`);
+    // }
+    // const decision = DecisionAssembler.fromCmd(cmd);
+    // await this._docWriteRepo.saveNewDecision(existCon.id, decision);
+  }
 
   async addSubmissionForNewDecision(
     conId: string,

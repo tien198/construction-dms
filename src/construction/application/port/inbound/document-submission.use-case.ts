@@ -5,10 +5,14 @@ import { Construction } from 'src/construction/domain/construction/construction.
 export interface IDocumentSubmissionUseCase {
   initConstruction(data: CreateSubmissionCommand): Promise<Construction | void>;
 
-  // addTvTt(
-  //   conId: string,
-  //   data: CreateSubmissionCommand,
-  // ): Promise<Construction | void>;
+  /*
+    KQ_LCNT (1 for new construction, 1 for existed construction, both only have one bid_package)
+  */
+
+  addKqLcnt(
+    conId: string,
+    data: CreateSubmissionCommand,
+  ): Promise<Construction | void>;
 
   addSubmissionForNewDecision(
     conId: string,
