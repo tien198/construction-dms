@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-21T14:34:50.531Z
+-- Generated at: 2026-04-29T08:41:50.563Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
@@ -66,7 +66,6 @@ CREATE TABLE "submissions" (
   "id" varchar PRIMARY KEY,
   "construction_id" varchar NOT NULL,
   "decision_id" varchar NOT NULL,
-  "for_bid_package_type" bid_package_type,
   "created_at" timestamptz NOT NULL DEFAULT 'NOW()'
 );
 
@@ -96,8 +95,6 @@ COMMENT ON COLUMN "bid_package_snapshots"."created_at" IS 'used to define the ne
 
 COMMENT ON COLUMN "submissions"."construction_id" IS 'refers to [constructions.id]';
 
-COMMENT ON COLUMN "submissions"."for_bid_package_type" IS 'used to define that submission is for a bid package. This can be null if the submission is not for a bid package.';
-
 COMMENT ON COLUMN "submissions"."created_at" IS 'used to define the newest record';
 
 COMMENT ON COLUMN "decisions"."construction_id" IS 'refers to [constructions.id]';
@@ -110,7 +107,7 @@ ALTER TABLE "submissions" ADD FOREIGN KEY ("id") REFERENCES "administrative_docu
 
 ALTER TABLE "decisions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "submissions" ADD FOREIGN KEY ("id") REFERENCES "construction_info_snapshots" ("submission_id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 

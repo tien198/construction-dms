@@ -124,15 +124,15 @@
     },
     {
       "firstFieldNames": [
-        "submission_id"
+        "id"
       ],
-      "firstTableName": "construction_info_snapshots",
+      "firstTableName": "submissions",
       "firstSchemaName": "public",
       "firstRelation": "1",
       "secondFieldNames": [
-        "id"
+        "submission_id"
       ],
-      "secondTableName": "submissions",
+      "secondTableName": "construction_info_snapshots",
       "secondSchemaName": "public",
       "secondRelation": "1",
       "checkPoints": []

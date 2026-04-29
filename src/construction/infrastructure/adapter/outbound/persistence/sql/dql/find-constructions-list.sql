@@ -7,4 +7,5 @@ JOIN (
     ORDER BY d.construction_id, ad.date ASC
 ) AS dec ON dec.construction_id = c.id
 JOIN public.construction_info_snapshots ci
-ON c.current_snapshot_id = ci.id;
+ON c.id = ci.construction_id;
+-- ORDER BY ci.created

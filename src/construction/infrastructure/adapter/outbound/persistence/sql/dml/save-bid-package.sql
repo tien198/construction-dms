@@ -16,9 +16,7 @@ INSERT INTO bid_package_snapshots (
 
   successful_bidder_id,
   duration,
-  is_completed,
-
-  created_at,
+  is_completed
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
 );

@@ -5,6 +5,11 @@ import { Construction } from 'src/construction/domain/construction/construction.
 export interface IDocumentSubmissionUseCase {
   initConstruction(data: CreateSubmissionCommand): Promise<Construction | void>;
 
+  // addTvTt(
+  //   conId: string,
+  //   data: CreateSubmissionCommand,
+  // ): Promise<Construction | void>;
+
   addSubmissionForNewDecision(
     conId: string,
     data: CreateSubmissionCommand,

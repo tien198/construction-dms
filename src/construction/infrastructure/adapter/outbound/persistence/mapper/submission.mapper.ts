@@ -7,7 +7,7 @@ export class SubmissionMapper {
 
     entity.id = context.submission.id.value!;
     entity.construction_id = context.construction_id;
-    entity.decision_id = context.submission.document.id.value!;
+    entity.decision_id = context.decisoin_id;
 
     return entity;
   }

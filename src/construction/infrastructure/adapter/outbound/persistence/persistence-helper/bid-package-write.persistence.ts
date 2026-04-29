@@ -24,8 +24,6 @@ export class BidPackageWritePersistence extends BasePersistence {
       bp.successful_bidder_id,
       bp.duration,
       bp.is_completed,
-
-      bp.created_at,
     ]);
   }
 }

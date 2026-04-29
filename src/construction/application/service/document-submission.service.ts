@@ -35,6 +35,8 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     const construction = ConstructionAssembler.fromCmd(cmd);
 
     const decision = DecisionAssembler.fromCmd(cmd);
+    decision.construction_id = construction.id;
+
     const subDomain = decision.submissions[0];
     if (!subDomain) {
       throw new Error('Submission is required');
@@ -61,6 +63,22 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
       throw error;
     }
   }
+
+  // async addTvTt(
+  //   conId: string,
+  //   cmd: CreateSubmissionCommand,
+  // ): Promise<Construction | void> {
+  //   const existCon = await this._conQueryRepo.findConstructionById(conId);
+  //   if (!existCon) {
+  //     throw new Error(`Construction: "${conId}" not found`);
+  //   }
+
+  //   const decision = DecisionAssembler.fromCmd(cmd);
+
+  //   await this._docWriteRepo.saveNewDecision(existCon.id, decision);
+
+  //   return decision;
+  // }
 
   async addSubmissionForNewDecision(
     conId: string,

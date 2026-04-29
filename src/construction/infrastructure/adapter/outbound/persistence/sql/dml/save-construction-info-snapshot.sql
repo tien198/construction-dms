@@ -13,7 +13,6 @@ INSERT INTO construction_info_snapshots (
   impl_end_date,
 
   existing_condition_of_the_structure,
-  repair_scope,
+  repair_scope
 
-  created_at
-) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);
+) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);

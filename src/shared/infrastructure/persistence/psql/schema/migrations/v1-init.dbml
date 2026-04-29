@@ -102,7 +102,7 @@ Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents
 Ref: administrative_documents.id - submissions.id
 Ref: administrative_documents.id - decisions.id
 
-Ref: construction_info_snapshots.submission_id - submissions.id 
+Ref: submissions.id - construction_info_snapshots.submission_id
 
 Ref: bid_package_snapshots.submission_id > submissions.id
 

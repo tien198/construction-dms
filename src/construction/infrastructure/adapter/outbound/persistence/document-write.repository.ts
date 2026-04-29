@@ -48,13 +48,14 @@ export class DocumentWriteRepository
     try {
       // decision
       const decRow = DecisionMapper.toPersistence(decDomain);
-      await this._decPersist.save(client, decRow);
 
       // administrative document
       const decisionAdDoc = AdministrativeDocumentMapper.toPersistence(
         decDomain.document,
       );
+
       await this._adDocPersist.save(client, decisionAdDoc);
+      await this._decPersist.save(client, decRow);
 
       await this._saveSubmission(conId, decDomain, client);
 
@@ -125,13 +126,14 @@ export class DocumentWriteRepository
 
     const subRow = SubmissionMapper.toPersistence({
       construction_id: conId,
+      decisoin_id: decDomain.id.value!,
       submission: subDomain,
     });
     const subAdDocRow = AdministrativeDocumentMapper.toPersistence(
       subDomain.document,
     );
-    await this._subPersist.save(client, subRow);
     await this._adDocPersist.save(client, subAdDocRow);
+    await this._subPersist.save(client, subRow);
 
     await this._saveConInfoAndBidPackages(conId, subRow.id, subDomain, client);
   }

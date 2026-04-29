@@ -26,7 +26,6 @@ export class ConstructionInfoWritePersistence extends BasePersistence {
 
       info.existing_condition_of_the_structure,
       info.repair_scope,
-      info.created_at,
     ]);
   }
 }
