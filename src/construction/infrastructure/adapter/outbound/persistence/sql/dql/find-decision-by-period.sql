@@ -78,7 +78,7 @@ SELECT
                                                                           SELECT DISTINCT ON (bp.type) bp.*
                                                                           FROM bid_package_snapshots bp
                                                                           WHERE bp.submission_id = sub.id
-                                                                          ORDER BY bp.type, sub_ad.date DESC
+                                                                          ORDER BY bp.type, sub_ad.date DESC, bp.created_at DESC
                                                                        ) AS bp
                                                                      ),
                                                                      '[]'::json
@@ -109,22 +109,18 @@ LEFT JOIN administrative_documents sub_ttmn
 JOIN LATERAL (
   -- using LATERAL to find the last construction_info_snapshots of submission history
   -- it can be replaced by "is_approved" if there is approve function in the application
-  SELECT ci.* FROM public.construction_info_snapshots ci
+  SELECT ci.* 
+  FROM public.construction_info_snapshots ci
   JOIN public.administrative_documents sub_ad_lateral
     ON sub_ad_lateral.id = ci.submission_id
-  WHERE ci.submission_id = sub_ad_lateral.id
-    AND sub_ad_lateral.date <= sub_ad.date
-  ORDER BY sub_ad_lateral.date DESC
+  WHERE sub_ad_lateral.date <= sub_ad.date
+  ORDER BY sub_ad_lateral.date DESC, ci.created_at DESC
   LIMIT 1
 ) AS cis ON true
--- JOIN LATERAL (
---   SELECT DISTINCT ON (bp.type) bp.*
---   FROM bid_package_snapshots bp
---   WHERE bp.submission_id = sub.id
---   ORDER BY bp.type, bp.created_at DESC
--- ) AS bp ON true
-WHERE d.construction_id = '019ddc58-e541-7217-a783-f4bcd5627054'
-  AND d.period = 'KH_LCNT';
 
--- WHERE d.construction_id = $1
---   AND d.period = $2; 
+WHERE d.construction_id = $1
+  AND d.period = $2; 
+
+
+-- WHERE d.construction_id = '019ddc58-e541-7217-a783-f4bcd5627054'
+  -- AND d.period = 'KH_LCNT';

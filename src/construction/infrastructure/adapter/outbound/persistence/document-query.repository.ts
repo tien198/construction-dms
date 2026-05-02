@@ -38,7 +38,7 @@ export class DocumentQueryRepository
       constructionId,
       period,
     ]);
-    return result.rows[0] as DecisionDetailResDto | undefined;
+    return result.rows[0].result as DecisionDetailResDto | undefined;
   }
 
   async findTCTDecisionsList(): Promise<DecisionResDto[]> {
