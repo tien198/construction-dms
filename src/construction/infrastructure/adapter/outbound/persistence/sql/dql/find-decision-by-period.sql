@@ -56,69 +56,38 @@ SELECT
                                                                       'est_cost_str',                      cis.est_cost_str
                                                                     )
                                                                   END,
-                                 'bid_package_snapshots',         COALESCE(
-                                                                     (
-                                                                       WITH newest_bps AS (
-                                                                         SELECT bp.*
-                                                                         FROM bid_package_snapshots bp
-                                                                         JOIN administrative_documents sub_ad_inner
-                                                                           ON bp.submission_id = sub_ad_inner.id
-                                                                         WHERE sub_ad_inner.id = sub_ad.id
-                                                                         ORDER BY bp.created_at DESC
-                                                                         LIMIT 1
-                                                                       )
-                                                                       SELECT CASE
-                                                                         WHEN EXISTS (SELECT 1 FROM newest_bps) THEN
-                                                                           (
-                                                                             SELECT json_agg(
-                                                                               json_build_object(
-                                                                                 'id',                       bp.id,
-                                                                                 'type',                     bp.type,
-                                                                                 'project_owner',            bp.project_owner,
-                                                                                 'name',                     bp.name,
-                                                                                 'short_desc',               bp.short_desc,
-                                                                                 'est_cost',                 bp.est_cost,
-                                                                                 'est_cost_str',             bp.est_cost_str,
-                                                                                 'bidder_selection_time',    bp.bidder_selection_time,
-                                                                                 'bidder_selection_method',  bp.bidder_selection_method,
-                                                                                 'successful_bidder_id',     bp.successful_bidder_id,
-                                                                                 'duration',                 bp.duration,
-                                                                                 'is_completed',             bp.is_completed
-                                                                               )
-                                                                             )
-                                                                             FROM newest_bps AS bp
-                                                                           )
-                                                                         ELSE
-                                                                           (
-                                                                             SELECT json_agg(
-                                                                               json_build_object(
-                                                                                 'id',                       bp.id,
-                                                                                 'type',                     bp.type,
-                                                                                 'project_owner',            bp.project_owner,
-                                                                                 'name',                     bp.name,
-                                                                                 'short_desc',               bp.short_desc,
-                                                                                 'est_cost',                 bp.est_cost,
-                                                                                 'est_cost_str',             bp.est_cost_str,
-                                                                                 'bidder_selection_time',    bp.bidder_selection_time,
-                                                                                 'bidder_selection_method',  bp.bidder_selection_method,
-                                                                                 'successful_bidder_id',     bp.successful_bidder_id,
-                                                                                 'duration',                 bp.duration,
-                                                                                 'is_completed',             bp.is_completed
-                                                                               )
-                                                                             )
-                                                                             FROM (
-                                                                                SELECT DISTINCT ON (bp.type) bp.*
-                                                                                FROM bid_package_snapshots bp
-                                                                                WHERE bp.submission_id = sub.id
-                                                                                ORDER BY bp.type, sub_ad.date DESC, bp.created_at DESC
-                                                                             ) AS bp
-                                                                           )
-                                                                       END
-                                                                       
-                                                                     ),
-                                                                     '[]'::json
-                                                                   )
-                               )
+                                 'bid_package_snapshots',         COALESCE (
+                                                                    (
+                                                                      WITH bp AS (
+                                                                        SELECT DISTINCT ON (bp_inner.type) bp_inner.*, sub_ad_inner.date AS sub_date
+                                                                        FROM public.bid_package_snapshots bp_inner
+                                                                        JOIN public.administrative_documents sub_ad_inner
+                                                                          ON sub_ad_inner.id = bp_inner.submission_id
+                                                                        WHERE sub_ad_inner.date <= sub_ad.date
+                                                                        ORDER BY bp_inner.type, sub_ad_inner.date DESC, bp_inner.created_at DESC
+                                                                      )
+                                                                      SELECT json_agg (
+                                                                        json_build_object (
+                                                                          'id',                       bp.id,
+                                                                          'type',                     bp.type,
+                                                                          'project_owner',            bp.project_owner,
+                                                                          'name',                     bp.name,
+                                                                          'short_desc',               bp.short_desc,
+                                                                          'est_cost',                 bp.est_cost,
+                                                                          'est_cost_str',             bp.est_cost_str,
+                                                                          'bidder_selection_time',    bp.bidder_selection_time,
+                                                                          'bidder_selection_method',  bp.bidder_selection_method,
+                                                                          'successful_bidder_id',     bp.successful_bidder_id,
+                                                                          'duration',                 bp.duration,
+                                                                          'is_completed',             bp.is_completed
+                                                                        )
+                                                                        ORDER BY sub_date DESC
+                                                                      )
+                                                                      FROM bp
+                                                                    ),
+                                                                  '[]'::json
+                                                                )
+      )
   ) AS result
 FROM decisions d
 -- decision -> administrative_documents (cùng id)
@@ -144,11 +113,12 @@ LEFT JOIN administrative_documents sub_ttmn
 JOIN LATERAL (
   -- using LATERAL to find the last construction_info_snapshots of submission history
   -- it can be replaced by "is_approved" if there is approve function in the application
-  SELECT ci.* 
+  SELECT ci.*
   FROM public.construction_info_snapshots ci
   JOIN public.administrative_documents sub_ad_lateral
     ON sub_ad_lateral.id = ci.submission_id
   WHERE sub_ad_lateral.date <= sub_ad.date
+    AND ci.construction_id = d.construction_id
   ORDER BY sub_ad_lateral.date DESC, ci.created_at DESC
   LIMIT 1
 ) AS cis ON true
