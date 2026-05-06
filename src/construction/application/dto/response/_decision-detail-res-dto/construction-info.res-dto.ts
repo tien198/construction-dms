@@ -1,5 +1,3 @@
-import type { BidPackageResDto } from './bid-package.res-dto';
-
 export class ConstructionInfoResDto {
   id: string;
   name: string;
@@ -12,5 +10,4 @@ export class ConstructionInfoResDto {
   // est - estimated
   est_cost: number;
   est_cost_str: string;
-  bid_package_snapshots?: BidPackageResDto[];
 }

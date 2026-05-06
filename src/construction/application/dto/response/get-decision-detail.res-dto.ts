@@ -4,5 +4,5 @@ import { AdminDocResDto } from './_decision-detail-res-dto/admin-doc.res-dto';
 
 export class DecisionDetailResDto extends AdminDocResDto {
   period: ConstructionPeriod;
-  submission: SubmissionResDto;
+  submissions: SubmissionResDto[];
 }
