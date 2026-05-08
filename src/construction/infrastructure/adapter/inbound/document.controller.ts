@@ -9,7 +9,8 @@ import { DecisionDetailResDto } from 'src/construction/application/queries/get-d
 import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
 import { ResResult } from 'src/shared/response-result';
-import { Construction } from 'src/construction/domain/construction/construction.entity';
+import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
+import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
 
 @ApiTags('document')
 @Controller('document')
@@ -24,16 +25,18 @@ export class DocumentController {
   @Post('init-construction')
   @ApiOperation({ summary: 'Create a new decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async create(@Body() data: CreateSubmissionCommand): Promise<string> {
+  async create(@Body() data: CreateSubmissionCommand): Promise<ConstructionId> {
     const constructionId =
       await this._documentSubmissionUseCase.initConstruction(data);
-    return constructionId.value!;
+    return constructionId;
   }
 
   @Post('add-submission')
   @ApiOperation({ summary: 'Add a new submission for an existing decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async addSubmission(@Body() data: CreateSubmissionCommand): Promise<any> {
+  async addSubmission(
+    @Body() data: CreateSubmissionCommand,
+  ): Promise<DecisionId> {
     if (data.con_id) {
       return this._documentSubmissionUseCase.addSubmissionForNewDecision(
         data.con_id,
@@ -41,12 +44,16 @@ export class DocumentController {
       );
     }
     // if exists decision id (directlyDecision.id), add submission for existed decision
-    // else if (data.directly_decision.id) {
-    //   return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
-    //     data.directly_decision.id,
-    //     data,
-    //   );
-    // }
+    else if (data.directly_decision.id) {
+      return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
+        data.directly_decision.id,
+        data,
+      );
+    } else {
+      throw new Error(
+        'Invalid request: either con_id or directly_decision.id must be provided',
+      );
+    }
   }
 
   @Get('constructions-list')
