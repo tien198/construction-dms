@@ -13,6 +13,7 @@ import { ConstructionAssembler } from '../assembler/construction/construction.as
 import { PoolClient } from 'pg';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import { SubmissionAssembler } from '../assembler/document/submission.assembler';
 
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
@@ -89,8 +90,11 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     // Build a new Decision aggregate for the existing construction
     const decision = DecisionAssembler.fromCmd(cmd);
 
-    const dec = await this._docWriteRepo.saveNewDecision(existCon.id, decision);
-    return dec.id;
+    const decId = await this._docWriteRepo.saveNewDecision(
+      existCon.id,
+      decision,
+    );
+    return decId;
   }
 
   async addSubmissionForExistedDecision(
@@ -102,8 +106,13 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     if (!existDec) {
       throw new Error(`Decision: "${decId}" not found`);
     }
-    const decDomain = DecisionAssembler.fromCmd(cmd);
-    await this._docWriteRepo.saveExistingDecision(existDec.id, decDomain);
-    return decDomain.id;
+    const subDomain = SubmissionAssembler.fromCmd(cmd);
+    const conId = existDec.construction_id;
+    const decIdRes = await this._docWriteRepo.saveExistingDecision(
+      conId,
+      decId,
+      subDomain,
+    );
+    return decIdRes;
   }
 }

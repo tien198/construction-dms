@@ -18,6 +18,7 @@ import { ConstructionInfoWritePersistence } from './persistence-helper/construct
 import { BidPackageMapper } from './mapper/bid-package.mapper';
 import { BidPackageWritePersistence } from './persistence-helper/bid-package-write.persistence';
 import { Submission } from 'src/construction/domain/document/submission.entity';
+import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
 
 @Injectable()
 export class DocumentWriteRepository
@@ -43,7 +44,7 @@ export class DocumentWriteRepository
     conId: string,
     decDomain: Decision,
     poolClient?: PoolClient,
-  ): Promise<Decision> {
+  ): Promise<DecisionId> {
     const client = poolClient || ((await this._uow.begin()) as PoolClient);
     try {
       // decision
@@ -57,13 +58,16 @@ export class DocumentWriteRepository
       await this._adDocPersist.save(client, decisionAdDoc);
       await this._decPersist.save(client, decRow);
 
-      await this._saveSubmission(conId, decDomain, client);
+      const decId = decDomain.id.value!;
+      // only one submission when initConstruction
+      const subDomain = decDomain.submissions[0];
+      await this._saveSubmission(conId, decId, subDomain, client);
 
       // if poolClient exist, all DML in a transaction, commit and roll back will occure outthere
       if (!poolClient) {
         await this._uow.commit(client);
       }
-      return decDomain;
+      return decDomain.id;
     } catch (error) {
       if (!poolClient) {
         await this._uow.rollback(client);
@@ -73,17 +77,18 @@ export class DocumentWriteRepository
   }
 
   async saveExistingDecision(
+    conId: string,
     decId: string,
-    decision: Decision,
+    submissionDomain: Submission,
     poolClient?: PoolClient,
-  ): Promise<Decision> {
+  ): Promise<DecisionId> {
     const client = poolClient || ((await this._uow.begin()) as PoolClient);
     try {
-      await this._saveSubmission(decId, decision, client);
+      await this._saveSubmission(conId, decId, submissionDomain, client);
       if (!poolClient) {
         await this._uow.commit(client);
       }
-      return decision;
+      return new DecisionId(decId);
     } catch (error) {
       if (!poolClient) {
         await this._uow.rollback(client);
@@ -117,16 +122,13 @@ export class DocumentWriteRepository
 
   private async _saveSubmission(
     conId: string,
-    decDomain: Decision,
+    decId: string,
+    subDomain: Submission,
     client: PoolClient,
   ) {
-    // submission
-    // only one submission when initConstruction
-    const subDomain = decDomain.submissions[0];
-
     const subRow = SubmissionMapper.toPersistence({
       construction_id: conId,
-      decisoin_id: decDomain.id.value!,
+      decisoin_id: decId,
       submission: subDomain,
     });
     const subAdDocRow = AdministrativeDocumentMapper.toPersistence(
