@@ -6,7 +6,6 @@ curl -X POST http://localhost:3000/api/document/init-construction \
     "date": "2024-03-15",
     "pursuant_to_dec_tct_id": "019d61b4-dd23-724d-8d07-954fb34b3eff",
     "pursuant_to_dec_ttmn_id": null,
-    "is_change_construction_infor": true,
     "construction_info_snapshot": {
       "name": "Trường Tiểu học Phước Bình",
       "source_of_funds": "Ngân sách nhà nước",

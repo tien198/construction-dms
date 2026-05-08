@@ -6,13 +6,13 @@ import type { IUnitOfWork } from '../port/outbound/database/i-unit-of-work.port'
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Construction } from 'src/construction/domain/construction/construction.entity';
-import { Decision } from 'src/construction/domain/document/decision.entity';
 import { IDocumentSubmissionUseCase } from '../port/inbound/document-submission.use-case';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 import { DecisionAssembler } from '../assembler/document/decision.assembler';
 import { ConstructionAssembler } from '../assembler/construction/construction.assembler';
 import { PoolClient } from 'pg';
+import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
+import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
 
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
@@ -31,7 +31,7 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
 
   async initConstruction(
     cmd: CreateSubmissionCommand,
-  ): Promise<Construction | void> {
+  ): Promise<ConstructionId> {
     const construction = ConstructionAssembler.fromCmd(cmd);
 
     const decision = DecisionAssembler.fromCmd(cmd);
@@ -57,30 +57,30 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
         client,
       );
       await this._uow.commit(client);
-      return construction;
+      return construction.id;
     } catch (error) {
       await this._uow.rollback(client);
       throw error;
     }
   }
 
-  async addKqLcnt(
-    conId: string,
-    cmd: CreateSubmissionCommand,
-  ): Promise<Construction | void> {
-    throw new Error('The method not implemented yet!');
-    // const existCon = await this._conQueryRepo.findConstructionById(conId);
-    // if (!existCon) {
-    //   throw new Error(`Construction: "${conId}" not found`);
-    // }
-    // const decision = DecisionAssembler.fromCmd(cmd);
-    // await this._docWriteRepo.saveNewDecision(existCon.id, decision);
-  }
+  // async addKqLcnt(
+  //   conId: string,
+  //   cmd: CreateSubmissionCommand,
+  // ): Promise<Construction | void> {
+  //   throw new Error('The method not implemented yet!');
+  //   // const existCon = await this._conQueryRepo.findConstructionById(conId);
+  //   // if (!existCon) {
+  //   //   throw new Error(`Construction: "${conId}" not found`);
+  //   // }
+  //   // const decision = DecisionAssembler.fromCmd(cmd);
+  //   // await this._docWriteRepo.saveNewDecision(existCon.id, decision);
+  // }
 
   async addSubmissionForNewDecision(
     conId: string,
     cmd: CreateSubmissionCommand,
-  ): Promise<Decision | void> {
+  ): Promise<DecisionId> {
     const existCon = await this._conQueryRepo.findConstructionById(conId);
     if (!existCon) {
       throw new Error(`Construction: "${conId}" not found`);
@@ -89,14 +89,14 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     // Build a new Decision aggregate for the existing construction
     const decision = DecisionAssembler.fromCmd(cmd);
 
-    await this._docWriteRepo.saveNewDecision(existCon.id, decision);
-    return decision;
+    const dec = await this._docWriteRepo.saveNewDecision(existCon.id, decision);
+    return dec.id;
   }
 
   async addSubmissionForExistedDecision(
     decId: string,
     cmd: CreateSubmissionCommand,
-  ): Promise<Decision | void> {
+  ): Promise<DecisionId> {
     // Load the existing Decision aggregate
     const existDec = await this._docQueryRepo.findDecisionById(decId);
     if (!existDec) {
@@ -104,6 +104,6 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     }
     const decDomain = DecisionAssembler.fromCmd(cmd);
     await this._docWriteRepo.saveExistingDecision(existDec.id, decDomain);
-    return decDomain;
+    return decDomain.id;
   }
 }

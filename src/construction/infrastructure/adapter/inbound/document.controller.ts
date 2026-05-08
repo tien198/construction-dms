@@ -5,7 +5,7 @@ import type { IDocumentSubmissionUseCase } from '../../../application/port/inbou
 import type { IDocumentQueriesUseCase } from 'src/construction/application/port/inbound/document.queries.use-case';
 import { Decision } from 'src/construction/domain/document/decision.entity';
 import { CreateSubmissionCommand } from 'src/construction/application/commands/create-submission/create-submission.command';
-import { DecisionDetailResDto } from 'src/construction/application/dto/response/get-decision-detail.res-dto';
+import { DecisionDetailResDto } from 'src/construction/application/queries/get-decision-detail/get-decision-detail.res.dto';
 import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
 import { ResResult } from 'src/shared/response-result';
@@ -24,18 +24,16 @@ export class DocumentController {
   @Post('init-construction')
   @ApiOperation({ summary: 'Create a new decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async create(
-    @Body() data: CreateSubmissionCommand,
-  ): Promise<Construction | void> {
-    return this._documentSubmissionUseCase.initConstruction(data);
+  async create(@Body() data: CreateSubmissionCommand): Promise<string> {
+    const constructionId =
+      await this._documentSubmissionUseCase.initConstruction(data);
+    return constructionId.value!;
   }
 
   @Post('add-submission')
   @ApiOperation({ summary: 'Add a new submission for an existing decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async addSubmission(
-    @Body() data: CreateSubmissionCommand,
-  ): Promise<Decision | void> {
+  async addSubmission(@Body() data: CreateSubmissionCommand): Promise<any> {
     if (data.con_id) {
       return this._documentSubmissionUseCase.addSubmissionForNewDecision(
         data.con_id,
@@ -43,12 +41,12 @@ export class DocumentController {
       );
     }
     // if exists decision id (directlyDecision.id), add submission for existed decision
-    else if (data.directly_decision.id) {
-      return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
-        data.directly_decision.id,
-        data,
-      );
-    }
+    // else if (data.directly_decision.id) {
+    //   return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
+    //     data.directly_decision.id,
+    //     data,
+    //   );
+    // }
   }
 
   @Get('constructions-list')

@@ -1,5 +1,5 @@
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
-import { DecisionDetailResDto } from '../../../dto/response/get-decision-detail.res-dto';
+import { DecisionDetailResDto } from '../../../queries/get-decision-detail/get-decision-detail.res.dto';
 import { DecisionResDto } from '../../../dto/response/get-decision.res-dto';
 import { DecisionRow } from 'src/construction/infrastructure/adapter/outbound/persistence/model/decision.row';
 

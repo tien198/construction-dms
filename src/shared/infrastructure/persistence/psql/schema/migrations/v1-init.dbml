@@ -97,20 +97,20 @@ Table decisions {
   period construction_period [not null]
 }
 
-Ref: administrative_documents.pursuant_to_dec_tct_id > administrative_documents.id
-Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents.id
-Ref: administrative_documents.id - submissions.id
-Ref: administrative_documents.id - decisions.id
+Ref: administrative_documents.pursuant_to_dec_tct_id > administrative_documents.id [delete: cascade]
+Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents.id [delete: cascade]
+Ref: administrative_documents.id - submissions.id [delete: cascade]
+Ref: administrative_documents.id - decisions.id [delete: cascade]
 
-Ref: submissions.id - construction_info_snapshots.submission_id
+Ref: submissions.id - construction_info_snapshots.submission_id [delete: cascade]
 
-Ref: bid_package_snapshots.submission_id > submissions.id
+Ref: bid_package_snapshots.submission_id > submissions.id [delete: cascade]
 
-Ref: constructions.id - construction_info_snapshots.construction_id
-Ref: constructions.id < bid_package_snapshots.construction_id
+Ref: constructions.id - construction_info_snapshots.construction_id [delete: cascade]
+Ref: constructions.id < bid_package_snapshots.construction_id [delete: cascade]
 
-Ref: constructions.id < decisions.construction_id
+Ref: constructions.id < decisions.construction_id [delete: cascade]
 
-Ref: submissions.decision_id > decisions.id
+Ref: submissions.decision_id > decisions.id [delete: cascade]
 
 

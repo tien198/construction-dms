@@ -4,7 +4,7 @@ import type { IUnitOfWork } from 'src/construction/application/port/outbound/dat
 
 import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
-import { DecisionDetailResDto } from 'src/construction/application/dto/response/get-decision-detail.res-dto';
+import { DecisionDetailResDto } from 'src/construction/application/queries/get-decision-detail/get-decision-detail.res.dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
 import { BaseRepo } from './base.repository';
 import { IDocumentQueryRepository } from 'src/construction/application/port/outbound/database/document-query.repository.port';

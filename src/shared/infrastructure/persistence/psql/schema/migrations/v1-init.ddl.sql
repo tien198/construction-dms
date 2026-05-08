@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-04-29T13:46:34.526Z
+-- Generated at: 2026-05-08T08:51:31.800Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
@@ -99,22 +99,22 @@ COMMENT ON COLUMN "submissions"."created_at" IS 'used to define the newest recor
 
 COMMENT ON COLUMN "decisions"."construction_id" IS 'refers to [constructions.id]';
 
-ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_tct_id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_tct_id") REFERENCES "administrative_documents" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_ttmn_id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_ttmn_id") REFERENCES "administrative_documents" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "submissions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "submissions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "decisions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "decisions" ADD FOREIGN KEY ("id") REFERENCES "administrative_documents" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "decisions" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "decisions" ADD FOREIGN KEY ("construction_id") REFERENCES "constructions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "submissions" ADD FOREIGN KEY ("decision_id") REFERENCES "decisions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "submissions" ADD FOREIGN KEY ("decision_id") REFERENCES "decisions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;

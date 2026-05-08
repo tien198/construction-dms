@@ -9,9 +9,13 @@
       "request": "launch",
       "name": "Launch Program",
       "runtimeExecutable": "nest",
-      "runtimeArgs": ["start", "--watch"],
+      "runtimeArgs": [
+        "start",
+        "--watch"
+      ],
       "console": "integratedTerminal",
       // "internalConsoleOptions": "neverOpen",
+      "sourceMaps": true,
       "env": {
         "NEST_DEBUG": "true"
       }
