@@ -28,7 +28,7 @@ export class ConstructionInfoSnapshot implements IConstructionInfoSnapshot {
     public existing_condition_of_the_structure: ExistingCondition,
     public repair_scope: RepairScope,
   ) {
-    if (id.value == null) {
+    if (!id.value) {
       this.id = ConstructionInfoId.create(v7());
     }
   }

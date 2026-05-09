@@ -17,7 +17,7 @@ export class Submission implements ISubmission {
     public construction_info: ConstructionInfoSnapshot | null = null,
     public bid_packages: BidPackageSnapshot[] | null = null,
   ) {
-    if (this.document.id.value == null) {
+    if (!this.document.id.value) {
       this.document.id = DocumentId.create(v7());
     }
     if (!construction_info && !bid_packages) {

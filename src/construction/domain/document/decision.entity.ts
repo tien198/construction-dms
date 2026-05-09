@@ -24,7 +24,7 @@ export class Decision implements IDecision {
     // child entities
     public submissions: Submission[],
   ) {
-    if (this.document.id.value == null) {
+    if (!this.document.id.value) {
       this.document.id = DecisionId.create(v7());
     }
   }
