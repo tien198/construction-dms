@@ -14,7 +14,7 @@ export class AdministrativeDocumentWritePersistence extends BasePersistence {
       adDoc.level,
       adDoc.date,
       adDoc.pursuant_to_dec_tct_id,
-      adDoc.pursuant_to_dec_tct_id,
+      adDoc.pursuant_to_dec_ttmn_id,
     ]);
   }
 }
