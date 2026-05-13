@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { InfrastructureModule } from './shared/infrastructure/infrastructure.module';
 import { ConstructionModule } from './construction/construction.module';
+import { BidderModule } from './bidder/infrastructure/nestjs/bidder.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ConstructionModule } from './construction/construction.module';
     }),
     InfrastructureModule,
     ConstructionModule,
+    BidderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

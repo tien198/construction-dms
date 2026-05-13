@@ -3,9 +3,8 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import type { IDocumentSubmissionUseCase } from '../../../application/port/inbound/document-submission.use-case';
 import type { IDocumentQueriesUseCase } from 'src/construction/application/port/inbound/document.queries.use-case';
-import { Decision } from 'src/construction/domain/document/decision.entity';
 import { CreateSubmissionCommand } from 'src/construction/application/commands/create-submission/create-submission.command';
-import { DecisionDetailResDto } from 'src/construction/application/queries/get-decision-detail/get-decision-detail.res.dto';
+import { DecisionDetailResDto } from 'src/construction/application/queries/get-decision-detail/get-decision-detail.query';
 import { ConstructionResDto } from 'src/construction/application/dto/response/get-constructions.res-dto';
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
 import { ResResult } from 'src/shared/response-result';

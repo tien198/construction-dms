@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { IDocumentQueriesUseCase } from '../port/inbound/document.queries.use-case';
 import type { IDocumentQueryRepository } from '../port/outbound/database/document-query.repository.port';
 import type { IConstructionQueryRepository } from '../port/outbound/database/construction-query.repository.port';
-import type { DecisionDetailResDto } from '../queries/get-decision-detail/get-decision-detail.res.dto';
+import { DecisionDetailResDto } from 'src/construction/application/queries/get-decision-detail/get-decision-detail.query';
 import type { GetDecisionQuery } from '../queries/get-decision-detail/get-decision-detail.query';
 
 import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
