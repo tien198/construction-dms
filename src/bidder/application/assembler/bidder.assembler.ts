@@ -10,6 +10,7 @@ import {
   BidderRepresentativePosition,
   BidderTaxId,
 } from '../../domain/value-objects/bidder.vo';
+import { GetBidderQueryResult } from '../query/get-bidder.result';
 
 export class BidderAssembler {
   static fromCmd(cmd: CreateBidderCommand): Bidder {
@@ -24,5 +25,19 @@ export class BidderAssembler {
       new BidderPhoneNumber(cmd.phoneNumber),
       new BidderEmail(cmd.email),
     );
+  }
+
+  static toQueryResult(entity: Bidder): GetBidderQueryResult {
+    return {
+      id: entity.id.value,
+      name: entity.name.value,
+      address: entity.address.value,
+      representative_name: entity.representativeName.value,
+      representative_position: entity.representativePosition.value,
+      bank_account_number: entity.bankAccountNumber.value,
+      tax_id: entity.taxId.value,
+      phone_number: entity.phoneNumber.value,
+      email: entity.email.value,
+    };
   }
 }

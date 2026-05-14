@@ -1,4 +1,4 @@
-export class GetBidderQueryResult {
+export class BidderRow {
   id: string;
   name: string;
   address: string;
