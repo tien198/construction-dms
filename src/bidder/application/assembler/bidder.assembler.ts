@@ -18,11 +18,11 @@ export class BidderAssembler {
       null,
       new BidderName(cmd.name),
       new BidderAddress(cmd.address),
-      new BidderRepresentativeName(cmd.representativeName),
-      new BidderRepresentativePosition(cmd.representativePosition),
-      new BidderBankAccountNumber(cmd.bankAccountNumber),
-      new BidderTaxId(cmd.taxId),
-      new BidderPhoneNumber(cmd.phoneNumber),
+      new BidderRepresentativeName(cmd.representative_name),
+      new BidderRepresentativePosition(cmd.representative_position),
+      new BidderBankAccountNumber(cmd.bank_account_number),
+      new BidderTaxId(cmd.tax_id),
+      new BidderPhoneNumber(cmd.phone_number),
       new BidderEmail(cmd.email),
     );
   }

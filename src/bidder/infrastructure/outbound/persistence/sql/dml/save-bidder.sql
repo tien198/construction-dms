@@ -1,11 +1,13 @@
-UPDATE public.bidders
-SET 
-    name = $1,
-    address = $2,
-    representative_name = $3,
-    representative_position = $4,
-    bank_account_number = $5,
-    tax_id = $6,
-    phone_number = $7,
-    email = $8
-WHERE id = $9;
+INSERT INTO public.bidders
+(
+    name, 
+    address, 
+    representative_name, 
+    representative_position,
+    bank_account_number,
+    tax_id,
+    phone_number,
+    email,
+    id
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);

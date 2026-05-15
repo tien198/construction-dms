@@ -1,0 +1,5 @@
+curl -X PUT http://localhost:3000/api/bidder/019e29b2-0daf-74ea-83dd-bd208155a153 \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "Tien đẹp trai"
+}'

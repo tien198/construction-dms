@@ -18,11 +18,11 @@ export class BidderReadRepository implements IBidderReadRepositoryPort {
   }
 
   async findById(id: string): Promise<GetBidderQueryResult> {
-    const rows = await this._poolClient.query(
+    const result = await this._poolClient.query(
       this._getQueryFromFile('find-bidder-by-id.sql'),
       [id],
     );
-    const finded = rows[0] as BidderRow;
+    const finded = result.rows[0] as BidderRow;
 
     if (!finded)
       throw new NotFoundException(`Bidder with ID: "${id}" not found`);
@@ -36,10 +36,10 @@ export class BidderReadRepository implements IBidderReadRepositoryPort {
   }
 
   async findAll(): Promise<GetBidderQueryResult[]> {
-    const rows = await this._poolClient.query(
+    const result = await this._poolClient.query(
       this._getQueryFromFile('find-bidders-list.sql'),
     );
-    return rows as unknown as BidderRow[];
+    return result.rows as BidderRow[];
   }
 
   private _getQueryFromFile(...pathName: string[]): string {

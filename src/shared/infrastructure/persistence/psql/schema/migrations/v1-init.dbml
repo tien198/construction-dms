@@ -97,6 +97,18 @@ Table decisions {
   period construction_period [not null]
 }
 
+Table bidders {
+  id varchar [pk]
+  name varchar [not null]
+  address varchar [not null]
+  representative_name varchar [not null]
+  representative_position varchar [not null]
+  bank_account_number varchar [not null]
+  tax_id varchar [not null]
+  phone_number varchar [not null]
+  email varchar [not null]
+}
+
 Ref: administrative_documents.pursuant_to_dec_tct_id > administrative_documents.id [delete: cascade]
 Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents.id [delete: cascade]
 Ref: administrative_documents.id - submissions.id [delete: cascade]

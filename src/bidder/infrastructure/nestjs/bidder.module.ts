@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { BidderController } from '../inbound/bidder/bidder.controller';
-import { BidderService } from '../../application/service/bidder.service';
 import { BidderWriteRepository } from '../outbound/persistence/bidder-write.repository';
 import { BidderReadRepository } from '../outbound/persistence/bidder-read.repository';
+import { GetBidderByIdHandlerProvider } from './provider/get-bidder-by-id.provider';
+import { BidderServiceProvider } from './provider/bidder-service.provider';
 
 @Module({
   controllers: [BidderController],
   providers: [
     {
       provide: 'IBidderCrudUseCase',
-      useClass: BidderService,
+      useClass: BidderServiceProvider,
     },
     {
       provide: 'IBidderWriteRepositoryPort',
@@ -19,6 +20,7 @@ import { BidderReadRepository } from '../outbound/persistence/bidder-read.reposi
       provide: 'IBidderReadRepositoryPort',
       useClass: BidderReadRepository,
     },
+    GetBidderByIdHandlerProvider,
   ],
   exports: ['IBidderCrudUseCase'],
 })

@@ -36,9 +36,8 @@ export class BidderService implements IBidderCrudUseCase {
   }
 
   async findById(id: string): Promise<GetBidderQueryResult> {
-    const bidder =
-      await this._bidderReadRepository.findByIdAndConvertToDomain(id);
-    return BidderAssembler.toQueryResult(bidder);
+    const bidder = await this._bidderReadRepository.findById(id);
+    return bidder;
   }
 
   async findAll(): Promise<GetBidderQueryResult[]> {

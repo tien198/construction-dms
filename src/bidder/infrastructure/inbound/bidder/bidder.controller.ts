@@ -12,12 +12,14 @@ import type { IBidderCrudUseCase } from 'src/bidder/application/inbound-port/bid
 import type { CreateBidderDto } from './dto/create-bidder.dto';
 import type { UpdateBidderDto } from './dto/update-bidder.dto';
 import { GetBidderQueryResult } from 'src/bidder/application/query/get-bidder.result';
+import { GetBidderByIdHandlerProvider } from '../../nestjs/provider/get-bidder-by-id.provider';
 
 @Controller('bidder')
 export class BidderController {
   constructor(
     @Inject('IBidderCrudUseCase')
     private readonly _bidderService: IBidderCrudUseCase,
+    private readonly _getBidderByIdUseCase: GetBidderByIdHandlerProvider,
   ) {}
 
   @Post()
@@ -32,7 +34,7 @@ export class BidderController {
 
   @Get(':id')
   findById(@Param('id') id: string): Promise<GetBidderQueryResult> {
-    return this._bidderService.findById(id);
+    return this._getBidderByIdUseCase.execute({ id });
   }
 
   @Put(':id')

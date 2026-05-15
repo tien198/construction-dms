@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-05-08T08:51:31.800Z
+-- Generated at: 2026-05-15T02:57:14.968Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
@@ -73,6 +73,18 @@ CREATE TABLE "decisions" (
   "id" varchar PRIMARY KEY,
   "construction_id" varchar NOT NULL,
   "period" construction_period NOT NULL
+);
+
+CREATE TABLE "bidders" (
+  "id" varchar PRIMARY KEY,
+  "name" varchar NOT NULL,
+  "address" varchar NOT NULL,
+  "representative_name" varchar NOT NULL,
+  "representative_position" varchar NOT NULL,
+  "bank_account_number" varchar NOT NULL,
+  "tax_id" varchar NOT NULL,
+  "phone_number" varchar NOT NULL,
+  "email" varchar NOT NULL
 );
 
 COMMENT ON COLUMN "constructions"."pursuant_to_dec_tct_id" IS 'refers to [administrative_documents.id]';

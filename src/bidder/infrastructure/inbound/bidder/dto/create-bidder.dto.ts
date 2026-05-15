@@ -12,15 +12,15 @@ export class CreateBidderDto extends CreateBidderCommand {
 
   @IsString()
   @IsNotEmpty()
-  declare representativeName: string;
+  declare representative_name: string;
 
   @IsString()
   @IsNotEmpty()
-  declare representativePosition: string;
+  declare representative_position: string;
 
   @IsString()
   @IsNotEmpty()
-  declare bankAccountNumber: string;
+  declare bank_account_number: string;
 
   @IsString()
   @IsNotEmpty()

@@ -7,7 +7,6 @@ import { Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
 import { PgConnectionService } from 'src/shared/infrastructure/persistence/psql/pg-connection.service';
 import { BidderMapper } from './mapper/bidder.mapper';
-import { GetBidderQueryResult } from 'src/bidder/application/query/get-bidder.result';
 
 @Injectable()
 export class BidderWriteRepository implements IBidderWriteRepositoryPort {
