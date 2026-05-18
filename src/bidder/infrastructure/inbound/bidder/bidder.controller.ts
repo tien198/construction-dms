@@ -13,6 +13,7 @@ import type { CreateBidderDto } from './dto/create-bidder.dto';
 import type { UpdateBidderDto } from './dto/update-bidder.dto';
 import { GetBidderQueryResult } from 'src/bidder/application/query/get-bidder.result';
 import { GetBidderByIdHandlerProvider } from '../../nestjs/provider/get-bidder-by-id.provider';
+import { ResResult } from 'src/shared/response-result';
 
 @Controller('bidder')
 export class BidderController {
@@ -23,26 +24,34 @@ export class BidderController {
   ) {}
 
   @Post()
-  create(@Body() data: CreateBidderDto): Promise<GetBidderQueryResult> {
-    return this._bidderService.create(data);
+  async create(
+    @Body() data: CreateBidderDto,
+  ): Promise<ResResult<GetBidderQueryResult>> {
+    const created = await this._bidderService.create(data);
+    return new ResResult(created);
   }
 
   @Get()
-  findAll(): Promise<GetBidderQueryResult[]> {
-    return this._bidderService.findAll();
+  async findAll(): Promise<ResResult<GetBidderQueryResult[]>> {
+    const bidders = await this._bidderService.findAll();
+    return new ResResult(bidders);
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<GetBidderQueryResult> {
-    return this._getBidderByIdUseCase.execute({ id });
+  async findById(
+    @Param('id') id: string,
+  ): Promise<ResResult<GetBidderQueryResult>> {
+    const bidder = await this._getBidderByIdUseCase.execute({ id });
+    return new ResResult(bidder);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() data: UpdateBidderDto,
-  ): Promise<GetBidderQueryResult> {
-    return this._bidderService.update(id, data);
+  ): Promise<ResResult<GetBidderQueryResult>> {
+    const updated = await this._bidderService.update(id, data);
+    return new ResResult(updated);
   }
 
   @Delete(':id')

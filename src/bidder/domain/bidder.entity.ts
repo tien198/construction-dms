@@ -37,29 +37,44 @@ export class Bidder {
    * @returns list of property was updated
    */
   update(updatedData: UpdateBidderCommand): string[] {
-    const whiteList = new Set([
-      'name',
-      'address',
-      'representativeName',
-      'representativePosition',
-      'bankAccountNumber',
-      'taxId',
-      'phoneNumber',
-      'email',
-    ]);
+    if (updatedData.name) {
+      this.name.value = updatedData.name;
+      this.dirtyTracking.push('name');
+    }
 
-    const keys = Object.keys(updatedData);
+    if (updatedData.address) {
+      this.address.value = updatedData.address;
+      this.dirtyTracking.push('address');
+    }
 
-    // if (updatedData.name) {
-    //   this.name.value = updatedData.name;
-    // }
+    if (updatedData.representative_name) {
+      this.representativeName.value = updatedData.representative_name;
+      this.dirtyTracking.push('representative_name');
+    }
 
-    for (const key of keys) {
-      if (whiteList.has(key)) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        this[key].value = updatedData[key];
-        this.dirtyTracking.push(key);
-      }
+    if (updatedData.representative_position) {
+      this.representativePosition.value = updatedData.representative_position;
+      this.dirtyTracking.push('representative_position');
+    }
+
+    if (updatedData.bank_account_number) {
+      this.bankAccountNumber.value = updatedData.bank_account_number;
+      this.dirtyTracking.push('bank_account_number');
+    }
+
+    if (updatedData.tax_id) {
+      this.taxId.value = updatedData.tax_id;
+      this.dirtyTracking.push('tax_id');
+    }
+
+    if (updatedData.phone_number) {
+      this.phoneNumber.value = updatedData.phone_number;
+      this.dirtyTracking.push('phone_number');
+    }
+
+    if (updatedData.email) {
+      this.email.value = updatedData.email;
+      this.dirtyTracking.push('email');
     }
 
     return this.dirtyTracking;
