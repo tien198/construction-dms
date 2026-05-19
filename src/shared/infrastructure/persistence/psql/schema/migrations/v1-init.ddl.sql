@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-05-15T02:57:14.968Z
+-- Generated at: 2026-05-19T03:35:43.243Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
@@ -87,6 +87,13 @@ CREATE TABLE "bidders" (
   "email" varchar NOT NULL
 );
 
+CREATE TABLE "contracts" (
+  "id" varchar PRIMARY KEY,
+  "bid_package_snapshot_id" varchar NOT NULL,
+  "no" varchar NOT NULL,
+  "date" timestamptz NOT NULL
+);
+
 COMMENT ON COLUMN "constructions"."pursuant_to_dec_tct_id" IS 'refers to [administrative_documents.id]';
 
 COMMENT ON COLUMN "construction_info_snapshots"."construction_id" IS 'refers to [constructions.id]';
@@ -110,6 +117,10 @@ COMMENT ON COLUMN "submissions"."construction_id" IS 'refers to [constructions.i
 COMMENT ON COLUMN "submissions"."created_at" IS 'used to define the newest record';
 
 COMMENT ON COLUMN "decisions"."construction_id" IS 'refers to [constructions.id]';
+
+COMMENT ON TABLE "contracts" IS 'reference to bidder infor through bid_package_snapshots (bid_package_snapshots.successful_bidder_id)';
+
+COMMENT ON COLUMN "contracts"."bid_package_snapshot_id" IS 'refers to [bid_package_snapshots.id]';
 
 ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_tct_id") REFERENCES "administrative_documents" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 

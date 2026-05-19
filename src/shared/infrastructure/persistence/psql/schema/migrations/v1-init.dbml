@@ -109,6 +109,14 @@ Table bidders {
   email varchar [not null]
 }
 
+Table contracts {
+  id varchar [pk]
+  bid_package_snapshot_id varchar [not null, note: 'refers to [bid_package_snapshots.id]']
+  no varchar [not null]
+  date timestamptz [not null]
+  Note: 'reference to bidder infor through bid_package_snapshots (bid_package_snapshots.successful_bidder_id)'
+}
+
 Ref: administrative_documents.pursuant_to_dec_tct_id > administrative_documents.id [delete: cascade]
 Ref: administrative_documents.pursuant_to_dec_ttmn_id > administrative_documents.id [delete: cascade]
 Ref: administrative_documents.id - submissions.id [delete: cascade]
