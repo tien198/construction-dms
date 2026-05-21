@@ -1,0 +1,7 @@
+curl -X POST http://localhost:3000/api/contract \
+-H "Content-Type: application/json" \
+-d '{
+    "bid_package_id": "019e1759-6c47-75e4-beba-c58abdfce329",
+    "no": "HDSC01",
+    "signing_date": "2025-11-13"
+}'

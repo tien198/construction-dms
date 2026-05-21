@@ -111,9 +111,9 @@ Table bidders {
 
 Table contracts {
   id varchar [pk]
-  bid_package_snapshot_id varchar [not null, note: 'refers to [bid_package_snapshots.id]']
+  bid_package_id varchar [not null, note: 'refers to [bid_package_snapshots.id]']
   no varchar [not null]
-  date timestamptz [not null]
+  signing_date timestamptz [not null]
   Note: 'reference to bidder infor through bid_package_snapshots (bid_package_snapshots.successful_bidder_id)'
 }
 

@@ -1,0 +1,6 @@
+curl -X PUT http://localhost:3000/api/contract/019e497b-85a6-73e6-85a9-8e743a1d7f3d \
+-H "Content-Type: application/json" \
+-d '{
+
+    "signing_date": "2025-11-15"
+}'

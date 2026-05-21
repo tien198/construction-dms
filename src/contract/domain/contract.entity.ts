@@ -20,7 +20,7 @@ export class Contract {
   }
 
   update(updatedData: UpdateContractCommand): string[] {
-    this.id = new ContractId(updatedData.id);
+    // this.id = new ContractId(updatedData.id);
 
     if (updatedData.bid_package_id) {
       this.bidPackageId.value = updatedData.bid_package_id;

@@ -1,6 +1,6 @@
 import { IContractCrudUseCase } from 'src/contract/application/inbound-port/contract.use-case';
-import { IContractReadRepository } from 'src/contract/domain/outbound-port/contract-read.repository';
-import { IContractWriteRepository } from 'src/contract/domain/outbound-port/contract-write.repository';
+import { IContractReadRepository } from 'src/contract/domain/outbound-port/contract-read.repository.port';
+import { IContractWriteRepository } from 'src/contract/domain/outbound-port/contract-write.repository.port';
 import { CreateContractCommand } from '../command/create-contract.command';
 import { UpdateContractCommand } from '../command/update-contract.command';
 import { GetContractQueryResult } from '../query/get-contract.result';

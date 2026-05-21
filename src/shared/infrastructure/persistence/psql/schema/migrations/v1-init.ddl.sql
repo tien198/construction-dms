@@ -89,9 +89,9 @@ CREATE TABLE "bidders" (
 
 CREATE TABLE "contracts" (
   "id" varchar PRIMARY KEY,
-  "bid_package_snapshot_id" varchar NOT NULL,
+  "bid_package_id" varchar NOT NULL,
   "no" varchar NOT NULL,
-  "date" timestamptz NOT NULL
+  "signing_date" timestamptz NOT NULL
 );
 
 COMMENT ON COLUMN "constructions"."pursuant_to_dec_tct_id" IS 'refers to [administrative_documents.id]';
