@@ -4,6 +4,7 @@ import { Contract } from '../contract.entity';
 export interface IContractReadRepository {
   findAll(): Promise<GetContractQueryResult[]>;
   findById(id: string): Promise<GetContractQueryResult>;
+  findByBidPackageId(bidPackageId: string): Promise<GetContractQueryResult>;
 
   findByIdAndConvertToDomain(id: string): Promise<Contract>;
 }

@@ -30,6 +30,14 @@ export class ContractReadRepository
     return result.rows[0] as ContractRow;
   }
 
+  async findByBidPackageId(
+    bidPackageId: string,
+  ): Promise<GetContractQueryResult> {
+    const sql = this._getDqlFromFile('find-contract-by-bid-package-id.sql');
+    const result = await this._pool.query(sql, [bidPackageId]);
+    return result.rows[0] as ContractRow;
+  }
+
   async findByIdAndConvertToDomain(id: string): Promise<Contract> {
     const row = await this.findById(id);
     return ContractMapper.fromPersistence(row);

@@ -36,6 +36,12 @@ export class ContractService implements IContractCrudUseCase {
     return await this._contractReadRepository.findById(id);
   }
 
+  async findByBidPackageId(
+    bidPackageId: string,
+  ): Promise<GetContractQueryResult> {
+    return await this._contractReadRepository.findByBidPackageId(bidPackageId);
+  }
+
   async delete(id: string): Promise<void> {
     return await this._contractWriteRepository.delete(id);
   }

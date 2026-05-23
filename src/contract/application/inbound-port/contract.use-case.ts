@@ -9,5 +9,6 @@ export interface IContractCrudUseCase {
   // Query
   findAll(): Promise<GetContractQueryResult[]>;
   findById(id: string): Promise<GetContractQueryResult>;
+  findByBidPackageId(bidPackageId: string): Promise<GetContractQueryResult>;
   delete(id: string): Promise<void>;
 }

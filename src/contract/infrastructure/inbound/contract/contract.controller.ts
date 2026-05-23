@@ -13,6 +13,7 @@ import type { CreateContractCommand } from 'src/contract/application/command/cre
 import type { UpdateContractCommand } from 'src/contract/application/command/update-contract.command';
 import type { Contract } from 'src/contract/domain/contract.entity';
 import type { GetContractQueryResult } from 'src/contract/application/query/get-contract.result';
+import { ResResult } from 'src/shared/response-result';
 
 @Controller('contract')
 export class ContractController {
@@ -22,30 +23,48 @@ export class ContractController {
   ) {}
 
   @Post()
-  async create(@Body() data: CreateContractCommand): Promise<Contract> {
-    return this._contractService.create(data);
+  async create(
+    @Body() data: CreateContractCommand,
+  ): Promise<ResResult<Contract>> {
+    const contract = await this._contractService.create(data);
+    return new ResResult(contract);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() data: UpdateContractCommand,
-  ): Promise<Contract> {
-    return this._contractService.update(id, data);
+  ): Promise<ResResult<Contract>> {
+    const contract = await this._contractService.update(id, data);
+    return new ResResult(contract);
   }
 
   @Get()
-  async findAll(): Promise<GetContractQueryResult[]> {
-    return this._contractService.findAll();
+  async findAll(): Promise<ResResult<GetContractQueryResult[]>> {
+    const contracts = await this._contractService.findAll();
+    return new ResResult(contracts);
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<GetContractQueryResult> {
-    return this._contractService.findById(id);
+  async findById(
+    @Param('id') id: string,
+  ): Promise<ResResult<GetContractQueryResult>> {
+    const contract = await this._contractService.findById(id);
+    return new ResResult(contract);
+  }
+
+  @Get('query/bid-package/:bidPackageId')
+  async findByBidPackageId(
+    @Param('bidPackageId') bidPackageId: string,
+  ): Promise<ResResult<GetContractQueryResult>> {
+    const contract =
+      await this._contractService.findByBidPackageId(bidPackageId);
+    return new ResResult(contract);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
-    return this._contractService.delete(id);
+  async delete(@Param('id') id: string): Promise<ResResult<void>> {
+    await this._contractService.delete(id);
+    return new ResResult(undefined);
   }
 }
