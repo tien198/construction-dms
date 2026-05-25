@@ -35,8 +35,7 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
 
     public successful_bidder_id: SuccessfulBidderId | null = null,
   ) {
-    if (!id.value) {
-      this.id = BidPackageId.create(v7());
-    }
+    // generate Id for each new snapshot instance
+    this.id = BidPackageId.create(v7());
   }
 }
