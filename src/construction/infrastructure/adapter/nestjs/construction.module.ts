@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DocumentController } from './infrastructure/adapter/inbound/document.controller';
+import { DocumentController } from '../inbound/document.controller';
 import { ConstructionInfrastructureModule } from './construction-infrastructure.module';
-import { DocumentSubmissionService } from './application/service/document-submission.service';
-import { DocumentQueriesService } from './application/service/document.queries.service';
+import { DocumentSubmissionService } from '../../../application/service/document-submission.service';
+import { DocumentQueriesService } from '../../../application/service/document.queries.service';
 
 @Module({
   controllers: [DocumentController],

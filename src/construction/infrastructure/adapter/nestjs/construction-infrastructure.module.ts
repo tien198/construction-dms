@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { ConstructionQueryRepository } from './infrastructure/adapter/outbound/persistence/construction-query.repository';
-import { ConstructionWriteRepository } from './infrastructure/adapter/outbound/persistence/construction-write.repository';
-import { DocumentQueryRepository } from './infrastructure/adapter/outbound/persistence/document-query.repository';
-import { DocumentWriteRepository } from './infrastructure/adapter/outbound/persistence/document-write.repository';
-import { UnitOfWork } from './infrastructure/adapter/outbound/persistence/unit-of-work';
+import { ConstructionQueryRepository } from '../outbound/persistence/construction-query.repository';
+import { ConstructionWriteRepository } from '../outbound/persistence/construction-write.repository';
+import { DocumentQueryRepository } from '../outbound/persistence/document-query.repository';
+import { DocumentWriteRepository } from '../outbound/persistence/document-write.repository';
+import { UnitOfWork } from '../outbound/persistence/unit-of-work';
 
 @Module({
   providers: [

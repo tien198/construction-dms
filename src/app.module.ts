@@ -9,7 +9,7 @@ import databaseConfig from 'config/database.config';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { InfrastructureModule } from './shared/infrastructure/infrastructure.module';
-import { ConstructionModule } from './construction/construction.module';
+import { ConstructionModule } from './construction/infrastructure/adapter/nestjs/construction.module';
 import { BidderModule } from './bidder/infrastructure/nestjs/bidder.module';
 import { ContractModule } from './contract/infrastructure/nestjs/contract.module';
 
