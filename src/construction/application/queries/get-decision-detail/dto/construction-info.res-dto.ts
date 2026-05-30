@@ -5,6 +5,7 @@ export class ConstructionInfoResDto {
   // impl - implementation
   impl_start_date: string;
   impl_end_date: string;
+  //
   existing_condition_of_the_structure: string;
   repair_scope: string;
   // est - estimated

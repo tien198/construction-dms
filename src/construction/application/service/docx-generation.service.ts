@@ -1,66 +1,105 @@
-// import { Injectable } from '@nestjs/common';
-// import { DocNameObj, IDocxGenUseCase } from '../port/inbound/docx-gen.use-case';
-// import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.type';
-// import { AdministrativeDocument } from '../../domain/administrative-document.entity';
-// import { ConstructionInforSnapshot } from '../../domain/construction-infor.entity';
-// import { FormatService } from './format.service';
-// import { Inject } from '@nestjs/common';
-// import type { IDocxGenerationPort } from '../port/outbound/docx-generation/gen-docx.port';
-// import { GeneratedDocx } from '../../domain/docx-generation/generation-doc.entity';
-// import { AdminDoc_Docx } from '../../domain/docx-generation/administrative-document.docx.entity';
+import Docxtemplater from 'docxtemplater';
+import PizZip from 'pizzip';
+import expressionParser from 'docxtemplater/expressions';
 
-// @Injectable()
-// export class DocxGenerationService implements IDocxGenUseCase {
-//   constructor(
-//     private readonly _formateService: FormatService,
-//     @Inject('IDocxGenerationPort')
-//     private readonly _docxGenerationPort: IDocxGenerationPort,
-//   ) {}
+// Builtin file system utilities
+import fs from 'fs';
+import path from 'path';
+import { DocxGeneration } from 'src/construction/domain/docx-generation/docx-generation.entity';
 
-//   async generateDocx(
-//     docName: string,
-//     doc: AdministrativeDocument,
-//     infor: ConstructionInforSnapshot,
-//   ): Promise<Buffer> {
-//     const doc = new AdminDoc_Docx({
-//       id: doc.id.value,
-//       no: doc.no.value,
-//       level: doc.level,
-//       date: this._formateService.formatDate(doc.date),
-//       dec_no_pursued_tct: doc.dec_no_pursued_tct.value,
-//       dec_no_pursued_ttmn: doc.dec_no_pursued_ttmn.value,
-//     });
-//     const docx = new GeneratedDocx(doc, infor);
-//     return this._docxGenerationPort.generate(docName, docx);
-//   }
+export class DocxGenerationService {
+  async generate(docName: string, docx: DocxGeneration) {
+    const content = await fs.promises.readFile(
+      path.join('public', 'template', docName),
+      'binary',
+    );
+    // Unzip the content of the file
+    const zip = new PizZip(content);
 
-//   async getDocList() {
-//     const files = await fs.promises.readdir(path.resolve('public', 'template'));
-//     return files;
-//   }
+    /*
+     * Parse the template.
+     * This function throws an error if the template is invalid,
+     * for example, if the template is "Hello {user" (missing closing tag)
+     */
+    const parser = expressionParser.configure({
+      filters: {}, // optional: define your custom filters here
+    });
 
-//   getDocName(per: ConstructionPeriod): DocNameObj {
-//     switch (per) {
-//       case ConstructionPeriod.KH_TV_TT:
-//         return {
-//           submission: '2. Tờ trình phê duyệt KHLCNT.docx',
-//           decision: '3. QD Phê duyệt KHLCNT.docx',
-//         };
-//       case ConstructionPeriod.TV:
-//         return {
-//           submission: '4. Tờ trình phê duyệt KQLCNT TV.docx',
-//           decision: '5. QD Phê duyệt KQLCNT TV.docx',
-//         };
-//       case ConstructionPeriod.TT:
-//         return {
-//           submission: 'tt-submission.docx',
-//           decision: 'tt-decision.docx',
-//         };
-//       case ConstructionPeriod.BCKTKT:
-//         return {
-//           submission: 'bcktkt-submission.docx',
-//           decision: 'bcktkt-decision.docx',
-//         };
-//     }
-//   }
-// }
+    const doc = new Docxtemplater(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+      parser,
+    });
+
+    /*
+     * Render the document : Replaces :
+     * - {first_name} with John
+     * - {last_name} with Doe,
+     * ...
+     */
+
+    doc.render(docx);
+
+    /*
+     * Get the output document and export it as a Node.js buffer
+     * This method is available since docxtemplater@3.62.0
+     */
+    const buf = doc.toBuffer();
+
+    if (!fs.existsSync(path.resolve('gen-documents', docx.name))) {
+      fs.mkdirSync(path.resolve('gen-documents', docx.name), {
+        recursive: true,
+      });
+    }
+    // Write the Buffer to a file
+    await fs.promises.writeFile(
+      path.resolve('gen-documents', docx.name, docName),
+      buf,
+    );
+    /*
+     * Instead of writing it to a file, you could also
+     * let the user download it, store it in a database,
+     * on AWS S3, ...
+     */
+    return buf;
+  }
+  async getDocumentList() {
+    const files = await fs.promises.readdir(path.resolve('public', 'template'));
+    return files;
+  }
+
+  // getDocName(per: ConstructionPeriod): DocNameObj {
+  //   switch (per) {
+  //     case ConstructionPeriod.KH_LCNT:
+  //       return {
+  //         submission: '2. Tờ trình phê duyệt KHLCNT.docx',
+  //         decision: '3. QD Phê duyệt KHLCNT.docx',
+  //       };
+  //     case ConstructionPeriod.KQ_KH_LCNT:
+  //       return {
+  //         submission: '4. Tờ trình phê d@uyệt KQLCNT TV.docx',
+  //         decision: '5. QD Phê duyệt KQLCNT TV.docx',
+  //       };
+  //     case ConstructionPeriod.TT:
+  //       return {
+  //         submission: 'tt-submission.docx',
+  //         decision: 'tt-decision.docx',
+  //       };
+  //     case 'BCKTKT':
+  //       return {
+  //         submission: 'bcktkt-submission.docx',
+  //         decision: 'bcktkt-decision.docx',
+  //       };
+  //     default:
+  //       return {
+  //         submission: '',
+  //         decision: '',
+  //       };
+  //   }
+  // }
+}
+
+// type DocNameObj = {
+//   submission: string;
+//   decision: string;
+// };
