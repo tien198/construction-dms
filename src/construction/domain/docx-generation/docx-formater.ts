@@ -1,8 +1,5 @@
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class FormatService {
-  formatDate = (
+export class DocxFormater {
+  protected formatDate = (
     ISOString: string | Date | null,
     formatTo?: 'month' | 'year',
   ) => {
@@ -19,7 +16,7 @@ export class FormatService {
     }
   };
 
-  toFormalDate = (ISOString: string | Date): string => {
+  protected toFormalDate = (ISOString: string | Date): string => {
     const date = new Date(ISOString);
     const dd = String(date.getDate()).padStart(2, '0');
     const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -27,7 +24,7 @@ export class FormatService {
     return `ngày ${dd} tháng ${mm} năm ${yyyy}`;
   };
 
-  formatCurrency = (amount: number) => {
+  protected formatCurrency = (amount: number) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 }

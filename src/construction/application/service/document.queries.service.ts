@@ -18,7 +18,7 @@ export class DocumentQueriesService implements IDocumentQueriesUseCase {
     private readonly _conQueryRepo: IConstructionQueryRepository,
   ) {}
 
-  async getDecision(
+  async getDecisionByPeriod(
     query: GetDecisionQuery,
   ): Promise<DecisionDetailResDto | undefined> {
     const { constructionId, period } = query;

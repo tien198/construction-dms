@@ -1,8 +1,9 @@
 import { StrConvert } from 'src/shared/type-ultility/string-converter';
 import { TemplaterAdminDocument } from './administrative-document.docx.entity';
 import { ConstructionInfoSnapshot } from 'src/construction/domain/document/construction-info.entity';
-import { DecisionDetailResDto } from 'src/construction/application/queries/get-decision-detail/get-decision-detail.query';
 import { SubmissionResDto } from 'src/construction/application/queries/get-decision-detail/dto/submission.res-dto';
+import { AdminDocResDto } from 'src/construction/application/queries/get-decision-detail/dto/admin-doc.res-dto';
+import { BidPackageResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
 
 type ITemplaterConInfor = StrConvert<ConstructionInfoSnapshot>;
 
@@ -19,21 +20,13 @@ export class DocxGeneration
   existing_condition_of_the_structure: string;
   repair_scope: string;
   impl_duration: string;
+  bidPackages: BidPackageResDto[];
 
-  constructor(doc: DecisionDetailResDto | SubmissionResDto) {
-    // AdministrativeDocument
+  constructor(doc: AdminDocResDto, subInfo: SubmissionResDto) {
     super(doc);
 
-    const type = (doc as DecisionDetailResDto).submissions ? 'dec' : 'sub';
-
-    let sub: SubmissionResDto;
-    if (type === 'dec') {
-      sub = (doc as DecisionDetailResDto).submissions[0];
-    } else {
-      sub = doc as SubmissionResDto;
-    }
-    const info = sub.construction_info_snapshot;
-
+    // _____ construction_info_snapshot _________
+    const info = subInfo.construction_info_snapshot;
     this.name = info.name;
     this.source_of_funds = info.source_of_funds;
     // impl - implementation
@@ -47,6 +40,9 @@ export class DocxGeneration
     // est - estimated
     this.est_cost = info.est_cost.toString();
     this.est_cost_str = info.est_cost_str;
+
+    // ______ bidPackages _______________________
+    this.bidPackages = subInfo.bid_package_snapshots;
   }
 
   private implDurationFormat(): string {

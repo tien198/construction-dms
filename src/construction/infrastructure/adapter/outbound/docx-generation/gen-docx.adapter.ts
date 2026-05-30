@@ -1,4 +1,3 @@
-// Builtin file system utilities
 import fs from 'fs';
 import path from 'path';
 
@@ -12,12 +11,12 @@ import { IDocxGenerationPort } from 'src/construction/application/port/outbound/
 
 @Injectable()
 export class DocxGenerationAdapter implements IDocxGenerationPort {
-  async generate(docName: string, construction: DocxGeneration) {
+  async generate(docName: string, docxEntity: DocxGeneration) {
     const templatePath = path.resolve('public', 'template', docName);
-    const content = await fs.promises.readFile(templatePath, 'binary');
+    const templateBuffer = await fs.promises.readFile(templatePath, 'binary');
 
-    // Unzip the content of the file
-    const zip = new PizZip(content);
+    // Unzip the templateBuffer
+    const zip = new PizZip(templateBuffer);
 
     /*
      * Parse the template.
@@ -41,7 +40,7 @@ export class DocxGenerationAdapter implements IDocxGenerationPort {
      * ...
      */
 
-    doc.render(construction);
+    doc.render(docxEntity);
 
     /*
      * Get the output document and export it as a Node.js buffer
@@ -49,14 +48,14 @@ export class DocxGenerationAdapter implements IDocxGenerationPort {
      */
     const buf = doc.toBuffer();
 
-    if (!fs.existsSync(path.resolve('gen-documents', construction.name))) {
-      fs.mkdirSync(path.resolve('gen-documents', construction.name), {
+    if (!fs.existsSync(path.resolve('gen-documents', docxEntity.name))) {
+      fs.mkdirSync(path.resolve('gen-documents', docxEntity.name), {
         recursive: true,
       });
     }
     // Write the Buffer to a file
     await fs.promises.writeFile(
-      path.resolve('gen-documents', construction.name, docName),
+      path.resolve('gen-documents', docxEntity.name, docName),
       buf,
     );
     /*

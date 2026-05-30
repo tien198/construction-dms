@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Inject, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Inject,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import type { IDocumentSubmissionUseCase } from '../../../application/port/inbound/document-submission.use-case';
@@ -10,6 +18,8 @@ import { DecisionResDto } from 'src/construction/application/dto/response/get-de
 import { ResResult } from 'src/shared/response-result';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import { DocxGenerationServiceProvider } from '../nestjs/provider/docx-generation.service.provider';
+import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 
 @ApiTags('document')
 @Controller('document')
@@ -19,6 +29,7 @@ export class DocumentController {
     private readonly _documentSubmissionUseCase: IDocumentSubmissionUseCase,
     @Inject('IDocumentQueriesUseCase')
     private readonly _documentQueriesUseCase: IDocumentQueriesUseCase,
+    private readonly _docxGenerationService: DocxGenerationServiceProvider,
   ) {}
 
   @Post('init-construction')
@@ -71,7 +82,7 @@ export class DocumentController {
     @Param('constructionId') constructionId: string,
     @Param('period') period: string,
   ): Promise<ResResult<DecisionDetailResDto | undefined>> {
-    const result = await this._documentQueriesUseCase.getDecision({
+    const result = await this._documentQueriesUseCase.getDecisionByPeriod({
       constructionId,
       period,
     });
@@ -90,5 +101,30 @@ export class DocumentController {
   @ApiOperation({ summary: 'Get TCT decisions list' })
   async getTCT_DecisionsList(): Promise<DecisionResDto[]> {
     return this._documentQueriesUseCase.getTCT_DecisionsList();
+  }
+
+  // Docx Generation
+  @Get('docx/list')
+  async getDocumentsList(): Promise<string[]> {
+    return this._docxGenerationService.getDocumentsList();
+  }
+
+  @Get('docx/generate/:conId/:period')
+  async generate(
+    @Param('conId') conId: string,
+    @Param('period') period: string,
+    // used in KQ_LCNT period, this decision has 2 submissions (TV and TT)
+    @Query('sub_type') subType?: 'TV' | 'TT',
+  ) {
+    const decDetail = await this._documentQueriesUseCase.getDecisionByPeriod({
+      constructionId: conId,
+      period,
+    });
+    const buffer = await this._docxGenerationService.generate(
+      period as ConstructionPeriod,
+      decDetail!,
+      subType,
+    );
+    return buffer;
   }
 }

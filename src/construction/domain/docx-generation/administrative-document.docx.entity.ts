@@ -4,11 +4,16 @@ import {
   AdminDocResDto,
   DecisionRef,
 } from 'src/construction/application/queries/get-decision-detail/dto/admin-doc.res-dto';
+import { DocxFormater } from './docx-formater';
 
-export class TemplaterAdminDocument implements Omit<
-  StrConvert<AdministrativeDocument>,
-  'pursuant_to_dec_tct_id' | 'pursuant_to_dec_ttmn_id'
-> {
+export class TemplaterAdminDocument
+  extends DocxFormater
+  implements
+    Omit<
+      StrConvert<AdministrativeDocument>,
+      'pursuant_to_dec_tct_id' | 'pursuant_to_dec_ttmn_id'
+    >
+{
   id: string;
   level: string;
   no: string;
@@ -17,6 +22,8 @@ export class TemplaterAdminDocument implements Omit<
   ttmn_pursuanted_dec_no: string;
 
   constructor(doc: AdminDocResDto) {
+    super();
+
     this.id = doc.id;
     this.no = doc.no;
     this.level = doc.level;
@@ -27,16 +34,16 @@ export class TemplaterAdminDocument implements Omit<
   }
 
   private signingDateFormat(date: string): string {
-    const formater = new Intl.DateTimeFormat('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-    return formater.format(new Date(date));
+    return this.toFormalDate(date);
   }
 
   private formatDec(dec?: DecisionRef | null) {
     if (!dec) return '';
-    return dec.no + ' ngày ' + new Date(dec.date).toLocaleDateString('vi-VN');
+    const localDateStr = new Date(dec.date).toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    return dec.no + ' ngày ' + localDateStr;
   }
 }
