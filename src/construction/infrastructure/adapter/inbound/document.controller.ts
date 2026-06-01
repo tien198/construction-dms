@@ -6,7 +6,11 @@ import {
   Get,
   Param,
   Query,
+  Header,
+  StreamableFile,
+  Res,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import type { IDocumentSubmissionUseCase } from '../../../application/port/inbound/document-submission.use-case';
@@ -109,22 +113,65 @@ export class DocumentController {
     return this._docxGenerationService.getDocumentsList();
   }
 
-  @Get('docx/generate/:conId/:period')
-  async generate(
-    @Param('conId') conId: string,
-    @Param('period') period: string,
-    // used in KQ_LCNT period, this decision has 2 submissions (TV and TT)
-    @Query('sub_type') subType?: 'TV' | 'TT',
+  @Get('docx/generate/:subId')
+  async generateDocx(
+    @Param('subId') subId: string,
+    // type of document, default 'submission'
+    @Query('type') type: 'submission' | 'decision' = 'submission',
+    @Res({ passthrough: true }) res: Response,
   ) {
-    const decDetail = await this._documentQueriesUseCase.getDecisionByPeriod({
-      constructionId: conId,
-      period,
-    });
-    const buffer = await this._docxGenerationService.generate(
-      period as ConstructionPeriod,
-      decDetail!,
-      subType,
+    const { buffer, docName } = await this._docxGenerationService.generate(
+      subId,
+      type,
     );
-    return buffer;
+    res.set({
+      'Access-Control-Expose-Headers': 'Content-Disposition',
+    });
+
+    return new StreamableFile(buffer, {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      disposition: `attachment; filename="fall-back.docx"; filename*=UTF-8''${encodeURIComponent(docName)}`,
+    });
   }
+
+  /*
+  @Post('gen-decision')
+  @Header('Access-Control-Expose-Headers', 'Content-Disposition')
+  async decGen(
+    @Body()
+    doc: {
+      decId: string;
+    },
+  ) {
+    const dec = await this.constructionService.findDecision(doc.decId);
+    if (!dec) {
+      throw new Error('Not found Decision with id: ' + doc.decId);
+    }
+    const decPrint = new PrintDecisionImp(dec);
+
+    const docName = this.printService.getDocName(dec.period);
+    const buf = await this.printService.generate(docName.decision, decPrint);
+
+    const name = docName.decision;
+    return new StreamableFile(buf, {
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
+    });
+  }
+
+  @Post('gen-submission')
+  @Header('Access-Control-Expose-Headers', 'Content-Disposition')
+  async subGen(@Body() doc: { decId: string }) {
+    const dec = await this.constructionService.findDecision(doc.decId);
+    if (!dec) {
+      throw new Error('Not found Decision with id: ' + doc.decId);
+    }
+    const subPrint = new PrintSubmissionImp(dec.submission);
+    const docName = this.printService.getDocName(dec.period);
+    const buf = await this.printService.generate(docName.submission, subPrint);
+    const name = docName.submission;
+    return new StreamableFile(buf, {
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
+    });
+  }
+  */
 }

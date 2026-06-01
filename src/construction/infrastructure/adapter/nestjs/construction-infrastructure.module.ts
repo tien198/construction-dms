@@ -6,6 +6,7 @@ import { DocumentQueryRepository } from '../outbound/persistence/document-query.
 import { DocumentWriteRepository } from '../outbound/persistence/document-write.repository';
 import { UnitOfWork } from '../outbound/persistence/unit-of-work';
 import { DocxGenerationAdapter } from '../outbound/docx-generation/gen-docx.adapter';
+import { DocxGenerationServiceProvider } from './provider/docx-generation.service.provider';
 
 @Module({
   providers: [
@@ -34,6 +35,8 @@ import { DocxGenerationAdapter } from '../outbound/docx-generation/gen-docx.adap
       provide: 'IDocxGenerationPort',
       useClass: DocxGenerationAdapter,
     },
+
+    DocxGenerationServiceProvider,
   ],
   exports: [
     'IConstructionQueryRepository',
@@ -42,6 +45,7 @@ import { DocxGenerationAdapter } from '../outbound/docx-generation/gen-docx.adap
     'IDocumentWriteRepository',
     'IUnitOfWork',
     'IDocxGenerationPort',
+    DocxGenerationServiceProvider,
   ],
 })
 export class ConstructionInfrastructureModule {}

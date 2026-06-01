@@ -20,4 +20,8 @@ export interface IDocumentQueryRepository {
   findDecisionListOfConstruction(
     constructionId: string,
   ): Promise<DecisionDetailResDto[]>;
+
+  findDecisionBySubmissionId(
+    submissionId: string,
+  ): Promise<DecisionDetailResDto | undefined>;
 }

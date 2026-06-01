@@ -56,4 +56,10 @@ export class DocumentQueryRepository
     const result = await this._poolClient.query(query, [constructionId]);
     return result.rows as DecisionDetailResDto[];
   }
+
+  async findDecisionBySubmissionId(submissionId: string) {
+    const query = this._getQueryFromFile('find-decision-by-submission-id.sql');
+    const result = await this._poolClient.query(query, [submissionId]);
+    return result.rows[0].result as DecisionDetailResDto | undefined;
+  }
 }

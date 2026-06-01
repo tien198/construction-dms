@@ -1,8 +1,8 @@
-import type { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
+import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 
 export class BidPackageResDto {
   id: string;
-  type: ConstructionPeriod;
+  type: BidPackageType;
   project_owner: string;
   name: string;
   short_desc: string;
