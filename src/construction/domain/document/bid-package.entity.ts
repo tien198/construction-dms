@@ -20,7 +20,9 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
     public id: BidPackageId,
 
     public type: BidPackageType,
-    public project_owner: ProjectOwner,
+    public project_owner: ProjectOwner = new ProjectOwner(
+      'Công ty Trực thăng Miền Nam',
+    ),
     public name: BidPackageName,
     // short_description
     public short_desc: ShortDesc,
@@ -29,7 +31,9 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
     public est_cost_str: EstCostStr,
 
     public bidder_selection_time: Date,
-    public bidder_selection_method: BidderSelectionMethod,
+    public bidder_selection_method: BidderSelectionMethod = new BidderSelectionMethod(
+      'Chỉ định thầu rút gọn',
+    ),
 
     public duration: Duration,
 

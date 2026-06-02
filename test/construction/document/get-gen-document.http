@@ -1,1 +1,9 @@
-curl -OJ GET http://localhost:3000/api/document/docx/generate/019e1759-6c47-75e4-beba-d20bb1611529
+// KH_LCNT
+curl -OJX GET http://localhost:3000/api/document/docx/generate/019e88bc-8936-721a-9deb-6ebb9a54941c
+
+
+// KQ_KH_LCNT TV
+curl -OJX GET http://localhost:3000/api/document/docx/generate/019e88be-00ff-754d-8d7f-cf8f09ae15d3?type=decision
+
+// KQ_KH_LCNT TT
+curl -OJX GET http://localhost:3000/api/document/docx/generate/019e88be-010d-7485-9ffd-0eeaee35a2a3

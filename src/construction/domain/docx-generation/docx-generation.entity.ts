@@ -22,9 +22,13 @@ export class DocxGeneration
   repair_scope: string;
   impl_duration: string;
   bid_packages: DocxGenerationBidPackage[];
+  bid_package_total: string;
+  // if docx is decision, format sub_no of decision
+  sub_no: string;
 
   constructor(doc: AdminDocResDto, subInfo: SubmissionResDto) {
     super(doc);
+    this.date = this.signingDateFormat(subInfo.date);
 
     // _____ construction_info_snapshot _________
     const info = subInfo.construction_info_snapshot;
@@ -46,6 +50,12 @@ export class DocxGeneration
     this.bid_packages = subInfo.bid_package_snapshots.map((bp) =>
       this.convertBidPackageResDtoToEntity(bp),
     );
+
+    this.bid_package_total = this.formatCurrency(
+      subInfo.bid_package_snapshots.reduce((acc, bp) => acc + bp.est_cost, 0),
+    );
+
+    this.sub_no = this.formatDocNo(subInfo);
   }
 
   private implDurationFormat(): string {

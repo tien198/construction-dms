@@ -25,7 +25,7 @@ export class DocxGenerationService {
 
     //  get document info according docType
     const adminDoc =
-      docType === 'submission' ? decision : decision.submissions[0];
+      docType === 'decision' ? decision : decision.submissions[0];
 
     // There is only one submission returned in query
     const docxEntity = new DocxGeneration(adminDoc, decision.submissions[0]);
@@ -68,13 +68,13 @@ export class DocxGenerationService {
     {
       per: ConstructionPeriod.KH_LCNT,
       submission: '2. Tờ trình phê duyệt KHLCNT.docx',
-      decision: '3. QD Phê duyệt KHLCNT.docx',
+      decision: '3. QD Phê duyệt KHLCNT .docx',
     },
     {
       per: ConstructionPeriod.KQ_KH_LCNT,
       sub_type: BidPackageType.TV,
       submission: '4. Tờ trình phê duyệt KQLCNT TV.docx',
-      decision: '5. QD Phê duyệt KQLCNT TV.docx',
+      decision: '5. QD Phê duyệt KQLCNT.docx',
     },
     {
       per: ConstructionPeriod.KQ_KH_LCNT,

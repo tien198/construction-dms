@@ -23,7 +23,6 @@ import { ResResult } from 'src/shared/response-result';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
 import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
 import { DocxGenerationServiceProvider } from '../nestjs/provider/docx-generation.service.provider';
-import { ConstructionPeriod } from 'src/construction/domain/enum/construction-period.enum';
 
 @ApiTags('document')
 @Controller('document')

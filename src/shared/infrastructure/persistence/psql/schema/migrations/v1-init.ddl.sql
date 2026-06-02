@@ -120,7 +120,7 @@ COMMENT ON COLUMN "decisions"."construction_id" IS 'refers to [constructions.id]
 
 COMMENT ON TABLE "contracts" IS 'reference to bidder infor through bid_package_snapshots (bid_package_snapshots.successful_bidder_id)';
 
-COMMENT ON COLUMN "contracts"."bid_package_snapshot_id" IS 'refers to [bid_package_snapshots.id]';
+COMMENT ON COLUMN "contracts"."bid_package_id" IS 'refers to [bid_package_snapshots.id]';
 
 ALTER TABLE "administrative_documents" ADD FOREIGN KEY ("pursuant_to_dec_tct_id") REFERENCES "administrative_documents" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 

@@ -2,7 +2,7 @@ import { StrConvert } from 'src/shared/type-ultility/string-converter';
 import { AdministrativeDocument } from 'src/construction/domain/document/administrative-document.entity';
 import {
   AdminDocResDto,
-  DecisionRef,
+  DocRef,
 } from 'src/construction/application/queries/get-decision-detail/dto/admin-doc.res-dto';
 import { DocxFormater } from './docx-formater';
 
@@ -29,21 +29,21 @@ export class TemplaterAdminDocument
     this.level = doc.level;
     this.date = this.signingDateFormat(doc.date);
     //____________ format dec no and date
-    this.tct_pursuanted_dec_no = this.formatDec(doc.pursuant_to_dec_tct);
-    this.ttmn_pursuanted_dec_no = this.formatDec(doc.pursuant_to_dec_ttmn);
+    this.tct_pursuanted_dec_no = this.formatDocNo(doc.pursuant_to_dec_tct);
+    this.ttmn_pursuanted_dec_no = this.formatDocNo(doc.pursuant_to_dec_ttmn);
   }
 
-  private signingDateFormat(date: string): string {
+  protected signingDateFormat(date: string): string {
     return this.toFormalDate(date);
   }
 
-  private formatDec(dec?: DecisionRef | null) {
-    if (!dec) return '';
-    const localDateStr = new Date(dec.date).toLocaleDateString('vi-VN', {
+  protected formatDocNo(doc?: DocRef | null) {
+    if (!doc) return '';
+    const localDateStr = new Date(doc.date).toLocaleDateString('vi-VN', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     });
-    return dec.no + ' ngày ' + localDateStr;
+    return doc.no + ' ngày ' + localDateStr;
   }
 }
