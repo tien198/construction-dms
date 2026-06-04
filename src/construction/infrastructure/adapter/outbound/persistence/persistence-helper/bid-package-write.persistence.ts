@@ -11,6 +11,7 @@ export class BidPackageWritePersistence extends BasePersistence {
     await client.query(sql, [
       bp.id,
       bp.bid_package_id,
+      bp.submission_id,
 
       bp.project_owner,
       bp.name,
@@ -30,11 +31,6 @@ export class BidPackageWritePersistence extends BasePersistence {
 
   async saveBidPackage(client: PoolClient, bp: BidPackageRow) {
     const sql = this._getManipulateFromFile('save-bid-package.sql');
-    await client.query(sql, [
-      bp.id,
-      bp.construction_id,
-      bp.submission_id,
-      bp.type,
-    ]);
+    await client.query(sql, [bp.id, bp.construction_id, bp.type]);
   }
 }

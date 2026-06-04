@@ -4,7 +4,6 @@ export class BidPackageRow {
   id: string;
 
   construction_id: string;
-  submission_id: string;
 
   type: BidPackageType;
 }
@@ -12,6 +11,7 @@ export class BidPackageRow {
 export class BidPackageSnapshotRow {
   id: string;
   bid_package_id: string;
+  submission_id: string;
 
   project_owner: string;
   name: string;

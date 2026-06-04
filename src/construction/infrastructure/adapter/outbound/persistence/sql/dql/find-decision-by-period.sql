@@ -69,10 +69,13 @@ SELECT
                                                                            bp_snapshot_inner.*,
                                                                            sub_ad_inner.date AS sub_date
                                                                          FROM public.bid_packages bp_inner
-                                                                         JOIN public.administrative_documents sub_ad_inner
-                                                                           ON sub_ad_inner.id = bp_inner.submission_id
+                                                                         
                                                                          JOIN public.bid_package_snapshots bp_snapshot_inner
                                                                            ON bp_inner.id = bp_snapshot_inner.bid_package_id
+
+                                                                         JOIN public.administrative_documents sub_ad_inner
+                                                                           ON sub_ad_inner.id = bp_snapshot_inner.submission_id
+
                                                                          WHERE sub_ad_inner.date <= sub_ad.date
                                                                          ORDER BY bp_inner.type, sub_ad_inner.date DESC, bp_snapshot_inner.created_at DESC
                                                                        )

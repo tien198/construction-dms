@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-06-04T02:44:36.310Z
+-- Generated at: 2026-06-04T16:56:42.961Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
@@ -41,19 +41,19 @@ CREATE TABLE "construction_info_snapshots" (
   "impl_end_date" timestamptz NOT NULL,
   "existing_condition_of_the_structure" text NOT NULL,
   "repair_scope" text NOT NULL,
-  "created_at" timestamptz NOT NULL DEFAULT 'NOW()'
+  "created_at" timestamptz NOT NULL DEFAULT (NOW())
 );
 
 CREATE TABLE "bid_packages" (
   "id" varchar PRIMARY KEY,
   "construction_id" varchar NOT NULL,
-  "submission_id" varchar NOT NULL,
   "type" bid_package_type NOT NULL
 );
 
 CREATE TABLE "bid_package_snapshots" (
   "id" varchar PRIMARY KEY,
   "bid_package_id" varchar NOT NULL,
+  "submission_id" varchar NOT NULL,
   "project_owner" varchar NOT NULL,
   "name" varchar NOT NULL,
   "short_desc" text NOT NULL,
@@ -64,14 +64,14 @@ CREATE TABLE "bid_package_snapshots" (
   "successful_bidder_id" varchar,
   "duration" varchar NOT NULL,
   "is_completed" boolean NOT NULL,
-  "created_at" timestamptz NOT NULL DEFAULT 'NOW()'
+  "created_at" timestamptz NOT NULL DEFAULT (NOW())
 );
 
 CREATE TABLE "submissions" (
   "id" varchar PRIMARY KEY,
   "construction_id" varchar NOT NULL,
   "decision_id" varchar NOT NULL,
-  "created_at" timestamptz NOT NULL DEFAULT 'NOW()'
+  "created_at" timestamptz NOT NULL DEFAULT (NOW())
 );
 
 CREATE TABLE "decisions" (
@@ -109,9 +109,9 @@ COMMENT ON COLUMN "construction_info_snapshots"."created_at" IS 'used to define 
 
 COMMENT ON COLUMN "bid_packages"."construction_id" IS 'refers to [constructions.id]';
 
-COMMENT ON COLUMN "bid_packages"."submission_id" IS 'refers to [submissions.id]';
-
 COMMENT ON TABLE "bid_package_snapshots" IS 'Bidder schema not provided';
+
+COMMENT ON COLUMN "bid_package_snapshots"."submission_id" IS 'refers to [submissions.id]';
 
 COMMENT ON COLUMN "bid_package_snapshots"."successful_bidder_id" IS 'refers to [bidders.id] and can be null if there are no snapshots available for the construction.';
 
@@ -137,7 +137,7 @@ ALTER TABLE "decisions" ADD FOREIGN KEY ("id") REFERENCES "administrative_docume
 
 ALTER TABLE "construction_info_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "bid_packages" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("submission_id") REFERENCES "submissions" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "bid_package_snapshots" ADD FOREIGN KEY ("bid_package_id") REFERENCES "bid_packages" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 

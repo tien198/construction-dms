@@ -9,9 +9,8 @@ export class BidPackageMapper {
     const entity = new BidPackageSnapshotRow();
     entity.id = bp.snapshot_id.value!;
     entity.bid_package_id = bp.bid_package_id.value!;
-    // entity.construction_id = context.construction_id;
-    // entity.submission_id = context.submission_id;
-    // entity.type = bp.type;
+    entity.submission_id = context.submission_id;
+
     entity.project_owner = bp.project_owner.value;
     entity.name = bp.name.value;
     entity.short_desc = bp.short_desc.value;
@@ -36,7 +35,6 @@ export class BidPackageMapper {
     const entity = new BidPackageRow();
     entity.id = bp.bid_package_id.value!;
     entity.construction_id = context.construction_id;
-    entity.submission_id = context.submission_id;
     entity.type = bp.type;
     return entity;
   }
