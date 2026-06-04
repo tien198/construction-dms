@@ -57,13 +57,19 @@ Table construction_info_snapshots {
   created_at timestamptz [not null, default: 'NOW()', note:'used to define the newest record']
 }
 
-Table bid_package_snapshots {
+Table bid_packages{
   id varchar [pk]
-
   construction_id varchar [not null, note: 'refers to [constructions.id]']
   submission_id varchar [not null, note: 'refers to [submissions.id]']
 
   type bid_package_type [not null]
+}
+
+Table bid_package_snapshots {
+  id varchar [pk]
+
+  bid_package_id varchar [not null]
+
   project_owner varchar [not null]
   name varchar [not null]
   short_desc text [not null]
@@ -124,10 +130,11 @@ Ref: administrative_documents.id - decisions.id [delete: cascade]
 
 Ref: submissions.id - construction_info_snapshots.submission_id [delete: cascade]
 
-Ref: bid_package_snapshots.submission_id > submissions.id [delete: cascade]
+Ref: bid_packages.submission_id > submissions.id [delete: cascade]
+Ref: bid_package_snapshots.bid_package_id > bid_packages.id [delete: cascade]
 
 Ref: constructions.id - construction_info_snapshots.construction_id [delete: cascade]
-Ref: constructions.id < bid_package_snapshots.construction_id [delete: cascade]
+Ref: constructions.id < bid_packages.construction_id [delete: cascade]
 
 Ref: constructions.id < decisions.construction_id [delete: cascade]
 

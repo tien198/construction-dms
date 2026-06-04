@@ -6,6 +6,14 @@ export class BidPackageId {
   }
 }
 
+export class SnapshotId {
+  constructor(readonly value: string | null = null) {}
+
+  static create(val: string) {
+    return new SnapshotId(val);
+  }
+}
+
 export class ProjectOwner {
   constructor(readonly value: string) {}
 

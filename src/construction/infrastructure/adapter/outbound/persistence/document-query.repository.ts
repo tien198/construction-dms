@@ -62,4 +62,10 @@ export class DocumentQueryRepository
     const result = await this._poolClient.query(query, [submissionId]);
     return result.rows[0].result as DecisionDetailResDto | undefined;
   }
+
+  async checkExistBidPackage(bidPackageId: string) {
+    const query = this._getQueryFromFile('check-existed-bid-package.sql');
+    const result = await this._poolClient.query(query, [bidPackageId]);
+    return result.rows[0].exists as boolean;
+  }
 }

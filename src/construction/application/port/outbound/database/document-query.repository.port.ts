@@ -24,4 +24,6 @@ export interface IDocumentQueryRepository {
   findDecisionBySubmissionId(
     submissionId: string,
   ): Promise<DecisionDetailResDto | undefined>;
+
+  checkExistBidPackage(id: string): Promise<boolean>;
 }

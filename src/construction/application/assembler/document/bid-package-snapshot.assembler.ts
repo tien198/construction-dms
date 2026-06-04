@@ -6,6 +6,7 @@ import {
   Duration,
   ProjectOwner,
   ShortDesc,
+  SnapshotId,
   SuccessfulBidderId,
 } from 'src/construction/domain/value-objects/bid-package-snapshot.vo';
 import { EstCostStr } from 'src/construction/domain/value-objects/construction-info.vo';
@@ -14,6 +15,7 @@ import { BidPackageSnapshotCommand } from '../../commands/create-submission/bid-
 export class BidPackageSnapshotAssembler {
   static fromCmd(cmd: BidPackageSnapshotCommand): BidPackageSnapshot {
     return new BidPackageSnapshot(
+      new SnapshotId(cmd.id),
       new BidPackageId(cmd.id),
       cmd.type,
       new ProjectOwner(cmd.project_owner),

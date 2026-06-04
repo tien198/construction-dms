@@ -1,17 +1,19 @@
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 import {
-  BidderSelectionMethod,
+  SnapshotId,
   BidPackageId,
   BidPackageName,
   Duration,
   EstCostStr,
   ProjectOwner,
   ShortDesc,
+  BidderSelectionMethod,
   SuccessfulBidderId,
 } from '../../value-objects/bid-package-snapshot.vo';
 
 export interface IBidPackageSnapshot {
-  id: BidPackageId;
+  snapshot_id: SnapshotId;
+  bid_package_id: BidPackageId;
 
   type: BidPackageType;
   project_owner: ProjectOwner;

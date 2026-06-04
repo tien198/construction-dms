@@ -8,6 +8,7 @@ import {
   EstCostStr,
   ProjectOwner,
   ShortDesc,
+  SnapshotId,
   SuccessfulBidderId,
 } from '../value-objects/bid-package-snapshot.vo';
 import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
@@ -17,7 +18,8 @@ import type { IBidPackageSnapshot } from './domain-primitive/i-bid-package';
  */
 export class BidPackageSnapshot implements IBidPackageSnapshot {
   constructor(
-    public id: BidPackageId,
+    public snapshot_id: SnapshotId,
+    public bid_package_id: BidPackageId,
 
     public type: BidPackageType,
     public project_owner: ProjectOwner = new ProjectOwner(
@@ -40,6 +42,9 @@ export class BidPackageSnapshot implements IBidPackageSnapshot {
     public successful_bidder_id: SuccessfulBidderId | null = null,
   ) {
     // generate Id for each new snapshot instance
-    this.id = BidPackageId.create(v7());
+    this.snapshot_id = SnapshotId.create(v7());
+    if (!this.bid_package_id.value) {
+      this.bid_package_id = BidPackageId.create(v7());
+    }
   }
 }

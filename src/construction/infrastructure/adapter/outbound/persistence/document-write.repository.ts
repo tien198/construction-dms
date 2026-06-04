@@ -19,6 +19,8 @@ import { BidPackageMapper } from './mapper/bid-package.mapper';
 import { BidPackageWritePersistence } from './persistence-helper/bid-package-write.persistence';
 import { Submission } from 'src/construction/domain/document/submission.entity';
 import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import { BidPackageRow, BidPackageSnapshotRow } from './model/bid-package.row';
+import type { IDocumentQueryRepository } from 'src/construction/application/port/outbound/database/document-query.repository.port';
 
 @Injectable()
 export class DocumentWriteRepository
@@ -36,6 +38,8 @@ export class DocumentWriteRepository
   constructor(
     connectionService: PgConnectionService,
     @Inject('IUnitOfWork') uow: IUnitOfWork,
+    @Inject('IDocumentQueryRepository')
+    private readonly _docQueryRepo: IDocumentQueryRepository,
   ) {
     super(connectionService, uow);
   }
@@ -160,17 +164,31 @@ export class DocumentWriteRepository
     // bid packages
     const bpDomainsArr = subDomain.bid_packages;
     if (bpDomainsArr) {
-      const bidPackagesRowArr = bpDomainsArr.map((bidPackageDomain) =>
-        BidPackageMapper.toPersistence({
-          construction_id: conId,
-          submission_id: subId,
-          bid_package: bidPackageDomain,
-        }),
-      );
+      const bidPackagesRowArr: [BidPackageRow, BidPackageSnapshotRow][] =
+        bpDomainsArr.map((bidPackageDomain) => [
+          BidPackageMapper.toPersistenceBidPackage({
+            construction_id: conId,
+            submission_id: subId,
+            bid_package: bidPackageDomain,
+          }),
+          BidPackageMapper.toPersistenceSnapshot({
+            construction_id: conId,
+            submission_id: subId,
+            bid_package: bidPackageDomain,
+          }),
+        ]);
 
       for (const bpRow of bidPackagesRowArr) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        await this._bidPackagePersist.save(client, bpRow);
+        const isExisted = await this._docQueryRepo.checkExistBidPackage(
+          bpRow[0].id,
+        );
+        // Insert new bp if it doesn't exist
+        if (!isExisted) {
+          await this._bidPackagePersist.saveBidPackage(client, bpRow[0]);
+        }
+        // Always insert snapshot
+        await this._bidPackagePersist.saveSnapshot(client, bpRow[1]);
       }
     }
   }

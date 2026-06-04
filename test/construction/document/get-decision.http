@@ -1,1 +1,1 @@
-curl -X GET http://localhost:3000/api/document/decision/019e072c-52c6-7513-9dfa-9863c0a54d6f/KH_LCNT
+curl -X GET http://localhost:3000/api/document/decision/019e9200-7dda-7298-98ac-343627969070/KH_LCNT

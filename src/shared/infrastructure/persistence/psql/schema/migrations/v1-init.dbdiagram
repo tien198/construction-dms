@@ -27,8 +27,8 @@
       {
         "name": "bid_package_snapshots",
         "schemaName": "public",
-        "x": 530.6153613240966,
-        "y": 372.80658317369193
+        "x": 997.0868387718995,
+        "y": 411.21597610795516
       },
       {
         "name": "submissions",
@@ -45,14 +45,20 @@
       {
         "name": "bidders",
         "schemaName": "public",
-        "x": -415.8240546405367,
-        "y": 584.9818848670083
+        "x": -213.9782091888099,
+        "y": 574.9729999685756
       },
       {
         "name": "contracts",
         "schemaName": "public",
-        "x": 34.44797764270754,
-        "y": 664.9818848670083
+        "x": 214.60790581449697,
+        "y": 601.5922805102676
+      },
+      {
+        "name": "bid_packages",
+        "schemaName": "public",
+        "x": 608.8931121316223,
+        "y": 407.3332970130102
       }
     ],
     "tableGroupCollapseStates": [],
@@ -153,30 +159,6 @@
       },
       {
         "firstFieldNames": [
-          "submission_id"
-        ],
-        "firstTableName": "bid_package_snapshots",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "id"
-        ],
-        "secondTableName": "submissions",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": [
-          {
-            "x": 988.1003790520876,
-            "y": 484.80658317369193
-          },
-          {
-            "x": 988.1003790520876,
-            "y": 109.8311869052319
-          }
-        ]
-      },
-      {
-        "firstFieldNames": [
           "id"
         ],
         "firstTableName": "constructions",
@@ -192,45 +174,12 @@
         "secondEndpointSide": "left",
         "checkPoints": [
           {
-            "x": -29.08506543700264,
+            "x": -85.8020798614549,
             "y": -56.141664254689715
           },
           {
-            "x": -29.08506543700264,
+            "x": -85.8020798614549,
             "y": 105.436102360998
-          }
-        ]
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "constructions",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "construction_id"
-        ],
-        "secondTableName": "bid_package_snapshots",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "firstEndpointSide": "left",
-        "checkPoints": [
-          {
-            "x": 21.065736885553576,
-            "y": -56.141664254689715
-          },
-          {
-            "x": 21.065736885553576,
-            "y": 510.1620245707898
-          },
-          {
-            "x": 464.73100820641844,
-            "y": 510.1620245707898
-          },
-          {
-            "x": 464.73100820641844,
-            "y": 452.8065831736919
           }
         ]
       },
@@ -272,6 +221,72 @@
             "y": -88.14166425468972
           }
         ]
+      },
+      {
+        "firstFieldNames": [
+          "submission_id"
+        ],
+        "firstTableName": "bid_packages",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "id"
+        ],
+        "secondTableName": "submissions",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "firstEndpointSide": "left",
+        "secondEndpointSide": "left",
+        "checkPoints": [
+          {
+            "x": 552.7044855679812,
+            "y": 519.3332970130102
+          },
+          {
+            "x": 552.7044855679812,
+            "y": 111.29067414606078
+          }
+        ]
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "constructions",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "construction_id"
+        ],
+        "secondTableName": "bid_packages",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "firstEndpointSide": "left",
+        "checkPoints": [
+          {
+            "x": -0.44620086523093505,
+            "y": -56.141664254689715
+          },
+          {
+            "x": -0.44620086523093505,
+            "y": 487.33329701301017
+          }
+        ]
+      },
+      {
+        "firstFieldNames": [
+          "bid_package_id"
+        ],
+        "firstTableName": "bid_package_snapshots",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "id"
+        ],
+        "secondTableName": "bid_packages",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
       }
     ]
   },
