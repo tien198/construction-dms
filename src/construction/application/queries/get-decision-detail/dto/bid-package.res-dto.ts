@@ -15,4 +15,9 @@ export class BidPackageResDto {
   // est - estimated
   est_cost: number;
   est_cost_str: string;
+
+  contract_no?: string;
+  contract_signing_date?: string;
+  approval_no?: string;
+  approval_date?: string;
 }

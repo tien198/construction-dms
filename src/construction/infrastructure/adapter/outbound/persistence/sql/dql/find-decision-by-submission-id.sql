@@ -67,7 +67,10 @@ SELECT
                                                                          SELECT DISTINCT ON (bp_inner.type)
                                                                            bp_inner.type as type,
                                                                            bp_snapshot_inner.*,
-                                                                           sub_ad_inner.date AS sub_date
+                                                                           sub_ad_inner.date AS sub_date,
+                                                                           approval_dec.no AS approval_no,
+                                                                           approval_dec.date AS approval_date
+                                                                           
                                                                          FROM public.bid_packages bp_inner
                                                                          
                                                                          JOIN public.bid_package_snapshots bp_snapshot_inner
@@ -76,6 +79,14 @@ SELECT
                                                                          JOIN public.administrative_documents sub_ad_inner
                                                                            ON sub_ad_inner.id = bp_snapshot_inner.submission_id
 
+                                                                         JOIN public.submissions sub_inner
+                                                                           ON sub_inner.id = bp_snapshot_inner.submission_id
+                                                                         JOIN public.administrative_documents approval_dec
+                                                                           ON approval_dec.id = sub_inner.decision_id
+
+                                                                         
+
+                                                                         
                                                                          WHERE sub_ad_inner.date <= sub_ad.date
                                                                          ORDER BY bp_inner.type, sub_ad_inner.date DESC, bp_snapshot_inner.created_at DESC
                                                                        )
@@ -91,13 +102,30 @@ SELECT
                                                                            'est_cost_str',            bp.est_cost_str,
                                                                            'bidder_selection_time',   bp.bidder_selection_time,
                                                                            'bidder_selection_method', bp.bidder_selection_method,
-                                                                           'successful_bidder_id',    bp.successful_bidder_id,
+                                                                           'successful_bidder',    json_build_object(
+                                                                             'name',                    bidder.name,
+                                                                             'address',                 bidder.address,
+                                                                             'representative_name',     bidder.representative_name,
+                                                                             'representative_position', bidder.representative_position,
+                                                                             'bank_account_number',     bidder.bank_account_number,
+                                                                             'tax_id',                  bidder.tax_id,
+                                                                             'phone_number',            bidder.phone_number,
+                                                                             'email',                   bidder.email
+                                                                           ),
                                                                            'duration',                bp.duration,
-                                                                           'is_completed',            bp.is_completed
+                                                                           'is_completed',            bp.is_completed,
+                                                                           'contract_no',             contract.no,
+                                                                           'contract_signing_date',   contract.signing_date,
+                                                                           'approval_no',             bp.approval_no,
+                                                                           'approval_date',           bp.approval_date
                                                                          )
                                                                          ORDER BY sub_date DESC
                                                                        )
                                                                        FROM bp
+                                                                       LEFT JOIN public.contracts AS contract
+                                                                         ON contract.bid_package_id = bp.bid_package_id
+                                                                       LEFT JOIN public.bidders AS bidder
+                                                                         ON bidder.id = bp.successful_bidder_id
                                                                      ),
                                                                      '[]'::json
                                                                     )
