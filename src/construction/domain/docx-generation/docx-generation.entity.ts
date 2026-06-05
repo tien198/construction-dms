@@ -3,7 +3,7 @@ import { TemplaterAdminDocument } from './administrative-document.docx.entity';
 import { ConstructionInfoSnapshot } from 'src/construction/domain/document/construction-info.entity';
 import { SubmissionResDto } from 'src/construction/application/queries/get-decision-detail/dto/submission.res-dto';
 import { AdminDocResDto } from 'src/construction/application/queries/get-decision-detail/dto/admin-doc.res-dto';
-import { BidPackageResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
+import { BidPackageSnapshotResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
 import { DocxGenerationBidPackage } from './docx-generation.bid-package.entity';
 
 type ITemplaterConInfor = StrConvert<ConstructionInfoSnapshot>;
@@ -73,23 +73,9 @@ export class DocxGeneration
   }
 
   private convertBidPackageResDtoToEntity(
-    bidPackages: BidPackageResDto,
+    bidPackage: BidPackageSnapshotResDto,
   ): DocxGenerationBidPackage {
-    const entity = new DocxGenerationBidPackage();
-    entity.type = bidPackages.type;
-    entity.project_owner = bidPackages.project_owner;
-    entity.name = bidPackages.name;
-    entity.short_desc = bidPackages.short_desc;
-    entity.est_cost = this.formatCurrency(bidPackages.est_cost);
-    entity.est_cost_str = bidPackages.est_cost_str;
-    entity.bidder_selection_time = this.formatDate(
-      bidPackages.bidder_selection_time,
-      'month',
-    );
-    entity.bidder_selection_method = bidPackages.bidder_selection_method;
-    entity.successful_bidder_id = bidPackages.successful_bidder_id || '';
-    entity.duration = bidPackages.duration;
-    entity.is_completed = bidPackages.is_completed;
+    const entity = new DocxGenerationBidPackage(bidPackage);
     return entity;
   }
 }

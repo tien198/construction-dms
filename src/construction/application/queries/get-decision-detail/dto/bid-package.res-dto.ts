@@ -1,7 +1,8 @@
 import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 
-export class BidPackageResDto {
+export class BidPackageSnapshotResDto {
   id: string;
+  bid_package_id: string;
   type: BidPackageType;
   project_owner: string;
   name: string;
@@ -9,7 +10,7 @@ export class BidPackageResDto {
   bidder_selection_time: string;
   bidder_selection_method: string;
   // Note: sau khi hoàn thành chức năng nhà thầu sẽ thêm
-  successful_bidder_id: string | null;
+  successful_bidder?: BidderInfo;
   duration: string;
   is_completed: boolean;
   // est - estimated
@@ -21,3 +22,14 @@ export class BidPackageResDto {
   approval_no?: string;
   approval_date?: string;
 }
+
+export type BidderInfo = {
+  name: string;
+  address: string;
+  representative_name: string;
+  representative_position: string;
+  bank_account_number: string;
+  tax_id: string;
+  phone_number: string;
+  email: string;
+};

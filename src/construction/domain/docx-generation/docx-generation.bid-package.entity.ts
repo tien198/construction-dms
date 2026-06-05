@@ -1,38 +1,54 @@
-import { BidPackageResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
+import {
+  BidderInfo,
+  BidPackageSnapshotResDto,
+} from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
 import { BidPackageType } from '../enum/bid-package.enum';
+import { DocxFormater } from './docx-formater';
 
-export class DocxGenerationBidPackage implements Omit<
-  BidPackageResDto,
-  'successful_bidder_id' | 'est_cost'
-> {
+export class DocxGenerationBidPackage
+  extends DocxFormater
+  implements Omit<BidPackageSnapshotResDto, 'successful_bidder_id' | 'est_cost'>
+{
   id: string;
+  bid_package_id: string;
   type: BidPackageType;
   project_owner: string;
   name: string;
   short_desc: string;
-  bidder_selection_time: string;
-  bidder_selection_method: string;
-  // Note: sau khi hoàn thành chức năng nhà thầu sẽ thêm
-  successful_bidder: BidderInfor;
-  duration: string;
-  is_completed: boolean;
   // est - estimated
   est_cost: string;
   est_cost_str: string;
+  //
+  bidder_selection_time: string;
+  bidder_selection_method: string;
+  // Note: sau khi hoàn thành chức năng nhà thầu sẽ thêm
+  successful_bidder?: BidderInfo;
+  duration: string;
+  is_completed: boolean;
 
-  contract_no?: string;
-  contract_signing_date?: string;
-  approval_no?: string;
-  approval_date?: string;
+  contract_no: string;
+  approval_no: string;
+
+  constructor(bidPackage: BidPackageSnapshotResDto) {
+    super();
+    this.id = bidPackage.id;
+    this.bid_package_id = bidPackage.bid_package_id;
+    this.type = bidPackage.type;
+    this.project_owner = bidPackage.project_owner;
+    this.name = bidPackage.name;
+    this.short_desc = bidPackage.short_desc;
+    this.est_cost = this.formatCurrency(bidPackage.est_cost);
+    this.est_cost_str = bidPackage.est_cost_str;
+    this.bidder_selection_time = this.formatDate(
+      bidPackage.bidder_selection_time,
+      'month',
+    );
+    this.bidder_selection_method = bidPackage.bidder_selection_method;
+    this.successful_bidder = bidPackage.successful_bidder;
+    this.duration = bidPackage.duration;
+    this.is_completed = bidPackage.is_completed;
+
+    this.contract_no = `${bidPackage.contract_no} ngày ${this.formatDate(bidPackage.contract_signing_date ?? null)}`;
+    this.approval_no = `${bidPackage.approval_no} ngày ${this.formatDate(bidPackage.approval_date ?? null)}`;
+  }
 }
-
-type BidderInfor = {
-  name: string;
-  address: string;
-  representative_name: string;
-  representative_position: string;
-  bank_account_number: string;
-  tax_id: string;
-  phone_number: string;
-  email: string;
-};
