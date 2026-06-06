@@ -68,8 +68,7 @@ SELECT
                                                                            bp_inner.type as type,
                                                                            bp_snapshot_inner.*,
                                                                            sub_ad_inner.date AS sub_date,
-                                                                           approval_dec.no AS approval_no,
-                                                                           approval_dec.date AS approval_date
+                                                                           approval_dec.no AS approval_no
                                                                            
                                                                          FROM public.bid_packages bp_inner
                                                                          
@@ -84,9 +83,6 @@ SELECT
                                                                          JOIN public.administrative_documents approval_dec
                                                                            ON approval_dec.id = sub_inner.decision_id
 
-                                                                         
-
-                                                                         
                                                                          WHERE sub_ad_inner.date <= sub_ad.date
                                                                          ORDER BY bp_inner.type, sub_ad_inner.date DESC, bp_snapshot_inner.created_at DESC
                                                                        )
@@ -117,7 +113,8 @@ SELECT
                                                                            'contract_no',             contract.no,
                                                                            'contract_signing_date',   contract.signing_date,
                                                                            'approval_no',             bp.approval_no,
-                                                                           'approval_date',           bp.approval_date
+                                                                           -- approval_date also sub_date
+                                                                           'approval_date',           bp.sub_date
                                                                          )
                                                                          ORDER BY sub_date DESC
                                                                        )

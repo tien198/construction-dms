@@ -5,6 +5,7 @@ import { SubmissionResDto } from 'src/construction/application/queries/get-decis
 import { AdminDocResDto } from 'src/construction/application/queries/get-decision-detail/dto/admin-doc.res-dto';
 import { BidPackageSnapshotResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
 import { DocxGenerationBidPackage } from './docx-generation.bid-package.entity';
+import { BidPackageType } from '../enum/bid-package.enum';
 
 type ITemplaterConInfor = StrConvert<ConstructionInfoSnapshot>;
 
@@ -20,9 +21,16 @@ export class DocxGeneration
   impl_end_date: string;
   existing_condition_of_the_structure: string;
   repair_scope: string;
+
   impl_duration: string;
   bid_packages: DocxGenerationBidPackage[];
+  TV_bid_package: DocxGenerationBidPackage | null;
+  TT_bid_package: DocxGenerationBidPackage | null;
+  TC_bid_package: DocxGenerationBidPackage | null;
+
   bid_package_total: string;
+  completed_works_total: string;
+  bidder_selection_works_total: string;
   // if docx is decision, format sub_no of decision
   sub_no: string;
 
@@ -37,7 +45,6 @@ export class DocxGeneration
     // impl - implementation
     this.impl_start_date = info.impl_start_date;
     this.impl_end_date = info.impl_end_date;
-    this.impl_duration = this.implDurationFormat();
     //
     this.existing_condition_of_the_structure =
       info.existing_condition_of_the_structure;
@@ -46,13 +53,32 @@ export class DocxGeneration
     this.est_cost = this.formatCurrency(info.est_cost);
     this.est_cost_str = info.est_cost_str;
 
+    this.impl_duration = this.implDurationFormat();
     // ______ bid_packages _______________________
     this.bid_packages = subInfo.bid_package_snapshots.map((bp) =>
       this.convertBidPackageResDtoToEntity(bp),
     );
 
+    this.TV_bid_package =
+      this.bid_packages.find((b) => b.type == BidPackageType.TV) ?? null;
+    this.TT_bid_package =
+      this.bid_packages.find((b) => b.type == BidPackageType.TT) ?? null;
+    this.TC_bid_package =
+      this.bid_packages.find((b) => b.type == BidPackageType.TC) ?? null;
+
     this.bid_package_total = this.formatCurrency(
       subInfo.bid_package_snapshots.reduce((acc, bp) => acc + bp.est_cost, 0),
+    );
+    this.completed_works_total = this.formatCurrency(
+      subInfo.bid_package_snapshots
+        .filter((bp) => bp.type !== BidPackageType.TC)
+        .reduce((acc, bp) => acc + bp.est_cost, 0),
+    );
+
+    this.bidder_selection_works_total = this.formatCurrency(
+      subInfo.bid_package_snapshots
+        .filter((bp) => bp.type === BidPackageType.TC)
+        .reduce((acc, bp) => acc + bp.est_cost, 0),
     );
 
     this.sub_no = this.formatDocNo(subInfo);
