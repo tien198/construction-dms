@@ -82,40 +82,26 @@ export class DocumentWriteRepository
 
   async saveExistingDecision(
     conId: string,
-    decId: string,
-    submissionDomain: Submission,
+    decDomain: Decision,
     poolClient?: PoolClient,
   ): Promise<DecisionId> {
+    const decId = decDomain.id.value!;
+
     const client = poolClient || ((await this._uow.begin()) as PoolClient);
     try {
-      await this._saveSubmission(conId, decId, submissionDomain, client);
+      const decisionAdDoc = AdministrativeDocumentMapper.toPersistence(
+        decDomain.document,
+      );
+      // update decision document info
+      await this._adDocPersist.update(client, decisionAdDoc);
+
+      const subDomain = decDomain.submissions[0];
+
+      await this._saveSubmission(conId, decId, subDomain, client);
       if (!poolClient) {
         await this._uow.commit(client);
       }
       return new DecisionId(decId);
-    } catch (error) {
-      if (!poolClient) {
-        await this._uow.rollback(client);
-      }
-      throw error;
-    }
-  }
-
-  async editSubmission(
-    conId: string,
-    subId: string,
-    decDomain: Decision,
-    poolClient?: PoolClient,
-  ): Promise<void> {
-    const client = poolClient || ((await this._uow.begin()) as PoolClient);
-    try {
-      // only one submission when initConstruction
-      const subDomain = decDomain.submissions[0];
-
-      await this._saveConInfoAndBidPackages(conId, subId, subDomain, client);
-      if (!poolClient) {
-        await this._uow.commit(client);
-      }
     } catch (error) {
       if (!poolClient) {
         await this._uow.rollback(client);
@@ -138,8 +124,13 @@ export class DocumentWriteRepository
     const subAdDocRow = AdministrativeDocumentMapper.toPersistence(
       subDomain.document,
     );
-    await this._adDocPersist.save(client, subAdDocRow);
-    await this._subPersist.save(client, subRow);
+    if (subDomain.id.value) {
+      // Update submission info only impact to administrative_documents
+      await this._adDocPersist.update(client, subAdDocRow);
+    } else {
+      await this._adDocPersist.save(client, subAdDocRow);
+      await this._subPersist.save(client, subRow);
+    }
 
     await this._saveConInfoAndBidPackages(conId, subRow.id, subDomain, client);
   }

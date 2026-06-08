@@ -106,12 +106,11 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     if (!existDec) {
       throw new Error(`Decision: "${decId}" not found`);
     }
-    const subDomain = SubmissionAssembler.fromCmd(cmd);
+    const decisionDomain = DecisionAssembler.fromCmd(cmd);
     const conId = existDec.construction_id;
     const decIdRes = await this._docWriteRepo.saveExistingDecision(
       conId,
-      decId,
-      subDomain,
+      decisionDomain,
     );
     return decIdRes;
   }

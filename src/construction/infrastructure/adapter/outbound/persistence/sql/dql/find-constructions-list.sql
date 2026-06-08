@@ -14,6 +14,7 @@ JOIN LATERAL (
   FROM public.construction_info_snapshots ci
   WHERE c.id = ci.construction_id
   ORDER BY ci.created_at DESC
+  LIMIT 1
 ) AS ci 
 ON c.id = ci.construction_id;
 
