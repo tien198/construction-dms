@@ -3,8 +3,7 @@ import { IConstructionInfoSnapshotCommand } from './construction-info-snapshot.t
 import { IDirectlyDecisionCommand } from './directly-decision';
 
 export interface ICreateSubmissionCommand {
-  // Optional between "decId" and "conId" to specify that where the submit for new Decision or existed
-  con_id?: string;
+  con_id: string;
 
   id?: string;
 

@@ -20,6 +20,7 @@ SELECT
                                 'date', dec_ad_ttmn.date
                               )
                             END,
+    'construction_id',      d.construction_id,
     'period',               d.period,
     'submissions',          COALESCE 
                             (

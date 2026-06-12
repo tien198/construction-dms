@@ -16,7 +16,7 @@ export class BidPackageSnapshotAssembler {
   static fromCmd(cmd: BidPackageSnapshotCommand): BidPackageSnapshot {
     return new BidPackageSnapshot(
       new SnapshotId(cmd.id),
-      new BidPackageId(cmd.id),
+      new BidPackageId(cmd.bid_package_id),
       cmd.type,
       new ProjectOwner(cmd.project_owner),
       new BidPackageName(cmd.name),

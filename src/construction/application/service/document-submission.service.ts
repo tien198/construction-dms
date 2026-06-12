@@ -6,14 +6,21 @@ import type { IUnitOfWork } from '../port/outbound/database/i-unit-of-work.port'
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import { IDocumentSubmissionUseCase } from '../port/inbound/document-submission.use-case';
+import {
+  EditContext,
+  IDocumentSubmissionUseCase,
+} from '../port/inbound/document-submission.use-case';
 import { CreateSubmissionCommand } from '../commands/create-submission/create-submission.command';
 import { DecisionAssembler } from '../assembler/document/decision.assembler';
 import { ConstructionAssembler } from '../assembler/construction/construction.assembler';
 import { PoolClient } from 'pg';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
-import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import {
+  DecisionId,
+  DocumentId,
+} from 'src/construction/domain/value-objects/document.vo';
 import { SubmissionAssembler } from '../assembler/document/submission.assembler';
+import { SubmissionResDto } from '../queries/get-decision-detail/dto/submission.res-dto';
 
 @Injectable()
 export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
@@ -79,9 +86,10 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
   // }
 
   async addSubmissionForNewDecision(
-    conId: string,
+    // conId: string,
     cmd: CreateSubmissionCommand,
   ): Promise<DecisionId> {
+    const conId = cmd.con_id;
     const existCon = await this._conQueryRepo.findConstructionById(conId);
     if (!existCon) {
       throw new Error(`Construction: "${conId}" not found`);
@@ -98,20 +106,47 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
   }
 
   async addSubmissionForExistedDecision(
-    decId: string,
+    // decId: string,
     cmd: CreateSubmissionCommand,
   ): Promise<DecisionId> {
     // Load the existing Decision aggregate
+    const decId = cmd.directly_decision.id!;
     const existDec = await this._docQueryRepo.findDecisionById(decId);
     if (!existDec) {
       throw new Error(`Decision: "${decId}" not found`);
     }
     const decisionDomain = DecisionAssembler.fromCmd(cmd);
     const conId = existDec.construction_id;
-    const decIdRes = await this._docWriteRepo.saveExistingDecision(
+    const decIdRes = await this._docWriteRepo.saveSubmission(
       conId,
-      decisionDomain,
+      decId,
+      decisionDomain.submissions[0],
     );
     return decIdRes;
+  }
+
+  async editSubmission(context: EditContext): Promise<DocumentId> {
+    const cmd = context.cmd;
+    // 1. Load existing domain entities
+    const existSub = await this._docQueryRepo.checkExistSubmission(cmd.id!);
+    if (!existSub) {
+      throw new Error(`Submission: "${cmd.id}" not found`);
+    }
+
+    // 2. Create updated domain entities from command
+    const updatedDecDomain = DecisionAssembler.fromCmd(cmd);
+    const updatedSubDomain = updatedDecDomain.submissions[0];
+
+    const updatedDecAdDoc = context.isDecEdit
+      ? updatedDecDomain.document
+      : null;
+
+    await this._docWriteRepo.updateSubmission(
+      cmd.con_id,
+      updatedSubDomain,
+      updatedDecAdDoc,
+    );
+
+    return updatedSubDomain.id;
   }
 }

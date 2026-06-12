@@ -26,4 +26,6 @@ export interface IDocumentQueryRepository {
   ): Promise<DecisionDetailResDto | undefined>;
 
   checkExistBidPackage(id: string): Promise<boolean>;
+
+  checkExistSubmission(id: string): Promise<boolean>;
 }

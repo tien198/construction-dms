@@ -3,6 +3,8 @@ import { BidPackageType } from 'src/construction/domain/enum/bid-package.enum';
 export interface IBidPackageSnapshotCommand {
   id?: string;
 
+  bid_package_id: string;
+
   type: BidPackageType;
 
   project_owner: string;

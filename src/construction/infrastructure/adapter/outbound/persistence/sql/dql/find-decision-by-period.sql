@@ -20,6 +20,7 @@ SELECT
                                 'date', dec_ad_ttmn.date
                               )
                             END,
+    'construction_id',      d.construction_id,
     'period',               d.period,
     'submissions',          COALESCE 
                             (
@@ -72,10 +73,10 @@ SELECT
                                                                          
                                                                          JOIN public.bid_package_snapshots bp_snapshot_inner
                                                                            ON bp_inner.id = bp_snapshot_inner.bid_package_id
-
+                                                                         
                                                                          JOIN public.administrative_documents sub_ad_inner
                                                                            ON sub_ad_inner.id = bp_snapshot_inner.submission_id
-
+                                                                         
                                                                          WHERE sub_ad_inner.date <= sub_ad.date
                                                                          ORDER BY bp_inner.type, sub_ad_inner.date DESC, bp_snapshot_inner.created_at DESC
                                                                        )
@@ -102,6 +103,7 @@ SELECT
                                                                      '[]'::json
                                                                     )
                                   )
+                                  ORDER BY sub_ad.date ASC
                                 )
                                 FROM public.submissions sub
                                 LEFT JOIN public.administrative_documents sub_ad

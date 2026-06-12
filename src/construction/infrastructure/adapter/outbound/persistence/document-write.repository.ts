@@ -18,9 +18,13 @@ import { ConstructionInfoWritePersistence } from './persistence-helper/construct
 import { BidPackageMapper } from './mapper/bid-package.mapper';
 import { BidPackageWritePersistence } from './persistence-helper/bid-package-write.persistence';
 import { Submission } from 'src/construction/domain/document/submission.entity';
-import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import {
+  DecisionId,
+  DocumentId,
+} from 'src/construction/domain/value-objects/document.vo';
 import { BidPackageRow, BidPackageSnapshotRow } from './model/bid-package.row';
 import type { IDocumentQueryRepository } from 'src/construction/application/port/outbound/database/document-query.repository.port';
+import { AdministrativeDocument } from 'src/construction/domain/document/administrative-document.entity';
 
 @Injectable()
 export class DocumentWriteRepository
@@ -65,7 +69,7 @@ export class DocumentWriteRepository
       const decId = decDomain.id.value!;
       // only one submission when initConstruction
       const subDomain = decDomain.submissions[0];
-      await this._saveSubmission(conId, decId, subDomain, client);
+      await this.saveSubmission(conId, decId, subDomain, client);
 
       // if poolClient exist, all DML in a transaction, commit and roll back will occure outthere
       if (!poolClient) {
@@ -80,41 +84,11 @@ export class DocumentWriteRepository
     }
   }
 
-  async saveExistingDecision(
-    conId: string,
-    decDomain: Decision,
-    poolClient?: PoolClient,
-  ): Promise<DecisionId> {
-    const decId = decDomain.id.value!;
-
-    const client = poolClient || ((await this._uow.begin()) as PoolClient);
-    try {
-      const decisionAdDoc = AdministrativeDocumentMapper.toPersistence(
-        decDomain.document,
-      );
-      // update decision document info
-      await this._adDocPersist.update(client, decisionAdDoc);
-
-      const subDomain = decDomain.submissions[0];
-
-      await this._saveSubmission(conId, decId, subDomain, client);
-      if (!poolClient) {
-        await this._uow.commit(client);
-      }
-      return new DecisionId(decId);
-    } catch (error) {
-      if (!poolClient) {
-        await this._uow.rollback(client);
-      }
-      throw error;
-    }
-  }
-
-  private async _saveSubmission(
+  async saveSubmission(
     conId: string,
     decId: string,
     subDomain: Submission,
-    client: PoolClient,
+    poolClient?: PoolClient,
   ) {
     const subRow = SubmissionMapper.toPersistence({
       construction_id: conId,
@@ -124,20 +98,29 @@ export class DocumentWriteRepository
     const subAdDocRow = AdministrativeDocumentMapper.toPersistence(
       subDomain.document,
     );
-    if (subDomain.id.value) {
-      // Update submission info only impact to administrative_documents
-      await this._adDocPersist.update(client, subAdDocRow);
-    } else {
+    // if (subDomain.id.value) {
+    // Update submission info only impact to administrative_documents
+    // await this._adDocPersist.update(client, subAdDocRow);
+    const client = poolClient || ((await this._uow.begin()) as PoolClient);
+    try {
       await this._adDocPersist.save(client, subAdDocRow);
       await this._subPersist.save(client, subRow);
-    }
 
-    await this._saveConInfoAndBidPackages(conId, subRow.id, subDomain, client);
+      await this._saveConInfoAndBidPackages(conId, subDomain, client);
+      if (!poolClient) {
+        await this._uow.commit(client);
+      }
+      return subDomain.id;
+    } catch (error) {
+      if (!poolClient) {
+        await this._uow.rollback(client);
+      }
+      throw error;
+    }
   }
 
   private async _saveConInfoAndBidPackages(
     conId: string,
-    subId: string,
     subDomain: Submission,
     client: PoolClient,
   ) {
@@ -146,7 +129,7 @@ export class DocumentWriteRepository
     if (infoDomain) {
       const info = ConstructionInfoMapper.toPersistence({
         construction_id: conId,
-        submission_id: subId,
+        submission_id: subDomain.id.value!,
         info: infoDomain,
       });
       await this._conInfoPersist.save(client, info);
@@ -159,12 +142,12 @@ export class DocumentWriteRepository
         bpDomainsArr.map((bidPackageDomain) => [
           BidPackageMapper.toPersistenceBidPackage({
             construction_id: conId,
-            submission_id: subId,
+            submission_id: subDomain.id.value!,
             bid_package: bidPackageDomain,
           }),
           BidPackageMapper.toPersistenceSnapshot({
             construction_id: conId,
-            submission_id: subId,
+            submission_id: subDomain.id.value!,
             bid_package: bidPackageDomain,
           }),
         ]);
@@ -181,6 +164,41 @@ export class DocumentWriteRepository
         // Always insert snapshot
         await this._bidPackagePersist.saveSnapshot(client, bpRow[1]);
       }
+    }
+  }
+
+  /**
+   * @param decAdDoc - if null, don't update decision ad doc
+   */
+  async updateSubmission(
+    conId: string,
+    subDomain: Submission,
+    decAdDoc: AdministrativeDocument | null,
+    poolClient?: PoolClient,
+  ): Promise<DocumentId> {
+    const subAdDocRow = AdministrativeDocumentMapper.toPersistence(
+      subDomain.document,
+    );
+    const decAdDocRow = decAdDoc
+      ? AdministrativeDocumentMapper.toPersistence(decAdDoc)
+      : null;
+    const client = poolClient || ((await this._uow.begin()) as PoolClient);
+    try {
+      await this._adDocPersist.update(client, subAdDocRow);
+      if (decAdDocRow) {
+        await this._adDocPersist.update(client, decAdDocRow);
+      }
+
+      await this._saveConInfoAndBidPackages(conId, subDomain, client);
+      if (!poolClient) {
+        await this._uow.commit(client);
+      }
+      return subDomain.id;
+    } catch (error) {
+      if (!poolClient) {
+        await this._uow.rollback(client);
+      }
+      throw error;
     }
   }
 }

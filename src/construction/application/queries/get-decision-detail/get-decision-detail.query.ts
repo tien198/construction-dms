@@ -10,6 +10,7 @@ export class GetDecisionQuery {
 }
 
 export class DecisionDetailResDto extends AdminDocResDto {
+  construction_id: string;
   period: ConstructionPeriod;
   submissions: SubmissionResDto[];
 }

@@ -1,5 +1,10 @@
+import { AdministrativeDocument } from 'src/construction/domain/document/administrative-document.entity';
 import { Decision } from 'src/construction/domain/document/decision.entity';
-import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import { Submission } from 'src/construction/domain/document/submission.entity';
+import {
+  DecisionId,
+  DocumentId,
+} from 'src/construction/domain/value-objects/document.vo';
 import type { Queryable } from 'src/shared/type-ultility/i-queryable';
 
 export interface IDocumentWriteRepository {
@@ -11,10 +16,17 @@ export interface IDocumentWriteRepository {
     client?: Queryable,
   ): Promise<DecisionId>;
 
-  // only create new submission (and attached construction_info, bid_packages)
-  saveExistingDecision(
+  saveSubmission(
     conId: string,
-    decision: Decision,
+    decId: string,
+    subDomain: Submission,
     client?: Queryable,
-  ): Promise<DecisionId>;
+  ): Promise<DocumentId>;
+
+  updateSubmission(
+    conId: string,
+    subDomain: Submission,
+    decAdDoc: AdministrativeDocument | null,
+    client?: Queryable,
+  ): Promise<DocumentId>;
 }

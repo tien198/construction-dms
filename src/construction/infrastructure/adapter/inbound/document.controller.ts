@@ -6,9 +6,9 @@ import {
   Get,
   Param,
   Query,
-  Header,
   StreamableFile,
   Res,
+  Put,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -21,7 +21,10 @@ import { ConstructionResDto } from 'src/construction/application/dto/response/ge
 import { DecisionResDto } from 'src/construction/application/dto/response/get-decision.res-dto';
 import { ResResult } from 'src/shared/response-result';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
-import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import {
+  DecisionId,
+  DocumentId,
+} from 'src/construction/domain/value-objects/document.vo';
 import { DocxGenerationServiceProvider } from '../nestjs/provider/docx-generation.service.provider';
 
 @ApiTags('document')
@@ -38,35 +41,43 @@ export class DocumentController {
   @Post('init-construction')
   @ApiOperation({ summary: 'Create a new decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
-  async create(@Body() data: CreateSubmissionCommand): Promise<ConstructionId> {
-    const constructionId =
-      await this._documentSubmissionUseCase.initConstruction(data);
-    return constructionId;
+  async create(@Body() cmd: CreateSubmissionCommand): Promise<ConstructionId> {
+    const conId = await this._documentSubmissionUseCase.initConstruction(cmd);
+    return conId;
   }
 
   @Post('add-submission')
   @ApiOperation({ summary: 'Add a new submission for an existing decision' })
   @ApiResponse({ status: 201, description: 'Created successfully.' })
   async addSubmission(
-    @Body() data: CreateSubmissionCommand,
+    @Body() cmd: CreateSubmissionCommand,
   ): Promise<DecisionId> {
-    if (data.con_id) {
-      return this._documentSubmissionUseCase.addSubmissionForNewDecision(
-        data.con_id,
-        data,
-      );
-    }
     // if exists decision id (directlyDecision.id), add submission for existed decision
-    else if (data.directly_decision.id) {
+    if (cmd.directly_decision.id) {
       return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
-        data.directly_decision.id,
-        data,
+        cmd,
       );
+    } else if (cmd.con_id) {
+      return this._documentSubmissionUseCase.addSubmissionForNewDecision(cmd);
     } else {
       throw new Error(
         'Invalid request: either con_id or directly_decision.id must be provided',
       );
     }
+  }
+
+  @Put('edit-submission')
+  @ApiOperation({ summary: 'Edit a submission' })
+  @ApiResponse({ status: 200, description: 'Updated successfully.' })
+  async editSubmission(
+    @Query('isDecEdit') isDecEdit: boolean,
+    @Body() cmd: CreateSubmissionCommand,
+  ): Promise<DocumentId> {
+    const subId = await this._documentSubmissionUseCase.editSubmission({
+      cmd,
+      isDecEdit: isDecEdit ?? true,
+    });
+    return subId;
   }
 
   @Get('constructions-list')

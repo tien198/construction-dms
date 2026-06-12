@@ -68,4 +68,10 @@ export class DocumentQueryRepository
     const result = await this._poolClient.query(query, [bidPackageId]);
     return result.rows[0].exists as boolean;
   }
+
+  async checkExistSubmission(id: string): Promise<boolean> {
+    const query = this._getQueryFromFile('check-existed-submission.sql');
+    const result = await this._poolClient.query(query, [id]);
+    return result.rows[0].exists as boolean;
+  }
 }

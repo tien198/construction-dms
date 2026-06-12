@@ -15,12 +15,9 @@ import { ICreateSubmissionCommand } from '../type/create-submission/create-submi
 import { BidPackageSnapshotCommand } from './bid-package-snapshot.command';
 
 export class CreateSubmissionCommand implements ICreateSubmissionCommand {
-  // Optional between "decId" and "conId" to specify that where the submit for new Decision or existed
-
   @ApiPropertyOptional()
-  @IsOptional()
   @IsString()
-  con_id?: string;
+  con_id: string;
 
   @ApiPropertyOptional()
   @IsOptional()

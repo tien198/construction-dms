@@ -17,6 +17,10 @@ export class BidPackageSnapshotCommand implements IBidPackageSnapshotCommand {
   @IsOptional()
   id?: string;
 
+  @ApiProperty()
+  @IsString()
+  bid_package_id: string;
+
   @ApiProperty({ enum: BidPackageType })
   @IsEnum(BidPackageType)
   type: BidPackageType;

@@ -1,6 +1,10 @@
 import { CreateSubmissionCommand } from '../../commands/create-submission/create-submission.command';
 import { ConstructionId } from 'src/construction/domain/value-objects/construction.vo';
-import { DecisionId } from 'src/construction/domain/value-objects/document.vo';
+import {
+  DecisionId,
+  DocumentId,
+} from 'src/construction/domain/value-objects/document.vo';
+import { SubmissionResDto } from '../../queries/get-decision-detail/dto/submission.res-dto';
 
 export interface IDocumentSubmissionUseCase {
   initConstruction(data: CreateSubmissionCommand): Promise<ConstructionId>;
@@ -15,12 +19,19 @@ export interface IDocumentSubmissionUseCase {
   // ): Promise<Construction | void>;
 
   addSubmissionForNewDecision(
-    conId: string,
+    // conId: string,
     data: CreateSubmissionCommand,
   ): Promise<DecisionId>;
 
   addSubmissionForExistedDecision(
-    decId: string,
+    // decId: string,
     data: CreateSubmissionCommand,
   ): Promise<DecisionId>;
+
+  editSubmission(context: EditContext): Promise<DocumentId>;
 }
+
+export type EditContext = {
+  cmd: CreateSubmissionCommand;
+  isDecEdit?: boolean;
+};
