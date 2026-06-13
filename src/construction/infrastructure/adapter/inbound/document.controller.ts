@@ -9,6 +9,7 @@ import {
   StreamableFile,
   Res,
   Put,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -70,12 +71,13 @@ export class DocumentController {
   @ApiOperation({ summary: 'Edit a submission' })
   @ApiResponse({ status: 200, description: 'Updated successfully.' })
   async editSubmission(
-    @Query('isDecEdit') isDecEdit: boolean,
+    @Query('isDecEdit', new ParseBoolPipe({ optional: true }))
+    isDecEdit: boolean,
     @Body() cmd: CreateSubmissionCommand,
   ): Promise<DocumentId> {
     const subId = await this._documentSubmissionUseCase.editSubmission({
       cmd,
-      isDecEdit: isDecEdit ?? true,
+      isDecEdit: isDecEdit ?? false,
     });
     return subId;
   }
