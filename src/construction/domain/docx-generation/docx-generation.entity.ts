@@ -6,6 +6,7 @@ import { AdminDocResDto } from 'src/construction/application/queries/get-decisio
 import { BidPackageSnapshotResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
 import { DocxGenerationBidPackage } from './docx-generation.bid-package.entity';
 import { BidPackageType } from '../enum/bid-package.enum';
+import { DocxGenerationBidder } from './docx-generation-bidder.entity';
 
 type ITemplaterConInfor = StrConvert<ConstructionInfoSnapshot>;
 
@@ -102,6 +103,7 @@ export class DocxGeneration
     bidPackage: BidPackageSnapshotResDto,
   ): DocxGenerationBidPackage {
     const entity = new DocxGenerationBidPackage(bidPackage);
+
     return entity;
   }
 }

@@ -1,13 +1,17 @@
-import {
-  BidderInfo,
-  BidPackageSnapshotResDto,
-} from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
+import { BidPackageSnapshotResDto } from 'src/construction/application/queries/get-decision-detail/dto/bid-package.res-dto';
 import { BidPackageType } from '../enum/bid-package.enum';
 import { DocxFormater } from './docx-formater';
+import { DocxGenerationBidder } from './docx-generation-bidder.entity';
 
 export class DocxGenerationBidPackage
   extends DocxFormater
-  implements Omit<BidPackageSnapshotResDto, 'successful_bidder_id' | 'est_cost'>
+  implements
+    Partial<
+      Omit<
+        BidPackageSnapshotResDto,
+        'successful_bidder_id' | 'est_cost' | 'successful_bidder'
+      >
+    >
 {
   id: string;
   bid_package_id: string;
@@ -22,7 +26,7 @@ export class DocxGenerationBidPackage
   bidder_selection_time: string;
   bidder_selection_method: string;
   // Note: sau khi hoàn thành chức năng nhà thầu sẽ thêm
-  successful_bidder?: BidderInfo;
+  successful_bidder?: DocxGenerationBidder = undefined;
   duration: string;
   is_completed: boolean;
 
@@ -44,7 +48,11 @@ export class DocxGenerationBidPackage
       'month',
     );
     this.bidder_selection_method = bidPackage.bidder_selection_method;
-    this.successful_bidder = bidPackage.successful_bidder;
+    if (bidPackage.successful_bidder) {
+      this.successful_bidder = new DocxGenerationBidder(
+        bidPackage.successful_bidder,
+      );
+    }
     this.duration = bidPackage.duration;
     this.is_completed = bidPackage.is_completed;
 

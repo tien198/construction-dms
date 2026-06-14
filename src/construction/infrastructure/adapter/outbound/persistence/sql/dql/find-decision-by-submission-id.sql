@@ -105,6 +105,8 @@ SELECT
                                                                              'representative_name',     bidder.representative_name,
                                                                              'representative_position', bidder.representative_position,
                                                                              'bank_account_number',     bidder.bank_account_number,
+                                                                             'bank_name',               bidder.bank_name,
+                                                                             'bank_branch',             bidder.bank_branch,
                                                                              'tax_id',                  bidder.tax_id,
                                                                              'phone_number',            bidder.phone_number,
                                                                              'email',                   bidder.email

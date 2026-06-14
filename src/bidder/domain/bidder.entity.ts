@@ -42,42 +42,58 @@ export class Bidder {
    */
   update(updatedData: UpdateBidderCommand): string[] {
     if (updatedData.name) {
-      this.name.value = updatedData.name;
+      this.name = new BidderName(updatedData.name);
       this.dirtyTracking.push('name');
     }
 
     if (updatedData.address) {
-      this.address.value = updatedData.address;
+      this.address = new BidderAddress(updatedData.address);
       this.dirtyTracking.push('address');
     }
 
     if (updatedData.representative_name) {
-      this.representativeName.value = updatedData.representative_name;
+      this.representativeName = new BidderRepresentativeName(
+        updatedData.representative_name,
+      );
       this.dirtyTracking.push('representative_name');
     }
 
     if (updatedData.representative_position) {
-      this.representativePosition.value = updatedData.representative_position;
+      this.representativePosition = new BidderRepresentativePosition(
+        updatedData.representative_position,
+      );
       this.dirtyTracking.push('representative_position');
     }
 
     if (updatedData.bank_account_number) {
-      this.bankAccountNumber.value = updatedData.bank_account_number;
+      this.bankAccountNumber = new BidderBankAccountNumber(
+        updatedData.bank_account_number,
+      );
       this.dirtyTracking.push('bank_account_number');
     }
 
+    if (updatedData.bank_name) {
+      this.bankName = new BidderBankName(updatedData.bank_name);
+      this.dirtyTracking.push('bank_name');
+    }
+
+    if (updatedData.bank_branch) {
+      this.bankBranch = new BidderBankBranch(updatedData.bank_branch);
+      this.dirtyTracking.push('bank_branch');
+    }
+
     if (updatedData.tax_id) {
-      this.taxId.value = updatedData.tax_id;
+      this.taxId = new BidderTaxId(updatedData.tax_id);
       this.dirtyTracking.push('tax_id');
     }
 
     if (updatedData.phone_number) {
-      this.phoneNumber.value = updatedData.phone_number;
+      this.phoneNumber = new BidderPhoneNumber(updatedData.phone_number);
       this.dirtyTracking.push('phone_number');
     }
 
     if (updatedData.email) {
-      this.email.value = updatedData.email;
+      this.email = new BidderEmail(updatedData.email);
       this.dirtyTracking.push('email');
     }
 
