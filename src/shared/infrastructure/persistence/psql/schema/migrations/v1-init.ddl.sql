@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml.dbdiagram.io)
 -- Database: PostgreSQL
--- Generated at: 2026-06-04T16:56:42.961Z
+-- Generated at: 2026-06-14T08:41:55.687Z
 
 CREATE TYPE "construction_period" AS ENUM (
   'KH_LCNT',
@@ -87,6 +87,8 @@ CREATE TABLE "bidders" (
   "representative_name" varchar NOT NULL,
   "representative_position" varchar NOT NULL,
   "bank_account_number" varchar NOT NULL,
+  "bank_name" varchar NOT NULL,
+  "bank_branch" varchar NOT NULL,
   "tax_id" varchar NOT NULL,
   "phone_number" varchar NOT NULL,
   "email" varchar NOT NULL

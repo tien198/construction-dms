@@ -22,6 +22,14 @@ export class BidderBankAccountNumber {
   constructor(public value: string) {}
 }
 
+export class BidderBankName {
+  constructor(public value: string) {}
+}
+
+export class BidderBankBranch {
+  constructor(public value: string) {}
+}
+
 export class BidderTaxId {
   constructor(public value: string) {}
 }

@@ -10,6 +10,8 @@ import {
   BidderTaxId,
   BidderPhoneNumber,
   BidderEmail,
+  BidderBankName,
+  BidderBankBranch,
 } from 'src/bidder/domain/value-objects/bidder.vo';
 
 export class BidderMapper {
@@ -21,6 +23,8 @@ export class BidderMapper {
       new BidderRepresentativeName(persistence.representative_name),
       new BidderRepresentativePosition(persistence.representative_position),
       new BidderBankAccountNumber(persistence.bank_account_number),
+      new BidderBankName(persistence.bank_name),
+      new BidderBankBranch(persistence.bank_branch),
       new BidderTaxId(persistence.tax_id),
       new BidderPhoneNumber(persistence.phone_number),
       new BidderEmail(persistence.email),
@@ -36,6 +40,8 @@ export class BidderMapper {
       representative_name: entity.representativeName.value,
       representative_position: entity.representativePosition.value,
       bank_account_number: entity.bankAccountNumber.value,
+      bank_name: entity.bankName.value,
+      bank_branch: entity.bankBranch.value,
       tax_id: entity.taxId.value,
       phone_number: entity.phoneNumber.value,
       email: entity.email.value,

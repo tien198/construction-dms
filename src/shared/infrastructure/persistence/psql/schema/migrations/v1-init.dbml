@@ -110,6 +110,8 @@ Table bidders {
   representative_name varchar [not null]
   representative_position varchar [not null]
   bank_account_number varchar [not null]
+  bank_name varchar [not null]
+  bank_branch varchar [not null]
   tax_id varchar [not null]
   phone_number varchar [not null]
   email varchar [not null]

@@ -2,6 +2,8 @@ import { v7 } from 'uuid';
 import {
   BidderAddress,
   BidderBankAccountNumber,
+  BidderBankBranch,
+  BidderBankName,
   BidderEmail,
   BidderId,
   BidderName,
@@ -22,6 +24,8 @@ export class Bidder {
     public representativeName: BidderRepresentativeName,
     public representativePosition: BidderRepresentativePosition,
     public bankAccountNumber: BidderBankAccountNumber,
+    public bankName: BidderBankName,
+    public bankBranch: BidderBankBranch,
     public taxId: BidderTaxId,
     public phoneNumber: BidderPhoneNumber,
     public email: BidderEmail,

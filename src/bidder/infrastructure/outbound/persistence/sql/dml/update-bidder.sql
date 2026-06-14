@@ -5,7 +5,9 @@ SET
     representative_name = $3,
     representative_position = $4,
     bank_account_number = $5,
-    tax_id = $6,
-    phone_number = $7,
-    email = $8
-WHERE id = $9;
+    bank_name = $6,
+    bank_branch = $7,
+    tax_id = $8,
+    phone_number = $9,
+    email = $10
+WHERE id = $11;
