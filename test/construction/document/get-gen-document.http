@@ -1,6 +1,6 @@
 // KH_LCNT
 curl -o 2_KH_LCNT.docx -JX GET http://localhost:3000/api/document/docx/generate/019e9396-d6eb-701c-a61d-98d924183f05
-curl -o 3_KH_LCNT_decision.docx -JX GET http://localhost:3000/api/document/docx/generate/019e9396-d6eb-701c-a61d-98d924183f05?type=decision
+curl -o 3_KH_LCNT_decision.docx -JX GET 'http://localhost:3000/api/document/docx/generate/019e9396-d6eb-701c-a61d-98d924183f05?type=decision&is-preview=false'
 
 
 // KQ_KH_LCNT TV

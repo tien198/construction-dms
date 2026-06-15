@@ -130,11 +130,15 @@ export class DocumentController {
     @Param('subId') subId: string,
     // type of document, default 'submission'
     @Query('type') type: 'submission' | 'decision' = 'submission',
+    // is preview, default false
+    @Query('is-preview', new ParseBoolPipe({ optional: true }))
+    isPreview: boolean = false,
     @Res({ passthrough: true }) res: Response,
   ) {
     const { buffer, docName } = await this._docxGenerationService.generate(
       subId,
       type,
+      isPreview,
     );
     res.set({
       'Access-Control-Expose-Headers': 'Content-Disposition',
@@ -145,45 +149,4 @@ export class DocumentController {
       disposition: `attachment; filename="fall-back.docx"; filename*=UTF-8''${encodeURIComponent(docName)}`,
     });
   }
-
-  /*
-  @Post('gen-decision')
-  @Header('Access-Control-Expose-Headers', 'Content-Disposition')
-  async decGen(
-    @Body()
-    doc: {
-      decId: string;
-    },
-  ) {
-    const dec = await this.constructionService.findDecision(doc.decId);
-    if (!dec) {
-      throw new Error('Not found Decision with id: ' + doc.decId);
-    }
-    const decPrint = new PrintDecisionImp(dec);
-
-    const docName = this.printService.getDocName(dec.period);
-    const buf = await this.printService.generate(docName.decision, decPrint);
-
-    const name = docName.decision;
-    return new StreamableFile(buf, {
-      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
-    });
-  }
-
-  @Post('gen-submission')
-  @Header('Access-Control-Expose-Headers', 'Content-Disposition')
-  async subGen(@Body() doc: { decId: string }) {
-    const dec = await this.constructionService.findDecision(doc.decId);
-    if (!dec) {
-      throw new Error('Not found Decision with id: ' + doc.decId);
-    }
-    const subPrint = new PrintSubmissionImp(dec.submission);
-    const docName = this.printService.getDocName(dec.period);
-    const buf = await this.printService.generate(docName.submission, subPrint);
-    const name = docName.submission;
-    return new StreamableFile(buf, {
-      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
-    });
-  }
-  */
 }

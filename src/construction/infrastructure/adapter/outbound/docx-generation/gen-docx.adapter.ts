@@ -11,8 +11,13 @@ import { IDocxGenerationPort } from 'src/construction/application/port/outbound/
 
 @Injectable()
 export class DocxGenerationAdapter implements IDocxGenerationPort {
-  async generate(docName: string, docxEntity: DocxGeneration) {
-    const templatePath = path.resolve('public', 'template', docName);
+  async generate(docName: string, docxEntity: DocxGeneration, isPreview) {
+    const directory = path.resolve(
+      'public',
+      'template',
+      isPreview ? 'preview' : 'production',
+    );
+    const templatePath = path.join(directory, docName);
     const templateBuffer = await fs.promises.readFile(templatePath, 'binary');
 
     // Unzip the templateBuffer
@@ -48,16 +53,19 @@ export class DocxGenerationAdapter implements IDocxGenerationPort {
      */
     const buf = doc.toBuffer();
 
+    /*
+    ** Write the Buffer to a file
     if (!fs.existsSync(path.resolve('gen-documents', docxEntity.name))) {
       fs.mkdirSync(path.resolve('gen-documents', docxEntity.name), {
         recursive: true,
       });
     }
-    // Write the Buffer to a file
     await fs.promises.writeFile(
       path.resolve('gen-documents', docxEntity.name, docName),
       buf,
     );
+    */
+
     /*
      * Instead of writing it to a file, you could also
      * let the user download it, store it in a database,

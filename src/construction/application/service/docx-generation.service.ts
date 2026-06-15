@@ -13,7 +13,11 @@ export class DocxGenerationService {
     private readonly _docQueryRepo: IDocumentQueryRepository,
   ) {}
 
-  async generate(subId: string, docType: 'submission' | 'decision') {
+  async generate(
+    subId: string,
+    docType: 'submission' | 'decision',
+    isPreview: boolean,
+  ) {
     const decision =
       (await this._docQueryRepo.findDecisionBySubmissionId(subId))!;
 
@@ -29,7 +33,11 @@ export class DocxGenerationService {
 
     // There is only one submission returned in query
     const docxEntity = new DocxGeneration(adminDoc, decision.submissions[0]);
-    const buffer = await this._docGeneration.generate(docName, docxEntity);
+    const buffer = await this._docGeneration.generate(
+      docName,
+      docxEntity,
+      isPreview,
+    );
     return { buffer, docName };
   }
 
