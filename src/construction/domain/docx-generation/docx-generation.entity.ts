@@ -25,9 +25,11 @@ export class DocxGeneration
 
   impl_duration: string;
   bid_packages: DocxGenerationBidPackage[];
-  TV_bid_package: DocxGenerationBidPackage | null;
-  TT_bid_package: DocxGenerationBidPackage | null;
-  TC_bid_package: DocxGenerationBidPackage | null;
+
+  // bp = bid_package
+  TV_bp: DocxGenerationBidPackage | null;
+  TT_bp: DocxGenerationBidPackage | null;
+  TC_bp: DocxGenerationBidPackage | null;
 
   bid_package_total: string;
   completed_works_total: string;
@@ -60,11 +62,11 @@ export class DocxGeneration
       this.convertBidPackageResDtoToEntity(bp),
     );
 
-    this.TV_bid_package =
+    this.TV_bp =
       this.bid_packages.find((b) => b.type == BidPackageType.TV) ?? null;
-    this.TT_bid_package =
+    this.TT_bp =
       this.bid_packages.find((b) => b.type == BidPackageType.TT) ?? null;
-    this.TC_bid_package =
+    this.TC_bp =
       this.bid_packages.find((b) => b.type == BidPackageType.TC) ?? null;
 
     this.bid_package_total = this.formatCurrency(

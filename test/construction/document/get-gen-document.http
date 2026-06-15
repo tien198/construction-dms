@@ -1,12 +1,16 @@
 // KH_LCNT
-curl -OJX GET http://localhost:3000/api/document/docx/generate/019e9396-d6eb-701c-a61d-98d924183f05
+curl -o 2_KH_LCNT.docx -JX GET http://localhost:3000/api/document/docx/generate/019e9396-d6eb-701c-a61d-98d924183f05
+curl -o 3_KH_LCNT_decision.docx -JX GET http://localhost:3000/api/document/docx/generate/019e9396-d6eb-701c-a61d-98d924183f05?type=decision
 
 
 // KQ_KH_LCNT TV
-curl -OJX GET http://localhost:3000/api/document/docx/generate/019e939c-ba65-764d-8038-cdd610804e0d?type=decision
+curl -o 4_KQ_TV.docx -JX GET http://localhost:3000/api/document/docx/generate/019e939c-ba65-764d-8038-cdd610804e0d
+curl -o 5_KQ_TV_decision.docx -JX GET http://localhost:3000/api/document/docx/generate/019e939c-ba65-764d-8038-cdd610804e0d?type=decision
 
 // KQ_KH_LCNT TT
-curl -OJX GET http://localhost:3000/api/document/docx/generate/019e939c-ba77-722a-ad9d-eaf7078206a3
+curl -o 6_KQ_TT.docx -JX GET http://localhost:3000/api/document/docx/generate/019e939c-ba77-722a-ad9d-eaf7078206a3
+curl -o 7_KQ_TT_decision.docx -JX GET http://localhost:3000/api/document/docx/generate/019e939c-ba77-722a-ad9d-eaf7078206a3?type=decision
 
 // BCKTKT
-curl -OJX GET http://localhost:3000/api/document/docx/generate/019e989d-321b-744f-994b-ecbd0070f8bd
+curl -o 8.BCKTKT.docx -JX GET http://localhost:3000/api/document/docx/generate/019e989d-321b-744f-994b-ecbd0070f8bd
+curl -o 9.BCKTKT_decision.docx -JX GET http://localhost:3000/api/document/docx/generate/019e989d-321b-744f-994b-ecbd0070f8bd?type=decision

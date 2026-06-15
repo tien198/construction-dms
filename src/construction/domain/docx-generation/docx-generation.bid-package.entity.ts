@@ -26,7 +26,8 @@ export class DocxGenerationBidPackage
   bidder_selection_time: string;
   bidder_selection_method: string;
   // Note: sau khi hoàn thành chức năng nhà thầu sẽ thêm
-  successful_bidder?: DocxGenerationBidder = undefined;
+  // succ_bidder = successful_bidder
+  succ_bidder?: DocxGenerationBidder = undefined;
   duration: string;
   is_completed: boolean;
 
@@ -49,9 +50,7 @@ export class DocxGenerationBidPackage
     );
     this.bidder_selection_method = bidPackage.bidder_selection_method;
     if (bidPackage.successful_bidder) {
-      this.successful_bidder = new DocxGenerationBidder(
-        bidPackage.successful_bidder,
-      );
+      this.succ_bidder = new DocxGenerationBidder(bidPackage.successful_bidder);
     }
     this.duration = bidPackage.duration;
     this.is_completed = bidPackage.is_completed;

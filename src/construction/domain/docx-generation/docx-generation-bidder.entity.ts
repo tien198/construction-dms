@@ -4,8 +4,11 @@ import { StrConvert } from 'src/shared/type-ultility/string-converter';
 export class DocxGenerationBidder implements Partial<StrConvert<BidderInfo>> {
   name: string;
   address: string;
-  representative_name: string;
-  representative_position: string;
+
+  // rep = representative
+  rep_name: string;
+  rep_position: string;
+
   tax_id: string;
   phone_number: string;
   email: string;
@@ -15,8 +18,8 @@ export class DocxGenerationBidder implements Partial<StrConvert<BidderInfo>> {
   constructor(bidder: BidderInfo) {
     this.name = bidder.name;
     this.address = bidder.address;
-    this.representative_name = bidder.representative_name;
-    this.representative_position = bidder.representative_position;
+    this.rep_name = bidder.representative_name;
+    this.rep_position = bidder.representative_position;
     this.tax_id = bidder.tax_id;
     this.phone_number = bidder.phone_number;
     this.email = bidder.email;
