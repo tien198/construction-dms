@@ -109,7 +109,7 @@ SELECT
                                 LEFT JOIN public.administrative_documents sub_ad
                                   ON sub_ad.id = sub.id
                                 -- submission -> construction_info_snapshots (optional)
-                                JOIN LATERAL (
+                                LEFT JOIN LATERAL (
                                   -- using LATERAL to find the last construction_info_snapshots of submission history
                                   -- it can be replaced by "is_approved" if there is approve function in the application
                                   SELECT ci.*
@@ -142,5 +142,5 @@ LEFT JOIN public.administrative_documents dec_ad_ttmn
 WHERE d.construction_id = $1
   AND d.period = $2; 
 
--- WHERE d.construction_id = '019ddc58-e541-7217-a783-f4bcd5627054'
---   AND d.period = 'KH_LCNT';
+-- WHERE d.construction_id = '019ed89d-2d93-74ef-a885-6c54fb548d31'
+--   AND d.period = 'KQ_KH_LCNT'; 
