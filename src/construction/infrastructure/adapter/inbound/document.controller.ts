@@ -52,19 +52,24 @@ export class DocumentController {
   @ApiResponse({ status: 201, description: 'Created successfully.' })
   async addSubmission(
     @Body() cmd: CreateSubmissionCommand,
-  ): Promise<DecisionId> {
+    // return created decision id
+  ): Promise<ResResult<string>> {
     // if exists decision id (directlyDecision.id), add submission for existed decision
+    let decId: DecisionId;
     if (cmd.directly_decision.id) {
-      return this._documentSubmissionUseCase.addSubmissionForExistedDecision(
-        cmd,
-      );
+      decId =
+        await this._documentSubmissionUseCase.addSubmissionForExistedDecision(
+          cmd,
+        );
     } else if (cmd.con_id) {
-      return this._documentSubmissionUseCase.addSubmissionForNewDecision(cmd);
+      decId =
+        await this._documentSubmissionUseCase.addSubmissionForNewDecision(cmd);
     } else {
       throw new Error(
         'Invalid request: either con_id or directly_decision.id must be provided',
       );
     }
+    return new ResResult(decId.value!);
   }
 
   @Put('edit-submission')
@@ -74,12 +79,13 @@ export class DocumentController {
     @Query('isDecEdit', new ParseBoolPipe({ optional: true }))
     isDecEdit: boolean,
     @Body() cmd: CreateSubmissionCommand,
-  ): Promise<DocumentId> {
+    // return edited submission id
+  ): Promise<ResResult<string>> {
     const subId = await this._documentSubmissionUseCase.editSubmission({
       cmd,
       isDecEdit: isDecEdit ?? false,
     });
-    return subId;
+    return new ResResult(subId.value!);
   }
 
   @Get('constructions-list')

@@ -117,12 +117,12 @@ export class DocumentSubmissionService implements IDocumentSubmissionUseCase {
     }
     const decisionDomain = DecisionAssembler.fromCmd(cmd);
     const conId = existDec.construction_id;
-    const decIdRes = await this._docWriteRepo.saveSubmission(
+    await this._docWriteRepo.saveSubmission(
       conId,
       decId,
       decisionDomain.submissions[0],
     );
-    return decIdRes;
+    return new DecisionId(decId);
   }
 
   async editSubmission(context: EditContext): Promise<DocumentId> {
